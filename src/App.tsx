@@ -44,11 +44,10 @@ function AboutPanel() {
       <Line n={5}>{'  '}<Prop c="role" />{'     : '}<Str c="Software Engineer (Frontend)" />{','}</Line>
       <Line n={6}>{'  '}<Prop c="company" />{'  : '}<Str c="BRINC Drones" />{','}</Line>
       <Line n={7}>{'  '}<Prop c="location" />{' : '}<Str c="Seattle, WA" />{','}</Line>
-      <Line n={8}>{'  '}<Prop c="bio" />{'      : '}<Str c="Building fast, beautiful web experiences." />{','}</Line>
-      <Line n={9}>{'  '}<Prop c="openTo" />{'   : '}<Str c="New opportunities" />{','}</Line>
-      <Line n={10}>{'};'}</Line>
-      <Line n={11} />
-      <Line n={12}><Kw c="export default" /> <Prop c="vansh" />{'  ;'}</Line>
+      <Line n={8}>{'  '}<Prop c="bio" />{'      : '}<Str c="Building fast, beautiful web experiences." /></Line>
+      <Line n={9}>{'};'}</Line>
+      <Line n={10} />
+      <Line n={11}><Kw c="export default" /> <Prop c="vansh" />{'  ;'}</Line>
     </>
   )
 }
