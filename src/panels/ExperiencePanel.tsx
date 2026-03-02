@@ -2,6 +2,10 @@ import type { ReactNode } from 'react'
 import { experience } from '../data/profile'
 import { Line, Kw, Prop, Str, Cmt } from '../components/syntax'
 
+function Promoted({ c }: { c: string }) {
+  return <span style={{ color: 'var(--tp)' }}>{`"${c}"`}</span>
+}
+
 export function ExperiencePanel() {
   const lineContents: ReactNode[] = [
     <Cmt c="// experience.ts" />,
@@ -17,6 +21,9 @@ export function ExperiencePanel() {
       lineContents.push(<>{'    '}<Prop c="team" />{'    : '}<Str c={entry.team} />{','}</>)
     }
     lineContents.push(<>{'    '}<Prop c="role" />{'    : '}<Str c={entry.role} />{','}</>)
+    if (entry.promoted) {
+      lineContents.push(<>{'    '}<Prop c="promoted" />{': '}<Promoted c={`↑ FE II · ${entry.promoted}`} />{','}</>)
+    }
     lineContents.push(<>{'    '}<Prop c="period" />{'  : '}<Str c={entry.period} /></>)
     lineContents.push(isLast ? '  }' : '  },')
   })
