@@ -1,6 +1,6 @@
 const ICON_MAP: Record<string, { label: string; color: string }> = {
   ts:   { label: 'TS',  color: '#519aba' },
-  json: { label: '{}',  color: '#cbcb41' },
+  json: { label: '{ }', color: '#cbcb41' },
   pdf:  { label: 'PDF', color: '#cc3e44' },
 }
 
