@@ -227,9 +227,6 @@
       <div class="tree-file" data-name="skills" onclick="go('skills')">
         <div class="ficon" style="background:#519aba"></div>skills.json
       </div>
-      <div class="tree-file" data-name="projects" onclick="go('projects')">
-        <div class="ficon" style="background:#519aba"></div>projects.ts
-      </div>
       <div class="tree-file" data-name="contact" onclick="go('contact')">
         <div class="ficon" style="background:#519aba"></div>contact.ts
       </div>
@@ -245,9 +242,6 @@
         <div class="tab" id="tab-skills" onclick="go('skills')">
           <div class="ficon" style="background:#519aba"></div>skills.json
         </div>
-        <div class="tab" id="tab-projects" onclick="go('projects')">
-          <div class="ficon" style="background:#519aba"></div>projects.ts
-        </div>
         <div class="tab" id="tab-contact" onclick="go('contact')">
           <div class="ficon" style="background:#519aba"></div>contact.ts
         </div>
@@ -261,71 +255,51 @@
           <div class="cl"><span class="ln">2</span><span class="lc"></span></div>
           <div class="cl"><span class="ln">3</span><span class="lc"><span class="kw">const</span> <span class="prop">vansh</span> = {</span></div>
           <div class="cl"><span class="ln">4</span><span class="lc">  <span class="prop">name</span>:     <span class="str">"Vansh Gambhir"</span>,</span></div>
-          <div class="cl"><span class="ln">5</span><span class="lc">  <span class="prop">role</span>:     <span class="str">"Frontend Engineer"</span>,</span></div>
-          <div class="cl"><span class="ln">6</span><span class="lc">  <span class="prop">location</span>: <span class="str">"Seattle, WA"</span>,</span></div>
-          <div class="cl"><span class="ln">7</span><span class="lc">  <span class="prop">bio</span>:      <span class="str">"Building fast, beautiful web experiences."</span>,</span></div>
-          <div class="cl"><span class="ln">8</span><span class="lc">  <span class="prop">openTo</span>:   <span class="str">"New opportunities"</span>,</span></div>
-          <div class="cl"><span class="ln">9</span><span class="lc">};</span></div>
-          <div class="cl"><span class="ln">10</span><span class="lc"></span></div>
-          <div class="cl"><span class="ln">11</span><span class="lc"><span class="kw">export default</span> <span class="prop">vansh</span>;</span></div>
+          <div class="cl"><span class="ln">5</span><span class="lc">  <span class="prop">role</span>:     <span class="str">"Front End Engineer II"</span>,</span></div>
+          <div class="cl"><span class="ln">6</span><span class="lc">  <span class="prop">company</span>:  <span class="str">"Amazon Web Services"</span>,</span></div>
+          <div class="cl"><span class="ln">7</span><span class="lc">  <span class="prop">location</span>: <span class="str">"Seattle, WA"</span>,</span></div>
+          <div class="cl"><span class="ln">8</span><span class="lc">  <span class="prop">bio</span>:      <span class="str">"Building AI-powered web experiences at AWS."</span>,</span></div>
+          <div class="cl"><span class="ln">9</span><span class="lc">  <span class="prop">openTo</span>:   <span class="str">"New opportunities"</span>,</span></div>
+          <div class="cl"><span class="ln">10</span><span class="lc">};</span></div>
+          <div class="cl"><span class="ln">11</span><span class="lc"></span></div>
+          <div class="cl"><span class="ln">12</span><span class="lc"><span class="kw">export default</span> <span class="prop">vansh</span>;</span></div>
         </div>
 
         <!-- skills.json -->
         <div class="panel" id="panel-skills">
           <div class="cl"><span class="ln">1</span><span class="lc">{</span></div>
           <div class="cl"><span class="ln">2</span><span class="lc">  <span class="prop">"languages"</span>: [</span></div>
-          <div class="cl"><span class="ln">3</span><span class="lc">    <span class="str">"JavaScript"</span>,</span></div>
-          <div class="cl"><span class="ln">4</span><span class="lc">    <span class="str">"TypeScript"</span>,</span></div>
-          <div class="cl"><span class="ln">5</span><span class="lc">    <span class="str">"HTML"</span>,</span></div>
-          <div class="cl"><span class="ln">6</span><span class="lc">    <span class="str">"CSS"</span></span></div>
-          <div class="cl"><span class="ln">7</span><span class="lc">  ],</span></div>
-          <div class="cl"><span class="ln">8</span><span class="lc">  <span class="prop">"frameworks"</span>: [</span></div>
-          <div class="cl"><span class="ln">9</span><span class="lc">    <span class="str">"React"</span>,</span></div>
-          <div class="cl"><span class="ln">10</span><span class="lc">    <span class="str">"Next.js"</span>,</span></div>
-          <div class="cl"><span class="ln">11</span><span class="lc">    <span class="str">"Vue"</span>,</span></div>
-          <div class="cl"><span class="ln">12</span><span class="lc">    <span class="str">"Nuxt"</span></span></div>
-          <div class="cl"><span class="ln">13</span><span class="lc">  ],</span></div>
-          <div class="cl"><span class="ln">14</span><span class="lc">  <span class="prop">"tools"</span>: [</span></div>
-          <div class="cl"><span class="ln">15</span><span class="lc">    <span class="str">"Vite"</span>,</span></div>
-          <div class="cl"><span class="ln">16</span><span class="lc">    <span class="str">"Webpack"</span>,</span></div>
-          <div class="cl"><span class="ln">17</span><span class="lc">    <span class="str">"Git"</span>,</span></div>
-          <div class="cl"><span class="ln">18</span><span class="lc">    <span class="str">"Figma"</span></span></div>
-          <div class="cl"><span class="ln">19</span><span class="lc">  ],</span></div>
-          <div class="cl"><span class="ln">20</span><span class="lc">  <span class="prop">"interests"</span>: [</span></div>
-          <div class="cl"><span class="ln">21</span><span class="lc">    <span class="str">"Performance"</span>,</span></div>
-          <div class="cl"><span class="ln">22</span><span class="lc">    <span class="str">"Accessibility"</span>,</span></div>
-          <div class="cl"><span class="ln">23</span><span class="lc">    <span class="str">"Design Systems"</span></span></div>
-          <div class="cl"><span class="ln">24</span><span class="lc">  ]</span></div>
-          <div class="cl"><span class="ln">25</span><span class="lc">}</span></div>
-        </div>
-
-        <!-- projects.ts -->
-        <div class="panel" id="panel-projects">
-          <div class="cl"><span class="ln">1</span><span class="lc"><span class="cmt">// projects.ts</span></span></div>
-          <div class="cl"><span class="ln">2</span><span class="lc"></span></div>
-          <div class="cl"><span class="ln">3</span><span class="lc"><span class="kw">interface</span> <span class="tp">Project</span> {</span></div>
-          <div class="cl"><span class="ln">4</span><span class="lc">  <span class="prop">name</span>:        <span class="tp">string</span>;</span></div>
-          <div class="cl"><span class="ln">5</span><span class="lc">  <span class="prop">description</span>: <span class="tp">string</span>;</span></div>
-          <div class="cl"><span class="ln">6</span><span class="lc">  <span class="prop">stack</span>:       <span class="tp">string</span>[];</span></div>
-          <div class="cl"><span class="ln">7</span><span class="lc">  <span class="prop">url</span>:         <span class="tp">string</span>;</span></div>
-          <div class="cl"><span class="ln">8</span><span class="lc">}</span></div>
-          <div class="cl"><span class="ln">9</span><span class="lc"></span></div>
-          <div class="cl"><span class="ln">10</span><span class="lc"><span class="kw">const</span> <span class="prop">projects</span>: <span class="tp">Project</span>[] = [</span></div>
-          <div class="cl"><span class="ln">11</span><span class="lc">  {</span></div>
-          <div class="cl"><span class="ln">12</span><span class="lc">    <span class="prop">name</span>:        <span class="str">"open-canvas"</span>,</span></div>
-          <div class="cl"><span class="ln">13</span><span class="lc">    <span class="prop">description</span>: <span class="str">"Collaborative canvas application."</span>,</span></div>
-          <div class="cl"><span class="ln">14</span><span class="lc">    <span class="prop">stack</span>:       [<span class="str">"React"</span>, <span class="str">"TypeScript"</span>, <span class="str">"Next.js"</span>],</span></div>
-          <div class="cl"><span class="ln">15</span><span class="lc">    <span class="prop">url</span>:         <span class="str">"#"</span>,</span></div>
-          <div class="cl"><span class="ln">16</span><span class="lc">  },</span></div>
-          <div class="cl"><span class="ln">17</span><span class="lc">  {</span></div>
-          <div class="cl"><span class="ln">18</span><span class="lc">    <span class="prop">name</span>:        <span class="str">"todai-toy"</span>,</span></div>
-          <div class="cl"><span class="ln">19</span><span class="lc">    <span class="prop">description</span>: <span class="str">"A productivity experiment."</span>,</span></div>
-          <div class="cl"><span class="ln">20</span><span class="lc">    <span class="prop">stack</span>:       [<span class="str">"Vue"</span>, <span class="str">"Nuxt"</span>, <span class="str">"CSS"</span>],</span></div>
-          <div class="cl"><span class="ln">21</span><span class="lc">    <span class="prop">url</span>:         <span class="str">"#"</span>,</span></div>
-          <div class="cl"><span class="ln">22</span><span class="lc">  },</span></div>
-          <div class="cl"><span class="ln">23</span><span class="lc">];</span></div>
-          <div class="cl"><span class="ln">24</span><span class="lc"></span></div>
-          <div class="cl"><span class="ln">25</span><span class="lc"><span class="kw">export default</span> <span class="prop">projects</span>;</span></div>
+          <div class="cl"><span class="ln">3</span><span class="lc">    <span class="str">"TypeScript"</span>,</span></div>
+          <div class="cl"><span class="ln">4</span><span class="lc">    <span class="str">"JavaScript"</span>,</span></div>
+          <div class="cl"><span class="ln">5</span><span class="lc">    <span class="str">"Python"</span>,</span></div>
+          <div class="cl"><span class="ln">6</span><span class="lc">    <span class="str">"Java"</span>,</span></div>
+          <div class="cl"><span class="ln">7</span><span class="lc">    <span class="str">"Go"</span>,</span></div>
+          <div class="cl"><span class="ln">8</span><span class="lc">    <span class="str">"Swift"</span></span></div>
+          <div class="cl"><span class="ln">9</span><span class="lc">  ],</span></div>
+          <div class="cl"><span class="ln">10</span><span class="lc">  <span class="prop">"frontend"</span>: [</span></div>
+          <div class="cl"><span class="ln">11</span><span class="lc">    <span class="str">"React"</span>,</span></div>
+          <div class="cl"><span class="ln">12</span><span class="lc">    <span class="str">"Node.js"</span>,</span></div>
+          <div class="cl"><span class="ln">13</span><span class="lc">    <span class="str">"Express"</span>,</span></div>
+          <div class="cl"><span class="ln">14</span><span class="lc">    <span class="str">"CSS"</span>,</span></div>
+          <div class="cl"><span class="ln">15</span><span class="lc">    <span class="str">"HTML"</span>,</span></div>
+          <div class="cl"><span class="ln">16</span><span class="lc">    <span class="str">"JSX"</span></span></div>
+          <div class="cl"><span class="ln">17</span><span class="lc">  ],</span></div>
+          <div class="cl"><span class="ln">18</span><span class="lc">  <span class="prop">"aws"</span>: [</span></div>
+          <div class="cl"><span class="ln">19</span><span class="lc">    <span class="str">"CloudFront"</span>,</span></div>
+          <div class="cl"><span class="ln">20</span><span class="lc">    <span class="str">"EC2"</span>,</span></div>
+          <div class="cl"><span class="ln">21</span><span class="lc">    <span class="str">"S3"</span>,</span></div>
+          <div class="cl"><span class="ln">22</span><span class="lc">    <span class="str">"Lambda"</span>,</span></div>
+          <div class="cl"><span class="ln">23</span><span class="lc">    <span class="str">"DynamoDB"</span>,</span></div>
+          <div class="cl"><span class="ln">24</span><span class="lc">    <span class="str">"AppSync"</span>,</span></div>
+          <div class="cl"><span class="ln">25</span><span class="lc">    <span class="str">"Bedrock"</span></span></div>
+          <div class="cl"><span class="ln">26</span><span class="lc">  ],</span></div>
+          <div class="cl"><span class="ln">27</span><span class="lc">  <span class="prop">"data"</span>: [</span></div>
+          <div class="cl"><span class="ln">28</span><span class="lc">    <span class="str">"Cassandra"</span>,</span></div>
+          <div class="cl"><span class="ln">29</span><span class="lc">    <span class="str">"MySQL"</span>,</span></div>
+          <div class="cl"><span class="ln">30</span><span class="lc">    <span class="str">"MongoDB"</span>,</span></div>
+          <div class="cl"><span class="ln">31</span><span class="lc">    <span class="str">"Pandas"</span></span></div>
+          <div class="cl"><span class="ln">32</span><span class="lc">  ]</span></div>
+          <div class="cl"><span class="ln">33</span><span class="lc">}</span></div>
         </div>
 
         <!-- contact.ts -->
@@ -334,11 +308,12 @@
           <div class="cl"><span class="ln">2</span><span class="lc"></span></div>
           <div class="cl"><span class="ln">3</span><span class="lc"><span class="kw">const</span> <span class="prop">contact</span> = {</span></div>
           <div class="cl"><span class="ln">4</span><span class="lc">  <span class="prop">email</span>:    <a class="str" href="mailto:vansh.gambhir@gmail.com">"vansh.gambhir@gmail.com"</a>,</span></div>
-          <div class="cl"><span class="ln">5</span><span class="lc">  <span class="prop">linkedin</span>: <a class="str" href="https://www.linkedin.com/in/vanshgambhir/" target="_blank" rel="noopener">"linkedin.com/in/vanshgambhir"</a>,</span></div>
-          <div class="cl"><span class="ln">6</span><span class="lc">  <span class="prop">github</span>:   <a class="str" href="https://github.com/kiku511" target="_blank" rel="noopener">"github.com/kiku511"</a>,</span></div>
-          <div class="cl"><span class="ln">7</span><span class="lc">};</span></div>
-          <div class="cl"><span class="ln">8</span><span class="lc"></span></div>
-          <div class="cl"><span class="ln">9</span><span class="lc"><span class="kw">export default</span> <span class="prop">contact</span>;</span></div>
+          <div class="cl"><span class="ln">5</span><span class="lc">  <span class="prop">website</span>:  <a class="str" href="https://vansh.dev" target="_blank" rel="noopener">"vansh.dev"</a>,</span></div>
+          <div class="cl"><span class="ln">6</span><span class="lc">  <span class="prop">linkedin</span>: <a class="str" href="https://www.linkedin.com/in/vanshgambhir/" target="_blank" rel="noopener">"linkedin.com/in/vanshgambhir"</a>,</span></div>
+          <div class="cl"><span class="ln">7</span><span class="lc">  <span class="prop">github</span>:   <a class="str" href="https://github.com/kiku511" target="_blank" rel="noopener">"github.com/kiku511"</a>,</span></div>
+          <div class="cl"><span class="ln">8</span><span class="lc">};</span></div>
+          <div class="cl"><span class="ln">9</span><span class="lc"></span></div>
+          <div class="cl"><span class="ln">10</span><span class="lc"><span class="kw">export default</span> <span class="prop">contact</span>;</span></div>
         </div>
 
       </div>
@@ -358,7 +333,7 @@
   </div>
 
   <script>
-    const langs = { about: 'JavaScript', skills: 'JSON', projects: 'TypeScript', contact: 'TypeScript' };
+    const langs = { about: 'JavaScript', skills: 'JSON', contact: 'TypeScript' };
 
     function go(name) {
       document.querySelectorAll('.tab, .tree-file').forEach(el => el.classList.remove('active'));
