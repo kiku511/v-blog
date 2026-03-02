@@ -12,13 +12,16 @@ export function FileIcon({ fileName }: Props) {
   if (!icon) return <span style={{ width: 20 }} />
   return (
     <span style={{
-      color:      icon.color,
-      fontWeight: 700,
-      fontSize:   ext === 'pdf' ? '8px' : '9px',
-      lineHeight: 1,
-      flexShrink: 0,
+      color:         icon.color,
+      fontWeight:    700,
+      fontSize:      ext === 'pdf' ? '8px' : '9px',
+      lineHeight:    1,
+      flexShrink:    0,
       letterSpacing: '-0.3px',
-      fontFamily: '-apple-system, "Helvetica Neue", sans-serif',
+      fontFamily:    '-apple-system, "Helvetica Neue", sans-serif',
+      display:       'inline-block',
+      width:         '26px',
+      textAlign:     'center',
     }}>
       {icon.label}
     </span>
