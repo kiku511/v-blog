@@ -1,17 +1,23 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { TABS, type Tab } from './config/tabs'
-import { ActivityBar } from './components/ActivityBar'
-import { Sidebar } from './components/Sidebar'
-import { EditorTabs } from './components/EditorTabs'
-import { StatusBar } from './components/StatusBar'
+import { ActivityBar }    from './components/ActivityBar'
+import { Sidebar }        from './components/Sidebar'
+import { EditorTabs }     from './components/EditorTabs'
+import { StatusBar }      from './components/StatusBar'
+import { CommandPalette } from './components/CommandPalette'
 
 export default function App() {
-  const [active, setActive] = useState<Tab>('about')
-  const [cursor, setCursor] = useState({ ln: 1, col: 1 })
-  const [charWidth, setCharWidth] = useState(8.4)
-  const { Panel } = TABS.find(t => t.id === active)!
+  const [active, setActive]         = useState<Tab>('about')
+  const [cursor, setCursor]         = useState({ ln: 1, col: 1 })
+  const [paletteOpen, setPalette]   = useState(false)
+  const [charWidth, setCharWidth]   = useState(8.4)
 
-  // Measure actual character width once for accurate column calculation
+  const activeRef      = useRef(active)
+  const paletteOpenRef = useRef(false)
+  useEffect(() => { activeRef.current = active },           [active])
+  useEffect(() => { paletteOpenRef.current = paletteOpen }, [paletteOpen])
+
+  // Measure actual character width once for accurate column numbers
   useEffect(() => {
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
@@ -20,22 +26,51 @@ export default function App() {
     setCharWidth(ctx.measureText('M').width)
   }, [])
 
-  const handleSelect = (tab: Tab) => {
+  const selectTab = useCallback((tab: Tab) => {
     setActive(tab)
     setCursor({ ln: 1, col: 1 })
-  }
+  }, [])
 
+  // Global keyboard navigation
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      // ⌘K / Ctrl+K — toggle command palette
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        setPalette(o => !o)
+        return
+      }
+      // Skip arrow-key nav when palette is open or an input is focused
+      if (paletteOpenRef.current)                          return
+      if (document.activeElement?.tagName === 'INPUT')     return
+
+      const idx = TABS.findIndex(t => t.id === activeRef.current)
+      if (e.key === 'ArrowRight') { e.preventDefault(); selectTab(TABS[(idx + 1) % TABS.length].id) }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); selectTab(TABS[(idx - 1 + TABS.length) % TABS.length].id) }
+      if (e.altKey && /^[1-4]$/.test(e.key)) {
+        e.preventDefault()
+        const t = TABS[+e.key - 1]
+        if (t) selectTab(t.id)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [selectTab])
+
+  // Live Ln/Col tracking via event delegation
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const line = (e.target as HTMLElement).closest('.cl') as HTMLElement | null
     if (!line) return
     const lnEl = line.querySelector('.ln')
     const lcEl = line.querySelector('.lc') as HTMLElement | null
     if (!lnEl || !lcEl) return
-    const ln = parseInt(lnEl.textContent ?? '1', 10)
-    const x = Math.max(0, e.clientX - lcEl.getBoundingClientRect().left)
+    const ln  = parseInt(lnEl.textContent ?? '1', 10)
+    const x   = Math.max(0, e.clientX - lcEl.getBoundingClientRect().left)
     const col = Math.floor(x / charWidth) + 1
     setCursor({ ln, col })
   }, [charWidth])
+
+  const { Panel } = TABS.find(t => t.id === active)!
 
   return (
     <div className="vscode">
@@ -47,20 +82,38 @@ export default function App() {
           <div className="dot g" />
         </div>
         vansh-gambhir — Code
+        <a
+          href="/resume.pdf"
+          download="Vansh-Gambhir-Resume.pdf"
+          className="resume-btn"
+          onClick={e => e.stopPropagation()}
+        >
+          ↓ Resume
+        </a>
       </div>
 
       <div className="main">
         <ActivityBar />
-        <Sidebar active={active} onSelect={handleSelect} />
+        <Sidebar active={active} onSelect={selectTab} />
         <div className="editor">
-          <EditorTabs active={active} onSelect={handleSelect} />
+          <EditorTabs active={active} onSelect={selectTab} />
           <div className="panels" onMouseMove={handleMouseMove}>
             <Panel />
           </div>
         </div>
       </div>
 
-      <StatusBar active={active} cursor={cursor} />
+      <StatusBar
+        active={active}
+        cursor={cursor}
+        onOpenPalette={() => setPalette(true)}
+      />
+
+      <CommandPalette
+        isOpen={paletteOpen}
+        onClose={() => setPalette(false)}
+        onTabSelect={selectTab}
+      />
 
     </div>
   )

@@ -164,6 +164,79 @@ a.str:hover { text-decoration: underline; }
 }
 .sb-left, .sb-right { display: flex; gap: 14px; }
 
+/* ── Resume button ── */
+.resume-btn {
+  position: absolute;
+  right: 12px;
+  font-size: 11px;
+  color: #bbb;
+  text-decoration: none;
+  padding: 2px 8px;
+  border: 1px solid #555;
+  border-radius: 2px;
+  transition: color 0.15s, border-color 0.15s;
+  user-select: none;
+}
+.resume-btn:hover { color: #fff; border-color: #aaa; }
+
+/* ── Status bar palette hint ── */
+.sb-palette-hint { cursor: pointer; opacity: 0.75; letter-spacing: 0.03em; }
+.sb-palette-hint:hover { opacity: 1; }
+
+/* ── Command Palette ── */
+.cp-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  padding-top: 80px;
+}
+.cp-modal {
+  background: #252526;
+  border: 1px solid #454545;
+  border-radius: 6px;
+  width: 600px;
+  max-width: 90vw;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  height: fit-content;
+}
+.cp-input {
+  width: 100%;
+  background: #3c3c3c;
+  border: none;
+  border-bottom: 1px solid #454545;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  padding: 10px 14px;
+  outline: none;
+}
+.cp-input::placeholder { color: var(--muted); }
+.cp-list { max-height: 320px; overflow-y: auto; }
+.cp-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.cp-item.active { background: #04395e; }
+.cp-label { color: var(--text); }
+.cp-kbd {
+  font-size: 11px;
+  color: var(--muted);
+  background: #3c3c3c;
+  border: 1px solid #555;
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-family: inherit;
+}
+.cp-empty { padding: 12px 14px; color: var(--muted); font-size: 13px; }
+
 /* ── Mobile ── */
 @media (max-width: 640px) {
   .activitybar, .sidebar { display: none; }
