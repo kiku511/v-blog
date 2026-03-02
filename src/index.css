@@ -128,6 +128,7 @@ body {
 
 /* ── Panels ── */
 .panels { flex: 1; overflow-y: auto; padding: 8px 0; }
+.panels:has(embed) { padding: 0; overflow: hidden; }
 
 .cl { display: flex; line-height: 1.7; }
 .ln {

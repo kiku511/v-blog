@@ -19,9 +19,9 @@ export function CommandPalette({ isOpen, onClose, onTabSelect }: Props) {
   const inputRef = useRef<HTMLInputElement>(null)
 
   const commands: Command[] = [
-    ...TABS.map((tab, i) => ({
+    ...TABS.map(tab => ({
       label: `Go to ${tab.fileName}`,
-      shortcut: `Alt+${i + 1}`,
+      shortcut: '← →',
       action: () => { onTabSelect(tab.id); onClose() },
     })),
     {

@@ -3,8 +3,9 @@ import { AboutPanel }      from '../panels/AboutPanel'
 import { SkillsPanel }     from '../panels/SkillsPanel'
 import { ExperiencePanel } from '../panels/ExperiencePanel'
 import { ContactPanel }    from '../panels/ContactPanel'
+import { ResumePanel }     from '../panels/ResumePanel'
 
-export type Tab = 'about' | 'skills' | 'experience' | 'contact'
+export type Tab = 'about' | 'skills' | 'experience' | 'contact' | 'resume'
 
 export type TabConfig = {
   id: Tab
@@ -20,4 +21,5 @@ export const TABS: TabConfig[] = [
   { id: 'skills',     fileName: 'skills.json',    lang: 'JSON',       color: '#519aba', Panel: SkillsPanel },
   { id: 'experience', fileName: 'experience.ts',  lang: 'TypeScript', color: '#519aba', Panel: ExperiencePanel },
   { id: 'contact',    fileName: 'contact.ts',     lang: 'TypeScript', color: '#519aba', Panel: ContactPanel },
+  { id: 'resume',     fileName: 'resume.pdf',     lang: 'PDF',        color: '#f44336', Panel: ResumePanel },
 ]

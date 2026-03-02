@@ -47,11 +47,6 @@ export default function App() {
       const idx = TABS.findIndex(t => t.id === activeRef.current)
       if (e.key === 'ArrowRight') { e.preventDefault(); selectTab(TABS[(idx + 1) % TABS.length].id) }
       if (e.key === 'ArrowLeft')  { e.preventDefault(); selectTab(TABS[(idx - 1 + TABS.length) % TABS.length].id) }
-      if (e.altKey && /^[1-4]$/.test(e.key)) {
-        e.preventDefault()
-        const t = TABS[+e.key - 1]
-        if (t) selectTab(t.id)
-      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
