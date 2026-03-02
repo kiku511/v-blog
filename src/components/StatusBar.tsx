@@ -1,8 +1,9 @@
 import { TABS, type Tab } from '../config/tabs'
 
-type Props = { active: Tab }
+type Cursor = { ln: number; col: number }
+type Props = { active: Tab; cursor: Cursor }
 
-export function StatusBar({ active }: Props) {
+export function StatusBar({ active, cursor }: Props) {
   const tab = TABS.find(t => t.id === active)!
   return (
     <div className="statusbar">
@@ -13,7 +14,7 @@ export function StatusBar({ active }: Props) {
       <div className="sb-right">
         <span>{tab.lang}</span>
         <span>UTF-8</span>
-        <span>Ln 1, Col 1</span>
+        <span>Ln {cursor.ln}, Col {cursor.col}</span>
       </div>
     </div>
   )
