@@ -11,15 +11,14 @@ export type TabConfig = {
   id: Tab
   fileName: string
   lang: string
-  color: string
   Panel: ComponentType
 }
 
 // To add a new tab: add an entry here and create a panel in src/panels/
 export const TABS: TabConfig[] = [
-  { id: 'about',      fileName: 'about.ts',       lang: 'TypeScript', color: '#519aba', Panel: AboutPanel },
-  { id: 'skills',     fileName: 'skills.json',    lang: 'JSON',       color: '#519aba', Panel: SkillsPanel },
-  { id: 'experience', fileName: 'experience.ts',  lang: 'TypeScript', color: '#519aba', Panel: ExperiencePanel },
-  { id: 'contact',    fileName: 'contact.ts',     lang: 'TypeScript', color: '#519aba', Panel: ContactPanel },
-  { id: 'resume',     fileName: 'resume.pdf',     lang: 'PDF',        color: '#f44336', Panel: ResumePanel },
+  { id: 'about',      fileName: 'about.ts',      lang: 'TypeScript', Panel: AboutPanel },
+  { id: 'skills',     fileName: 'skills.json',   lang: 'JSON',       Panel: SkillsPanel },
+  { id: 'experience', fileName: 'experience.ts', lang: 'TypeScript', Panel: ExperiencePanel },
+  { id: 'contact',    fileName: 'contact.ts',    lang: 'TypeScript', Panel: ContactPanel },
+  { id: 'resume',     fileName: 'resume.pdf',    lang: 'PDF',        Panel: ResumePanel },
 ]

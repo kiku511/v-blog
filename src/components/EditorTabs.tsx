@@ -12,7 +12,7 @@ export function EditorTabs({ active, onSelect }: Props) {
           className={`tab${active === tab.id ? ' active' : ''}`}
           onClick={() => onSelect(tab.id)}
         >
-          <FileIcon color={tab.color} />
+          <FileIcon fileName={tab.fileName} />
           {tab.fileName}
         </div>
       ))}

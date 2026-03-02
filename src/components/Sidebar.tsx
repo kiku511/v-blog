@@ -15,7 +15,7 @@ export function Sidebar({ active, onSelect }: Props) {
           className={`tree-file${active === tab.id ? ' active' : ''}`}
           onClick={() => onSelect(tab.id)}
         >
-          <FileIcon color={tab.color} />
+          <FileIcon fileName={tab.fileName} />
           {tab.fileName}
         </div>
       ))}
