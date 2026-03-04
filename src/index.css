@@ -55,7 +55,8 @@ body {
 /* ── Activity bar ── */
 .activitybar {
   width: 48px;
-  background: var(--sidebar);
+  background: var(--titlebar-bg);
+  border-right: 1px solid rgba(255,255,255,0.05);
   display: flex;
   flex-direction: column;
   align-items: center;
