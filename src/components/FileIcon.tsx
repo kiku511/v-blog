@@ -9,7 +9,7 @@ type Props = { fileName: string }
 export function FileIcon({ fileName }: Props) {
   const ext   = fileName.split('.').pop() ?? ''
   const icon  = ICON_MAP[ext]
-  if (!icon) return <span style={{ width: 20 }} />
+  if (!icon) return <span style={{ width: 16 }} />
   return (
     <span style={{
       color:         icon.color,
@@ -20,7 +20,7 @@ export function FileIcon({ fileName }: Props) {
       letterSpacing: '-0.3px',
       fontFamily:    '-apple-system, "Helvetica Neue", sans-serif',
       display:       'inline-block',
-      width:         '26px',
+      width:         '20px',
       textAlign:     'center',
     }}>
       {icon.label}
