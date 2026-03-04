@@ -176,15 +176,15 @@ a.str:hover { text-decoration: underline; }
 .resume-btn {
   font-size: 11px;
   white-space: nowrap;
-  color: var(--kw);
+  color: var(--muted);
   text-decoration: none;
   padding: 2px 8px;
-  border: 1px solid var(--kw);
+  border: 1px solid var(--muted);
   border-radius: 2px;
   transition: color 0.15s, border-color 0.15s;
   user-select: none;
 }
-.resume-btn:hover { color: #fff; border-color: #aaa; }
+.resume-btn:hover { color: var(--text); border-color: var(--text); }
 
 /* ── Status bar palette hint ── */
 .sb-palette-hint { cursor: pointer; opacity: 0.75; letter-spacing: 0.03em; }
@@ -279,7 +279,7 @@ a.str:hover { text-decoration: underline; }
   align-items: center;
   gap: 6px;
   font-size: 13px;
-  color: var(--text);
+  color: var(--kw);
 }
 .copilot-close {
   display: none;
