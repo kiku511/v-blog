@@ -398,12 +398,12 @@ a.str:hover { text-decoration: underline; }
   display: none;
   background: none;
   border: none;
-  color: #ccc;
+  color: var(--tp);
   cursor: pointer;
   padding: 4px;
   line-height: 0;
 }
-.chat-mobile-btn:hover { color: #fff; }
+.chat-mobile-btn:hover { opacity: 0.8; }
 
 /* ── Mobile ── */
 @media (max-width: 640px) {
