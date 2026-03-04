@@ -37,8 +37,10 @@ EDUCATION: Computer Science background (Apple internship in 2019, joined AWS ful
 --- END OF PROFILE ---`
 
 export default async function handler(req: Request): Promise<Response> {
+  const origin = new URL(req.url).origin
+  const allowedOrigins = ['https://www.vansh.dev', 'https://vansh.dev', 'http://localhost:3000', 'http://localhost:5173']
   const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': allowedOrigins.includes(origin) ? origin : allowedOrigins[0],
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
   }

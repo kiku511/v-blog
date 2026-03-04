@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 
-type Message = { role: 'user' | 'assistant'; content: string }
+type Message = { id: string; role: 'user' | 'assistant'; content: string }
 
 export function CopilotPanel() {
   const [messages, setMessages] = useState<Message[]>([])
@@ -21,7 +21,7 @@ export function CopilotPanel() {
     const text = input.trim()
     if (!text || loading) return
 
-    const next: Message[] = [...messages, { role: 'user', content: text }]
+    const next: Message[] = [...messages, { id: crypto.randomUUID(), role: 'user', content: text }]
     setMessages(next)
     setInput('')
     setLoading(true)
@@ -32,10 +32,11 @@ export function CopilotPanel() {
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ messages: next }),
       })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data = await res.json() as { content?: string; error?: string }
-      setMessages(m => [...m, { role: 'assistant', content: data.content ?? data.error ?? 'Something went wrong.' }])
+      setMessages(m => [...m, { id: crypto.randomUUID(), role: 'assistant', content: data.content ?? data.error ?? 'Something went wrong.' }])
     } catch {
-      setMessages(m => [...m, { role: 'assistant', content: 'Network error. Please try again.' }])
+      setMessages(m => [...m, { id: crypto.randomUUID(), role: 'assistant', content: 'Network error. Please try again.' }])
     } finally {
       setLoading(false)
     }
@@ -70,16 +71,16 @@ export function CopilotPanel() {
           </div>
         )}
 
-        {messages.map((m, i) => (
-          <div key={i} className={`copilot-msg copilot-msg-${m.role}`}>
-            <span className="copilot-msg-label">{m.role === 'user' ? 'You' : 'Copilot'}</span>
+        {messages.map(m => (
+          <div key={m.id} className={`copilot-msg copilot-msg-${m.role}`}>
+            <span className="copilot-msg-label">{m.role === 'user' ? 'You' : 'AI Chat'}</span>
             <p className="copilot-msg-text">{m.content}</p>
           </div>
         ))}
 
         {loading && (
           <div className="copilot-msg copilot-msg-assistant">
-            <span className="copilot-msg-label">Copilot</span>
+            <span className="copilot-msg-label">AI Chat</span>
             <p className="copilot-msg-text copilot-typing">
               <span /><span /><span />
             </p>

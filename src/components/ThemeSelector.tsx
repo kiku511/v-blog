@@ -11,13 +11,15 @@ type Props = {
 export function ThemeSelector({ isOpen, currentThemeId, onClose, onSelect }: Props) {
   const [preview, setPreview] = useState(currentThemeId)
   const [selected, setSelected] = useState(0)
-  const listRef = useRef<HTMLDivElement>(null)
+  const listRef   = useRef<HTMLDivElement>(null)
+  const modalRef  = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (isOpen) {
       const idx = THEMES.findIndex(t => t.id === currentThemeId)
       setSelected(idx >= 0 ? idx : 0)
       setPreview(currentThemeId)
+      modalRef.current?.focus()
     }
   }, [isOpen, currentThemeId])
 
@@ -71,7 +73,7 @@ export function ThemeSelector({ isOpen, currentThemeId, onClose, onSelect }: Pro
   return (
     <div className="cp-overlay" onClick={() => { onSelect(currentThemeId); onClose() }}>
       <div className="cp-modal" onClick={e => e.stopPropagation()} onKeyDown={handleKeyDown} tabIndex={-1}
-        ref={el => { el?.focus() }} style={{ outline: 'none' }}>
+        ref={modalRef} style={{ outline: 'none' }}>
         <div className="cp-input" style={{ pointerEvents: 'none', color: 'var(--muted)', fontSize: 13 }}>
           Select Color Theme (↑↓ to preview, Enter to confirm, Esc to cancel)
         </div>

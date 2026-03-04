@@ -11,7 +11,7 @@ export function Prop({ c }: { c: string }) {
 export function Str({ c, href }: { c: string; href?: string }) {
   const text = `"${c}"`
   return href
-    ? <a className="str" href={href} target="_blank" rel="noopener">{text}</a>
+    ? <a className="str" href={href} target="_blank" rel="noopener noreferrer">{text}</a>
     : <span className="str">{text}</span>
 }
 
