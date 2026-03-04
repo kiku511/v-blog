@@ -2,7 +2,7 @@ export const config = { runtime: 'edge' }
 
 // Per-IP rate limiter: max 5 requests per minute
 const ipRequests = new Map<string, number[]>()
-const RATE_LIMIT = 5
+const RATE_LIMIT = 15
 const WINDOW_MS  = 60_000
 
 function isRateLimited(ip: string): boolean {
