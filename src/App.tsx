@@ -13,6 +13,7 @@ export default function App() {
   const [cursor, setCursor]           = useState({ ln: 1, col: 1 })
   const [paletteOpen, setPalette]     = useState(false)
   const [themeOpen, setThemeOpen]     = useState(false)
+  const [sidebarOpen, setSidebar]     = useState(false)
   const [charWidth, setCharWidth]     = useState(8.4)
   const { themeId, setThemeId }       = useTheme()
 
@@ -38,8 +39,8 @@ export default function App() {
   // Global keyboard navigation
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      // ⌘⇧P / Ctrl+Shift+P — toggle command palette
-      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'P') {
+      // ⌘P / ⌘⇧P / Ctrl+P — toggle command palette
+      if ((e.metaKey || e.ctrlKey) && (e.key === 'p' || e.key === 'P')) {
         e.preventDefault()
         setPalette(o => !o)
         return
@@ -80,6 +81,11 @@ export default function App() {
           <div className="dot y" />
           <div className="dot g" />
         </div>
+        <button className="hamburger" onClick={() => setSidebar(o => !o)} aria-label="Toggle file explorer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/>
+          </svg>
+        </button>
         vansh-gambhir — Code
         <a
           href="/resume.pdf"
@@ -93,7 +99,13 @@ export default function App() {
 
       <div className="main">
         <ActivityBar onThemeClick={() => setThemeOpen(true)} />
-        <Sidebar active={active} onSelect={selectTab} />
+        <Sidebar
+          active={active}
+          onSelect={selectTab}
+          isOpen={sidebarOpen}
+          onClose={() => setSidebar(false)}
+          onThemeClick={() => setThemeOpen(true)}
+        />
         <div className="editor">
           <EditorTabs active={active} onSelect={selectTab} />
           <div className="panels" onMouseMove={handleMouseMove}>
