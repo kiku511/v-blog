@@ -38,8 +38,8 @@ export default function App() {
   // Global keyboard navigation
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      // ⌘⇧P / Ctrl+Shift+P — toggle command palette
-      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'P') {
+      // ⌘P / ⌘⇧P — toggle command palette
+      if ((e.metaKey || e.ctrlKey) && (e.key === 'p' || e.key === 'P')) {
         e.preventDefault()
         setPalette(o => !o)
         return
