@@ -8,7 +8,9 @@ const MIN_WIDTH = 220
 const MAX_WIDTH = 560
 const DEFAULT_WIDTH = 300
 
-export function CopilotPanel() {
+type Props = { isOpen: boolean; onClose: () => void }
+
+export function CopilotPanel({ isOpen, onClose }: Props) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput]       = useState('')
   const [loading, setLoading]   = useState(false)
@@ -89,7 +91,7 @@ export function CopilotPanel() {
   }
 
   return (
-    <div className="copilot-panel" style={{ width }}>
+    <div className={`copilot-panel${isOpen ? ' copilot-panel-open' : ''}`} style={{ width }}>
       <div className="copilot-resize-handle" onMouseDown={onDragStart} title="Drag to resize" />
 
       <div className="copilot-header">
@@ -99,6 +101,7 @@ export function CopilotPanel() {
           </svg>
           AI Chat
         </span>
+        <button className="copilot-close" onClick={onClose}>✕</button>
       </div>
 
       <div className="copilot-messages">

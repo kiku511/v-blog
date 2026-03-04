@@ -283,6 +283,7 @@ a.str:hover { text-decoration: underline; }
   color: var(--text);
 }
 .copilot-close {
+  display: none;
   background: none;
   border: none;
   color: var(--muted);
@@ -392,9 +393,35 @@ a.str:hover { text-decoration: underline; }
 
 .sb-only-mobile { display: none; }
 
+/* ── Chat mobile button ── */
+.chat-mobile-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 0;
+}
+.chat-mobile-btn:hover { color: #fff; }
+
 /* ── Mobile ── */
 @media (max-width: 640px) {
   .activitybar, .sidebar { display: none; }
   .sb-hide-mobile { display: none; }
   .sb-only-mobile { display: flex; align-items: center; }
+  .chat-mobile-btn { display: flex; align-items: center; }
+  .copilot-panel {
+    display: none;
+    position: fixed;
+    top: 30px;
+    right: 0;
+    bottom: 22px;
+    width: 100% !important;
+    z-index: 30;
+    border-left: none;
+  }
+  .copilot-panel.copilot-panel-open { display: flex; }
+  .copilot-close { display: flex; }
+  .resume-btn { display: none; }
 }
