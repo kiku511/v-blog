@@ -1,13 +1,23 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 type Message = { id: string; role: 'user' | 'assistant'; content: string }
+
+const MIN_WIDTH = 220
+const MAX_WIDTH = 560
+const DEFAULT_WIDTH = 300
 
 export function CopilotPanel() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput]       = useState('')
   const [loading, setLoading]   = useState(false)
+  const [width, setWidth]       = useState(DEFAULT_WIDTH)
   const bottomRef               = useRef<HTMLDivElement>(null)
   const inputRef                = useRef<HTMLTextAreaElement>(null)
+  const dragging                = useRef(false)
+  const startX                  = useRef(0)
+  const startWidth              = useRef(DEFAULT_WIDTH)
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -17,6 +27,28 @@ export function CopilotPanel() {
     inputRef.current?.focus()
   }, [])
 
+  const onDragStart = useCallback((e: React.MouseEvent) => {
+    dragging.current  = true
+    startX.current    = e.clientX
+    startWidth.current = width
+    e.preventDefault()
+  }, [width])
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      if (!dragging.current) return
+      const delta = startX.current - e.clientX
+      setWidth(Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, startWidth.current + delta)))
+    }
+    const onUp = () => { dragging.current = false }
+    window.addEventListener('mousemove', onMove)
+    window.addEventListener('mouseup', onUp)
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('mouseup', onUp)
+    }
+  }, [])
+
   const send = async () => {
     const text = input.trim()
     if (!text || loading) return
@@ -24,10 +56,13 @@ export function CopilotPanel() {
     const next: Message[] = [...messages, { id: crypto.randomUUID(), role: 'user', content: text }]
     setMessages(next)
     setInput('')
+    if (inputRef.current) {
+      inputRef.current.style.height = 'auto'
+    }
     setLoading(true)
 
     try {
-      const res  = await fetch('/api/chat', {
+      const res = await fetch('/api/chat', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ messages: next }),
@@ -47,7 +82,9 @@ export function CopilotPanel() {
   }
 
   return (
-    <div className="copilot-panel">
+    <div className="copilot-panel" style={{ width }}>
+      <div className="copilot-resize-handle" onMouseDown={onDragStart} title="Drag to resize" />
+
       <div className="copilot-header">
         <span className="copilot-title">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
@@ -74,7 +111,12 @@ export function CopilotPanel() {
         {messages.map(m => (
           <div key={m.id} className={`copilot-msg copilot-msg-${m.role}`}>
             <span className="copilot-msg-label">{m.role === 'user' ? 'You' : 'AI Chat'}</span>
-            <p className="copilot-msg-text">{m.content}</p>
+            {m.role === 'assistant'
+              ? <div className="copilot-msg-text copilot-md">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{m.content}</ReactMarkdown>
+                </div>
+              : <p className="copilot-msg-text">{m.content}</p>
+            }
           </div>
         ))}
 
