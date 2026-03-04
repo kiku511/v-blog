@@ -1,16 +1,19 @@
 :root {
-  --bg:      #1e1e1e;
-  --sidebar: #252526;
-  --tabbar:  #2d2d30;
-  --text:    #d4d4d4;
-  --muted:   #858585;
-  --accent:  #007acc;
-  --kw:      #569cd6;
-  --str:     #ce9178;
-  --prop:    #9cdcfe;
-  --nc:      #b5cea8;
-  --cmt:     #6a9955;
-  --tp:      #4ec9b0;
+  --bg:          #1e1e1e;
+  --sidebar:     #252526;
+  --tabbar:      #2d2d30;
+  --titlebar-bg: #323233;
+  --text:        #d4d4d4;
+  --muted:       #858585;
+  --accent:      #007acc;
+  --kw:          #569cd6;
+  --str:         #ce9178;
+  --prop:        #9cdcfe;
+  --nc:          #b5cea8;
+  --cmt:         #6a9955;
+  --tp:          #4ec9b0;
+  --hover:       #2a2d2e;
+  --sel:         #37373d;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -31,7 +34,7 @@ body {
 .titlebar {
   position: relative;
   height: 30px;
-  background: #323233;
+  background: var(--titlebar-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,7 +55,7 @@ body {
 /* ── Activity bar ── */
 .activitybar {
   width: 48px;
-  background: #333;
+  background: var(--sidebar);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -105,8 +108,8 @@ body {
   cursor: pointer;
   font-size: 13px;
 }
-.tree-file:hover { background: #2a2d2e; color: var(--text); }
-.tree-file.active { background: #37373d; color: var(--text); }
+.tree-file:hover { background: var(--hover); color: var(--text); }
+.tree-file.active { background: var(--sel); color: var(--text); }
 .ficon { width: 8px; height: 8px; border-radius: 1px; flex-shrink: 0; }
 
 /* ── Editor ── */

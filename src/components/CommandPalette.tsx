@@ -11,9 +11,10 @@ type Props = {
   isOpen: boolean
   onClose: () => void
   onTabSelect: (tab: Tab) => void
+  onThemeSelect: () => void
 }
 
-export function CommandPalette({ isOpen, onClose, onTabSelect }: Props) {
+export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect }: Props) {
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -25,8 +26,13 @@ export function CommandPalette({ isOpen, onClose, onTabSelect }: Props) {
       action: () => { onTabSelect(tab.id); onClose() },
     })),
     {
+      label: 'Change Color Theme',
+      shortcut: '⚙',
+      action: () => { onClose(); setTimeout(onThemeSelect, 50) },
+    },
+    {
       label: 'Download Resume',
-      shortcut: '⌘K → enter',
+      shortcut: '⌘⇧P → enter',
       action: () => {
         const a = document.createElement('a')
         a.href = '/resume.pdf'

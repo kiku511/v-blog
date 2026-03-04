@@ -10,7 +10,7 @@ export function StatusBar({ active, cursor, onOpenPalette }: Props) {
       <div className="sb-left">
         <span>⎇ main</span>
         <span className="sb-hide-mobile">🔴 0 &nbsp;⚠️ 0</span>
-        <span className="sb-palette-hint sb-hide-mobile" onClick={onOpenPalette} title="Open Command Palette">⌘K</span>
+        <span className="sb-palette-hint sb-hide-mobile" onClick={onOpenPalette} title="Open Command Palette">⌘⇧P</span>
       </div>
       <div className="sb-right">
         <span>{tab.lang}</span>

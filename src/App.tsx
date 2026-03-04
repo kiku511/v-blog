@@ -5,12 +5,16 @@ import { Sidebar }        from './components/Sidebar'
 import { EditorTabs }     from './components/EditorTabs'
 import { StatusBar }      from './components/StatusBar'
 import { CommandPalette } from './components/CommandPalette'
+import { ThemeSelector }  from './components/ThemeSelector'
+import { useTheme }       from './hooks/useTheme'
 
 export default function App() {
-  const [active, setActive]         = useState<Tab>('about')
-  const [cursor, setCursor]         = useState({ ln: 1, col: 1 })
-  const [paletteOpen, setPalette]   = useState(false)
-  const [charWidth, setCharWidth]   = useState(8.4)
+  const [active, setActive]           = useState<Tab>('about')
+  const [cursor, setCursor]           = useState({ ln: 1, col: 1 })
+  const [paletteOpen, setPalette]     = useState(false)
+  const [themeOpen, setThemeOpen]     = useState(false)
+  const [charWidth, setCharWidth]     = useState(8.4)
+  const { themeId, setThemeId }       = useTheme()
 
   const activeRef      = useRef(active)
   const paletteOpenRef = useRef(false)
@@ -34,8 +38,8 @@ export default function App() {
   // Global keyboard navigation
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      // ⌘K / Ctrl+K — toggle command palette
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      // ⌘⇧P / Ctrl+Shift+P — toggle command palette
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'P') {
         e.preventDefault()
         setPalette(o => !o)
         return
@@ -88,7 +92,7 @@ export default function App() {
       </div>
 
       <div className="main">
-        <ActivityBar />
+        <ActivityBar onThemeClick={() => setThemeOpen(true)} />
         <Sidebar active={active} onSelect={selectTab} />
         <div className="editor">
           <EditorTabs active={active} onSelect={selectTab} />
@@ -108,6 +112,14 @@ export default function App() {
         isOpen={paletteOpen}
         onClose={() => setPalette(false)}
         onTabSelect={selectTab}
+        onThemeSelect={() => setThemeOpen(true)}
+      />
+
+      <ThemeSelector
+        isOpen={themeOpen}
+        currentThemeId={themeId}
+        onClose={() => setThemeOpen(false)}
+        onSelect={setThemeId}
       />
 
     </div>
