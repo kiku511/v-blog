@@ -90,20 +90,26 @@ export function CopilotPanel() {
       </div>
 
       <div className="copilot-input-area">
-        <textarea
-          ref={inputRef}
-          className="copilot-input"
-          placeholder="Ask about Vansh..."
-          value={input}
-          rows={1}
-          onChange={e => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        <button className="copilot-send" onClick={send} disabled={!input.trim() || loading} title="Send">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M2 21 23 12 2 3v7l15 2-15 2z"/>
-          </svg>
-        </button>
+        <div className="copilot-input-wrap">
+          <textarea
+            ref={inputRef}
+            className="copilot-input"
+            placeholder="Ask about Vansh..."
+            value={input}
+            rows={1}
+            onChange={e => {
+              setInput(e.target.value)
+              e.target.style.height = 'auto'
+              e.target.style.height = e.target.scrollHeight + 'px'
+            }}
+            onKeyDown={handleKeyDown}
+          />
+          <button className="copilot-send" onClick={send} disabled={!input.trim() || loading} title="Send">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M2 21 23 12 2 3v7l15 2-15 2z"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   )
