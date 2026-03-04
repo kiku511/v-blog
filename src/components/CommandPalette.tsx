@@ -26,6 +26,11 @@ export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect }: 
       action: () => { onTabSelect(tab.id); onClose() },
     })),
     {
+      label: 'Talk to AI',
+      shortcut: '⌘P → enter',
+      action: () => { onClose(); document.querySelector<HTMLTextAreaElement>('.copilot-input')?.focus() },
+    },
+    {
       label: 'Change Color Theme',
       shortcut: '⚙',
       action: () => { onClose(); setTimeout(onThemeSelect, 50) },
