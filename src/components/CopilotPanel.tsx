@@ -27,6 +27,13 @@ export function CopilotPanel() {
     inputRef.current?.focus()
   }, [])
 
+  useEffect(() => {
+    const el = inputRef.current
+    if (!el) return
+    el.style.height = 'auto'
+    el.style.height = el.scrollHeight + 'px'
+  }, [input])
+
   const onDragStart = useCallback((e: React.MouseEvent) => {
     dragging.current  = true
     startX.current    = e.clientX
