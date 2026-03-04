@@ -174,13 +174,12 @@ a.str:hover { text-decoration: underline; }
 
 /* ── Resume button ── */
 .resume-btn {
-  position: absolute;
-  right: 12px;
   font-size: 11px;
-  color: #bbb;
+  white-space: nowrap;
+  color: var(--kw);
   text-decoration: none;
   padding: 2px 8px;
-  border: 1px solid #555;
+  border: 1px solid var(--kw);
   border-radius: 2px;
   transition: color 0.15s, border-color 0.15s;
   user-select: none;
@@ -379,7 +378,7 @@ a.str:hover { text-decoration: underline; }
   background: none;
   border: none;
   border-left: 1px solid rgba(255,255,255,0.08);
-  color: var(--muted);
+  color: var(--kw);
   cursor: pointer;
   padding: 0 10px;
   align-self: stretch;
