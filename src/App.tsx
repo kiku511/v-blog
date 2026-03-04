@@ -106,6 +106,7 @@ export default function App() {
         active={active}
         cursor={cursor}
         onOpenPalette={() => setPalette(true)}
+        onOpenTheme={() => setThemeOpen(true)}
       />
 
       <CommandPalette

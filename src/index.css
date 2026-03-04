@@ -245,8 +245,11 @@ a.str:hover { text-decoration: underline; }
 }
 .cp-empty { padding: 12px 14px; color: var(--muted); font-size: 13px; }
 
+.sb-only-mobile { display: none; }
+
 /* ── Mobile ── */
 @media (max-width: 640px) {
   .activitybar, .sidebar { display: none; }
   .sb-hide-mobile { display: none; }
+  .sb-only-mobile { display: flex; align-items: center; }
 }
