@@ -122,8 +122,8 @@ body {
 .tab {
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 0 16px;
+  gap: 6px;
+  padding: 0 10px;
   font-size: 13px;
   color: #969696;
   cursor: pointer;
