@@ -6,6 +6,7 @@ import { EditorTabs }     from './components/EditorTabs'
 import { StatusBar }      from './components/StatusBar'
 import { CommandPalette } from './components/CommandPalette'
 import { ThemeSelector }  from './components/ThemeSelector'
+import { CopilotPanel }  from './components/CopilotPanel'
 import { useTheme }       from './hooks/useTheme'
 
 export default function App() {
@@ -13,6 +14,7 @@ export default function App() {
   const [cursor, setCursor]           = useState({ ln: 1, col: 1 })
   const [paletteOpen, setPalette]     = useState(false)
   const [themeOpen, setThemeOpen]     = useState(false)
+  const [copilotOpen, setCopilot]     = useState(false)
   const [charWidth, setCharWidth]     = useState(8.4)
   const { themeId, setThemeId }       = useTheme()
 
@@ -92,7 +94,11 @@ export default function App() {
       </div>
 
       <div className="main">
-        <ActivityBar onThemeClick={() => setThemeOpen(true)} />
+        <ActivityBar
+          onThemeClick={() => setThemeOpen(true)}
+          onCopilotClick={() => setCopilot(o => !o)}
+          copilotOpen={copilotOpen}
+        />
         <Sidebar active={active} onSelect={selectTab} />
         <div className="editor">
           <EditorTabs active={active} onSelect={selectTab} />
@@ -100,6 +106,7 @@ export default function App() {
             <Panel />
           </div>
         </div>
+        {copilotOpen && <CopilotPanel onClose={() => setCopilot(false)} />}
       </div>
 
       <StatusBar

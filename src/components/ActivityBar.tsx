@@ -1,6 +1,6 @@
-type Props = { onThemeClick: () => void }
+type Props = { onThemeClick: () => void; onCopilotClick: () => void; copilotOpen: boolean }
 
-export function ActivityBar({ onThemeClick }: Props) {
+export function ActivityBar({ onThemeClick, onCopilotClick, copilotOpen }: Props) {
   return (
     <div className="activitybar">
       <div className="act-icon active">
@@ -16,6 +16,11 @@ export function ActivityBar({ onThemeClick }: Props) {
       <div className="act-icon">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2a5 5 0 1 0 0 10A5 5 0 0 0 12 2zm0 12c-5.33 0-8 2.67-8 4v2h16v-2c0-1.33-2.67-4-8-4z"/>
+        </svg>
+      </div>
+      <div className={`act-icon${copilotOpen ? ' active' : ''}`} onClick={onCopilotClick} style={{ cursor: 'pointer' }} title="Toggle Copilot Chat">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
         </svg>
       </div>
       <div className="act-icon settings" onClick={onThemeClick} style={{ cursor: 'pointer' }} title="Change Color Theme">
