@@ -50,6 +50,7 @@ export default function App() {
       if (paletteOpenRef.current)                          return
       if (document.activeElement?.tagName === 'INPUT')     return
 
+      if (!(e.metaKey || e.ctrlKey)) return
       const idx = TABS.findIndex(t => t.id === activeRef.current)
       if (e.key === 'ArrowRight') { e.preventDefault(); selectTab(TABS[(idx + 1) % TABS.length].id) }
       if (e.key === 'ArrowLeft')  { e.preventDefault(); selectTab(TABS[(idx - 1 + TABS.length) % TABS.length].id) }
