@@ -1,5 +1,18 @@
 export const config = { runtime: 'edge' }
 
+// Per-IP rate limiter: max 5 requests per minute
+const ipRequests = new Map<string, number[]>()
+const RATE_LIMIT = 5
+const WINDOW_MS  = 60_000
+
+function isRateLimited(ip: string): boolean {
+  const now       = Date.now()
+  const timestamps = (ipRequests.get(ip) ?? []).filter(t => now - t < WINDOW_MS)
+  if (timestamps.length >= RATE_LIMIT) return true
+  ipRequests.set(ip, [...timestamps, now])
+  return false
+}
+
 const SYSTEM_PROMPT = `You are an AI assistant embedded in Vansh Gambhir's personal portfolio website at vansh.dev.
 Your ONLY job is to answer questions about Vansh. Do not answer questions about anything else.
 If asked about anything unrelated to Vansh, politely say you can only talk about Vansh Gambhir.
@@ -51,6 +64,14 @@ export default async function handler(req: Request): Promise<Response> {
 
   if (req.method !== 'POST') {
     return new Response('Method Not Allowed', { status: 405 })
+  }
+
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown'
+  if (isRateLimited(ip)) {
+    return new Response(JSON.stringify({ error: 'Too many requests. Please wait a moment.' }), {
+      status: 429,
+      headers: { 'Content-Type': 'application/json', ...corsHeaders },
+    })
   }
 
   try {
