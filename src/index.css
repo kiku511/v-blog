@@ -245,60 +245,8 @@ a.str:hover { text-decoration: underline; }
 }
 .cp-empty { padding: 12px 14px; color: var(--muted); font-size: 13px; }
 
-/* ── Hamburger ── */
-.hamburger {
-  display: none;
-  position: absolute;
-  left: 48px;
-  background: none;
-  border: none;
-  color: #ccc;
-  cursor: pointer;
-  padding: 4px;
-  line-height: 0;
-}
-.hamburger:hover { color: #fff; }
-
-/* ── Sidebar theme button ── */
-.sidebar-theme-btn {
-  display: none;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  margin-top: auto;
-  font-size: 12px;
-  color: var(--muted);
-  cursor: pointer;
-  border-top: 1px solid rgba(255,255,255,0.06);
-}
-.sidebar-theme-btn:hover { color: var(--text); }
-
-/* ── Sidebar backdrop ── */
-.sidebar-backdrop {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  z-index: 19;
-}
-
 /* ── Mobile ── */
 @media (max-width: 640px) {
-  .activitybar { display: none; }
-  .sidebar {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 20;
-    flex-direction: column;
-    width: 240px;
-    box-shadow: 4px 0 16px rgba(0,0,0,0.4);
-  }
-  .sidebar.sidebar-open { display: flex; }
-  .sidebar-backdrop { display: block; }
-  .sidebar-theme-btn { display: flex; }
-  .hamburger { display: flex; align-items: center; }
+  .activitybar, .sidebar { display: none; }
   .sb-hide-mobile { display: none; }
 }
