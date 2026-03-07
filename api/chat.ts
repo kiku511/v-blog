@@ -170,13 +170,17 @@ export default async function handler(req: Request): Promise<Response> {
 
     // Fire-and-forget log to Google Sheets
     const webhookUrl = process.env.SHEETS_WEBHOOK_URL
+    console.log('[sheets] webhookUrl present:', !!webhookUrl)
     if (webhookUrl) {
       const question = messages[messages.length - 1]?.content ?? ''
       fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ip, question, answer: text }),
-      }).catch(() => {}) // ignore errors — logging should never break the chat
+        redirect: 'follow',
+      })
+        .then(r => console.log('[sheets] status:', r.status))
+        .catch(err => console.log('[sheets] error:', err))
     }
 
     return new Response(JSON.stringify({ content: text }), {
