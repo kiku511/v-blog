@@ -1,7 +1,8 @@
 const ICON_MAP: Record<string, { label: string; color: string }> = {
-  ts:   { label: 'TS',  color: '#519aba' },
-  json: { label: '{   }', color: '#cbcb41' },
-  pdf:  { label: 'PDF', color: '#cc3e44' },
+  ts:   { label: 'TS',   color: '#519aba' },
+  json: { label: '{  }', color: '#cbcb41' },
+  pdf:  { label: 'PDF',  color: '#cc3e44' },
+  sh:   { label: '>_',   color: '#4ec9b0' },
 }
 
 type Props = { fileName: string }
