@@ -11,10 +11,6 @@ const DEFAULT_WIDTH = 300
 
 type Props = { isOpen: boolean; onClose: () => void }
 
-// Characters typed per interval tick (every 20ms → ~100 chars/sec ≈ natural reading pace)
-const CHARS_PER_TICK = 2
-const TICK_MS        = 20
-
 export function CopilotPanel({ isOpen, onClose }: Props) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput]       = useState('')
@@ -22,28 +18,7 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
   const [width, setWidth]       = useState(DEFAULT_WIDTH)
   const bottomRef               = useRef<HTMLDivElement>(null)
   const inputRef                = useRef<HTMLTextAreaElement>(null)
-  const dragging                = useRef(false)
-  const startX                  = useRef(0)
-  const startWidth              = useRef(DEFAULT_WIDTH)
-  const charQueue               = useRef<string[]>([])
-  const typeInterval            = useRef<ReturnType<typeof setInterval> | null>(null)
-  const activeId                = useRef<string | null>(null)
-
-  const stopTypewriter = () => {
-    if (typeInterval.current) { clearInterval(typeInterval.current); typeInterval.current = null }
-  }
-
-  const startTypewriter = (id: string) => {
-    stopTypewriter()
-    activeId.current = id
-    typeInterval.current = setInterval(() => {
-      const batch = charQueue.current.splice(0, CHARS_PER_TICK).join('')
-      if (!batch) return
-      setMessages(m => m.map(msg => msg.id === id ? { ...msg, content: msg.content + batch } : msg))
-    }, TICK_MS)
-  }
-
-  useEffect(() => () => stopTypewriter(), [])
+  const drag                    = useRef({ active: false, startX: 0, startWidth: DEFAULT_WIDTH })
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -61,19 +36,17 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
   }, [input])
 
   const onDragStart = useCallback((e: React.MouseEvent) => {
-    dragging.current  = true
-    startX.current    = e.clientX
-    startWidth.current = width
+    drag.current = { active: true, startX: e.clientX, startWidth: width }
     e.preventDefault()
   }, [width])
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
-      if (!dragging.current) return
-      const delta = startX.current - e.clientX
-      setWidth(Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, startWidth.current + delta)))
+      if (!drag.current.active) return
+      const delta = drag.current.startX - e.clientX
+      setWidth(Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, drag.current.startWidth + delta)))
     }
-    const onUp = () => { dragging.current = false }
+    const onUp = () => { drag.current.active = false }
     window.addEventListener('mousemove', onMove)
     window.addEventListener('mouseup', onUp)
     return () => {
@@ -109,8 +82,6 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
       let buffer        = ''
       let gotToken      = false
 
-      charQueue.current = []
-
       while (true) {
         const { done, value } = await reader.read()
         if (done) break
@@ -128,9 +99,8 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
                 gotToken = true
                 setLoading(false)
                 setMessages(m => [...m, { id: assistantId, role: 'assistant', content: '' }])
-                startTypewriter(assistantId)
               }
-              charQueue.current.push(...token.split(''))
+              setMessages(m => m.map(msg => msg.id === assistantId ? { ...msg, content: msg.content + token } : msg))
             }
           } catch { /* skip malformed chunks */ }
         }
@@ -139,16 +109,8 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
       if (!gotToken) {
         setLoading(false)
         setMessages(m => [...m, { id: assistantId, role: 'assistant', content: 'Sorry, I could not generate a response.' }])
-        return
       }
-
-      // Wait for the typewriter to drain the queue, then stop
-      const drain = setInterval(() => {
-        if (charQueue.current.length === 0) { clearInterval(drain); stopTypewriter() }
-      }, 50)
     } catch (err) {
-      stopTypewriter()
-      charQueue.current = []
       setLoading(false)
       const msg = err instanceof Error ? err.message : 'Network error. Please try again.'
       setMessages(m => [...m, { id: crypto.randomUUID(), role: 'assistant', content: msg }])
