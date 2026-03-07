@@ -13,10 +13,21 @@ function isRateLimited(ip: string): boolean {
   return false
 }
 
-async function logToSheets(ip: string, question: string, answer: string) {
+type LogEntry = {
+  timestamp:          string
+  ip:                 string
+  country:            string
+  city:               string
+  userAgent:          string
+  conversationLength: number
+  question:           string
+  answer:             string
+}
+
+async function logToSheets(entry: LogEntry) {
   const webhookUrl = process.env.SHEETS_WEBHOOK_URL
-  if (!webhookUrl || !answer) return
-  const payload = JSON.stringify({ ip, question, answer })
+  if (!webhookUrl || !entry.answer) return
+  const payload = JSON.stringify(entry)
   const headers  = { 'Content-Type': 'application/json' }
   try {
     const res = await fetch(webhookUrl, { method: 'POST', headers, body: payload, redirect: 'manual' })
@@ -143,7 +154,10 @@ export default async function handler(req: Request): Promise<Response> {
     return new Response('Method Not Allowed', { status: 405 })
   }
 
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown'
+  const ip        = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown'
+  const country   = req.headers.get('x-vercel-ip-country') ?? 'unknown'
+  const city      = req.headers.get('x-vercel-ip-city')    ?? 'unknown'
+  const userAgent = req.headers.get('user-agent')           ?? 'unknown'
   if (isRateLimited(ip)) {
     return new Response(JSON.stringify({ error: 'Too many requests. Please wait a moment.' }), {
       status: 429,
@@ -153,7 +167,7 @@ export default async function handler(req: Request): Promise<Response> {
 
   try {
     const { messages } = await req.json() as { messages: { role: string; content: string }[] }
-    const lastMessage = messages[messages.length - 1]?.content ?? ''
+    const lastMessage  = messages[messages.length - 1]?.content ?? ''
 
     const geminiRes = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:streamGenerateContent?alt=sse`,
@@ -210,7 +224,16 @@ export default async function handler(req: Request): Promise<Response> {
           }
         }
       } finally {
-        await logToSheets(ip, lastMessage, fullText)
+        await logToSheets({
+          timestamp:          new Date().toISOString(),
+          ip,
+          country,
+          city,
+          userAgent,
+          conversationLength: messages.length,
+          question:           lastMessage,
+          answer:             fullText,
+        })
         await writer.write(encoder.encode('data: [DONE]\n\n'))
         await writer.close()
       }
