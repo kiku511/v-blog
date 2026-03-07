@@ -174,6 +174,35 @@ export function TerminalPanel({ onClose, height, onResize }: Props) {
       case 'pokemon': case 'lucario':
         push('Lucario — Aura Pokémon  #448', 'Type: Fighting / Steel · Ability: Inner Focus', "Favorite Pokémon. Will talk about this at length. Don't start him. 🐾")
         break
+      case 'npm':
+        if (args[0] === 'install' && (args[1] === 'vansh' || args[1] === 'vansh-gambhir')) {
+          push(
+            '',
+            'npm warn deprecated sleep@∞.0.0: please get some rest',
+            'npm warn deprecated work-life-balance@0.0.1: still working on it',
+            '',
+            'added 1 developer 👨‍💻',
+            '',
+            '> vansh@6.0.0 postinstall',
+            '> loading packages...',
+            '',
+            '  ✓ typescript              5.7.0',
+            '  ✓ react                   19.0.0',
+            '  ✓ aws-experience          5.5y',
+            '  ✓ brinc-drones            current',
+            '  ✓ problem-solving         latest',
+            '  ✓ bouldering              intermediate',
+            '  ✓ lucario-knowledge       expert',
+            '',
+            'added 47 packages in 5 years',
+            '',
+            'vansh is ready to ship 🚀',
+            '',
+          )
+        } else {
+          push("npm: try 'npm install vansh'")
+        }
+        break
       case 'echo':  push(args.join(' ') || ''); break
       case 'date':  push(new Date().toString()); break
       case 'uname': push('portfolio-v1 React19 arm64 TypeScript5.7'); break

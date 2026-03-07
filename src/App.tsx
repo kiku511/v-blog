@@ -10,6 +10,8 @@ import { CopilotPanel }  from './components/CopilotPanel'
 import { TerminalPanel } from './panels/TerminalPanel'
 import { MatrixRain }   from './components/MatrixRain'
 import { SearchPanel }  from './components/SearchPanel'
+import { Breadcrumbs }  from './components/Breadcrumbs'
+import { Minimap }      from './components/Minimap'
 import { useTheme }       from './hooks/useTheme'
 import { ChatIcon }       from './components/Icons'
 
@@ -171,8 +173,12 @@ export default function App() {
         </div>
         <div className="editor">
           <EditorTabs active={active} onSelect={selectTab} />
+          <Breadcrumbs active={active} />
           <div className="panels" onMouseMove={handleMouseMove}>
-            <Panel />
+            <div className="panel-content">
+              <Panel />
+            </div>
+            <Minimap active={active} />
           </div>
           {terminalOpen && (
             <TerminalPanel
