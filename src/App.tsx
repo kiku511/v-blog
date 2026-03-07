@@ -10,9 +10,9 @@ import { CopilotPanel }  from './components/CopilotPanel'
 import { TerminalPanel } from './panels/TerminalPanel'
 import { MatrixRain }   from './components/MatrixRain'
 import { SearchPanel }  from './components/SearchPanel'
-import { Breadcrumbs }  from './components/Breadcrumbs'
 import { Minimap }      from './components/Minimap'
-import { useTheme }       from './hooks/useTheme'
+import { useTheme }            from './hooks/useTheme'
+import { useMinimapSetting }  from './hooks/useMinimapSetting'
 import { ChatIcon }       from './components/Icons'
 
 const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a']
@@ -27,9 +27,12 @@ export default function App() {
   const [terminalHeight, setTerminalHeight] = useState(220)
   const [charWidth, setCharWidth]       = useState(8.4)
   const [matrixActive, setMatrixActive]   = useState(false)
+  const [scrollRatio, setScrollRatio]     = useState(0)
+  const panelContentRef                   = useRef<HTMLDivElement>(null)
   const [sidebarView, setSidebarView]     = useState<'explorer' | 'search'>('explorer')
   const [sidebarWidth, setSidebarWidth]   = useState(220)
   const { themeId, setThemeId }           = useTheme()
+  const { minimapOn, toggleMinimap }      = useMinimapSetting()
 
   const activeRef        = useRef(active)
   const paletteOpenRef   = useRef(false)
@@ -71,6 +74,8 @@ export default function App() {
   const selectTab = useCallback((tab: Tab) => {
     setActive(tab)
     setCursor({ ln: 1, col: 1 })
+    setScrollRatio(0)
+    if (panelContentRef.current) panelContentRef.current.scrollTop = 0
   }, [])
 
   // Global keyboard navigation
@@ -173,12 +178,20 @@ export default function App() {
         </div>
         <div className="editor">
           <EditorTabs active={active} onSelect={selectTab} />
-          <Breadcrumbs active={active} />
           <div className="panels" onMouseMove={handleMouseMove}>
-            <div className="panel-content">
+            <div
+              className="panel-content"
+              ref={panelContentRef}
+              onScroll={e => {
+                const el = e.currentTarget
+                const ratio = el.scrollHeight === el.clientHeight ? 0
+                  : el.scrollTop / (el.scrollHeight - el.clientHeight)
+                setScrollRatio(ratio)
+              }}
+            >
               <Panel />
             </div>
-            <Minimap active={active} />
+            {minimapOn && <Minimap active={active} scrollRatio={scrollRatio} />}
           </div>
           {terminalOpen && (
             <TerminalPanel
@@ -204,6 +217,8 @@ export default function App() {
         onTabSelect={selectTab}
         onThemeSelect={() => setThemeOpen(true)}
         onTerminalToggle={() => setTerminalOpen(o => !o)}
+        onMinimapToggle={toggleMinimap}
+        minimapOn={minimapOn}
       />
 
       <ThemeSelector

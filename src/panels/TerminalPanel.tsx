@@ -176,7 +176,7 @@ export function TerminalPanel({ onClose, height, onResize }: Props) {
         break
       case 'npm':
         if (args[0] === 'install' && (args[1] === 'vansh' || args[1] === 'vansh-gambhir')) {
-          push(
+          const npmLines = [
             '',
             'npm warn deprecated sleep@∞.0.0: please get some rest',
             'npm warn deprecated work-life-balance@0.0.1: still working on it',
@@ -186,6 +186,8 @@ export function TerminalPanel({ onClose, height, onResize }: Props) {
             '> vansh@6.0.0 postinstall',
             '> loading packages...',
             '',
+          ]
+          const packages = [
             '  ✓ typescript              5.7.0',
             '  ✓ react                   19.0.0',
             '  ✓ aws-experience          5.5y',
@@ -193,12 +195,40 @@ export function TerminalPanel({ onClose, height, onResize }: Props) {
             '  ✓ problem-solving         latest',
             '  ✓ bouldering              intermediate',
             '  ✓ lucario-knowledge       expert',
-            '',
-            'added 47 packages in 5 years',
-            '',
-            'vansh is ready to ship 🚀',
-            '',
-          )
+          ]
+          const BAR_LEN = 28
+          // Animate: initial lines → packages one by one → progress bar → done
+          let delay = 0
+          npmLines.forEach(text => {
+            setTimeout(() => setLines(l => [...l, { id: crypto.randomUUID(), kind: 'out', text }]), delay)
+            delay += 60
+          })
+          packages.forEach(text => {
+            setTimeout(() => setLines(l => [...l, { id: crypto.randomUUID(), kind: 'out', text }]), delay)
+            delay += 220
+          })
+          // Progress bar
+          for (let i = 1; i <= BAR_LEN; i++) {
+            const filled = '█'.repeat(i) + '░'.repeat(BAR_LEN - i)
+            const pct = Math.round((i / BAR_LEN) * 100)
+            const barId = 'npm-bar'
+            const text = `  [${filled}] ${pct}%`
+            setTimeout(() => {
+              setLines(l => {
+                const existing = l.findIndex(x => x.id === barId)
+                const bar = { id: barId, kind: 'out' as const, text }
+                return existing === -1 ? [...l, bar] : l.map(x => x.id === barId ? bar : x)
+              })
+            }, delay)
+            delay += 60
+          }
+          setTimeout(() => setLines(l => [...l,
+            { id: crypto.randomUUID(), kind: 'out', text: '' },
+            { id: crypto.randomUUID(), kind: 'out', text: 'added 47 packages in 5 years' },
+            { id: crypto.randomUUID(), kind: 'out', text: '' },
+            { id: crypto.randomUUID(), kind: 'out', text: 'vansh is ready to ship 🚀' },
+            { id: crypto.randomUUID(), kind: 'out', text: '' },
+          ]), delay)
         } else {
           push("npm: try 'npm install vansh'")
         }

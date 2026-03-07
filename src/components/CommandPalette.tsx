@@ -14,9 +14,11 @@ type Props = {
   onTabSelect: (tab: Tab) => void
   onThemeSelect: () => void
   onTerminalToggle: () => void
+  onMinimapToggle: () => void
+  minimapOn: boolean
 }
 
-export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect, onTerminalToggle }: Props) {
+export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect, onTerminalToggle, onMinimapToggle, minimapOn }: Props) {
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -41,6 +43,10 @@ export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect, on
       label: 'Change Color Theme',
       shortcut: `${cmdKey}+Shift+T`,
       action: () => { onClose(); setTimeout(onThemeSelect, 50) },
+    },
+    {
+      label: minimapOn ? 'Hide Minimap' : 'Show Minimap',
+      action: () => { onMinimapToggle(); onClose() },
     },
     {
       label: 'Download Resume',

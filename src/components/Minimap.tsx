@@ -87,15 +87,22 @@ const COLORS: Record<string, string> = {
   plain: 'rgba(255,255,255,0.18)',
 }
 
-type Props = { active: Tab }
+type Props = { active: Tab; scrollRatio: number }
 
-export function Minimap({ active }: Props) {
+const VIEWPORT_H = 72 // px, matches CSS
+
+export function Minimap({ active, scrollRatio }: Props) {
   const lines = MAPS[active]
   if (!lines) return null
 
+  // Total minimap content height: lines * (2px + 1.5px gap) + blanks * (5px + 1.5px gap)
+  const totalH = lines.reduce((h, l) => h + (l === null ? 6.5 : 3.5), 0)
+  const maxOffset = Math.max(0, totalH - VIEWPORT_H)
+  const topOffset = scrollRatio * maxOffset
+
   return (
     <div className="minimap">
-      <div className="minimap-viewport" />
+      <div className="minimap-viewport" style={{ top: 10 + topOffset }} />
       {lines.map((line, i) =>
         line === null
           ? <div key={i} className="mm-blank" />
