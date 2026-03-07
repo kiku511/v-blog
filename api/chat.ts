@@ -168,19 +168,16 @@ export default async function handler(req: Request): Promise<Response> {
 
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text ?? 'Sorry, I could not generate a response.'
 
-    // Fire-and-forget log to Google Sheets
+    // Log to Google Sheets (awaited — edge functions kill background fetches on response)
     const webhookUrl = process.env.SHEETS_WEBHOOK_URL
-    console.log('[sheets] webhookUrl present:', !!webhookUrl)
     if (webhookUrl) {
       const question = messages[messages.length - 1]?.content ?? ''
-      fetch(webhookUrl, {
+      await fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ip, question, answer: text }),
         redirect: 'follow',
-      })
-        .then(r => console.log('[sheets] status:', r.status))
-        .catch(err => console.log('[sheets] error:', err))
+      }).catch(() => {})
     }
 
     return new Response(JSON.stringify({ content: text }), {
