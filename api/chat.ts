@@ -157,7 +157,7 @@ export default async function handler(req: Request): Promise<Response> {
             role: m.role === 'assistant' ? 'model' : 'user',
             parts: [{ text: m.content }],
           })),
-          generationConfig: { maxOutputTokens: 512, temperature: 0.7 },
+          generationConfig: { maxOutputTokens: 1024, temperature: 0.7 },
         }),
       }
     )
