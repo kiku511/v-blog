@@ -46,43 +46,41 @@ BRINC is a public safety company that builds drones and software in service of s
 
 EXPERIENCE:
 
-1. BRINC Drones | Software Engineer (Frontend) | Feb 2026 – Present | Seattle, WA
-   - On the LiveOps team, building software that helps pilots monitor and manage drone missions in the field.
-   - BRINC serves public safety agencies — helping first responders use drones to save lives.
+1. BRINC Drones | Software Engineer | Feb 2026 – Present | Seattle, WA
+   - Building the LiveOps platform focused on the piloting and flight control experience for drone operators.
+   - Developing features that directly interface with drone hardware, maintaining a highly performant UI under real-time constraints.
+   - Tech stack: Vue, TypeScript, PHP, Laravel, EC2.
 
-2. Amazon Web Services | Jul 2020 – Feb 2026 (5.5 years total) | Seattle, WA
-   TITLE PROGRESSION: Started as Front End Engineer (Jul 2020), promoted to Front End Engineer II in January 2023 after 2.5 years — so he spent 2.5 years as FEE and ~3 years as FEE II.
+2. Amazon Web Services | Jul 2020 – Jan 2026 (5.5 years total) | Seattle, WA
+   TITLE PROGRESSION: Started as Front End Engineer (Jul 2020), promoted to Front End Engineer II in January 2023 after 2.5 years.
 
    Team: App Studio & QApps (Jul 2020 – Jan 2025):
-   - Launched an S-Team goal from vision to GA (General Availability).
-   - Led a team of 5 engineers to deliver AI-enriched React components for a new stealth low-code service within AWS, including schema design, architecture, and code generation.
-   - Built smart abstractions over AWS Redshift, QuickSight, S3, Lambda, and Bedrock for customers.
-   - Created in-house devtools and scripts that improved engineering velocity, enabling 35% faster feature delivery.
-   - Revamped metrics dashboards and alarms for 3 teams; built end-to-end infrastructure for the org using Cypress.
+   - Under tight constraints, delivered AWS AppStudio as a 0-1 product: architected a spec-driven rendering system that compiles customer-defined schemas into React components at runtime, forming the foundation of a no-code app builder.
+   - Led a team of 5 engineers from architecture through GA.
+   - Built abstractions over Redshift, QuickSight, S3, Lambda, and Bedrock for customers.
+   - Created in-house devtools enabling 35% faster feature delivery. Revamped metrics and alarms across 3 teams; built org-wide E2E infrastructure with Cypress.
 
-   Team: GenAI Agents (Jan 2025 – Feb 2026), as Front End Engineer II:
-   - Built a brand new stealth service to create AI Agents as part of the AWS GenAI org.
-   - Created a custom layout engine to allow users to build and visualize agentic workflows supporting 50+ coding constructs and 300+ first and third-party connectors.
-   - Partnered with Applied Scientists to co-develop a DSL that interfaces directly with a trained model, enabling both human and AI-based edits to workflows.
+   Team: GenAI Agents (Jan 2025 – Jan 2026), as Front End Engineer II:
+   - Led a team of 3 to architect and build the rendering engine for AWS Q Automate from scratch using React, TypeScript, and a custom layout algorithm — renders complex automation DSLs into deterministic, interactive node graphs capable of handling 1,000+ nodes, comparable to n8n.
+   - Onboarded the entire frontend org to the new architecture.
+   - Co-developed a DSL with Applied Scientists interfacing directly with a trained model, supporting 50+ coding constructs and 300+ connectors.
+   - Served as security guardian for the frontend team, reviewing all features and architecture, and partnering with AppSec to keep threat models current.
 
-4. Apple, Inc. | Software Engineer Intern | Jun 2019 – Sep 2019 | Cupertino, CA
-   - Built a RESTful API and UI using ReactJS, NodeJS, and Express to configure feature flags based on LDAP groups and users from scratch, enabling safe staged rollouts.
-   - Designed a Cassandra database schema for the service.
-   - Fixed UI issues in the internal CI/CD platform, including error handling for misconfigured webhooks.
-   - Helped launch the first version of an internal design system, fixing style issues and documenting components with StorybookJS.
+3. Apple, Inc. | Software Engineer Intern | Jun 2019 – Sep 2019 | Cupertino, CA
+   - Built a RESTful API and React/Node UI from scratch to configure LDAP-based feature flags, enabling safe staged rollouts. Designed the Cassandra schema for the service.
+   - Contributed to the launch of Apple's internal design system via StorybookJS.
 
 SKILLS:
-- Web: CSS, HTML, JSX, React, Next.js, Node.js, Express, GraphQL, Vega
-- Languages: TypeScript, JavaScript, Python, Java, Go, Swift, R
-- State: Redux Toolkit, Zustand, React Query
-- Testing: Jest, React Testing Library, Cypress, Playwright, Vitest
-- Tooling: Vite, Webpack, esbuild, Storybook
-- AWS: CloudFront, EC2, S3, SNS, IAM, Lambda, CloudWatch, AppSync, Bedrock, DynamoDB
-- Data: Cassandra, MySQL, MongoDB, DynamoDB, Redshift, Pandas, Tableau
+- Web: CSS, HTML, React, Vue, Node.js, Express, Laravel, HapiJS, GraphQL
+- Languages: TypeScript, JavaScript, PHP, Python, Java, Go, Swift
+- Testing: Cypress, Playwright, Vitest, React Testing Library
+- Tooling: Vite, Docker, GitHub Actions, Vercel, Webpack, Storybook
+- AWS: CloudFront, EC2, S3, SNS, IAM, Lambda, CloudWatch, AppSync, Bedrock, IoT Core, DynamoDB
+- Data: Cassandra, MySQL, MongoDB, DynamoDB
 
 PROJECTS:
-- Data Analysis for Pratham (non-profit): Cleaned and analyzed large datasets using R; created interactive Tableau visualizations on educational app usage among rural Indian students.
-- SkiBud: Designed and coded a ski resort management database in MS SQL Server; built stored procedures and synthetic transactions validating 100,000+ INSERTS; developed disaster-recovery plans.
+- vansh.dev: Built a VS Code-themed interactive portfolio using React, TypeScript, Vite, and Claude API. Features an AI chat assistant, command palette, syntax-highlighted code panels, a mock terminal with Easter eggs, full keyboard and screen reader accessibility, CI/CD via GitHub Actions and Vercel, and a hardened AI agent with prompt injection defenses and behavior tests.
+- SkiBud: Designed a ski resort management database in MS SQL Server; built stored procedures and synthetic transactions validating 100,000+ INSERTS; developed disaster-recovery plans.
 
 SOFT SKILLS & LEADERSHIP:
 - Has led multiple engineers on frontend and fullstack projects.

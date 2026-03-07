@@ -7,18 +7,17 @@ export const about = {
 }
 
 export const skills: Record<string, string[]> = {
-  languages: ['TypeScript', 'JavaScript', 'Python', 'Java', 'Go', 'Swift'],
-  frontend:  ['React', 'Next.js', 'Node.js', 'Express', 'GraphQL', 'CSS'],
-  state:     ['Redux Toolkit', 'Zustand', 'React Query'],
-  testing:   ['Jest', 'React Testing Library', 'Cypress', 'Playwright', 'Vitest'],
-  tooling:   ['Vite', 'Webpack', 'esbuild', 'Storybook'],
-  aws:       ['CloudFront', 'EC2', 'S3', 'Lambda', 'DynamoDB', 'AppSync', 'Bedrock', 'CloudWatch', 'SNS'],
-  data:      ['Cassandra', 'MySQL', 'MongoDB', 'Pandas', 'Redshift'],
+  languages: ['TypeScript', 'JavaScript', 'PHP', 'Python', 'Java', 'Go', 'Swift'],
+  frontend:  ['React', 'Vue', 'Node.js', 'Express', 'Laravel', 'HapiJS', 'GraphQL', 'CSS'],
+  testing:   ['Cypress', 'Playwright', 'Vitest', 'React Testing Library'],
+  tooling:   ['Vite', 'Docker', 'GitHub Actions', 'Vercel', 'Webpack', 'Storybook'],
+  aws:       ['CloudFront', 'EC2', 'S3', 'Lambda', 'DynamoDB', 'AppSync', 'Bedrock', 'CloudWatch', 'SNS', 'IoT Core'],
+  data:      ['Cassandra', 'MySQL', 'MongoDB', 'DynamoDB'],
 }
 
 export const experience: { company: string; team?: string; role: string; promoted?: string; period: string }[] = [
   { company: 'BRINC Drones',        role: 'Software Engineer (Frontend)',                   period: 'Feb 2026 – Present'   },
-  { company: 'Amazon Web Services', team: 'GenAI Agents',       role: 'Front End Engineer II',   period: 'Jan 2025 – Feb 2026'  },
+  { company: 'Amazon Web Services', team: 'GenAI Agents',       role: 'Front End Engineer II',   period: 'Jan 2025 – Jan 2026'  },
   { company: 'Amazon Web Services', team: 'App Studio & QApps', role: 'Front End Engineer', promoted: 'Jan 2023', period: 'Jul 2020 – Jan 2025'  },
   { company: 'Apple, Inc.',         role: 'Software Engineer Intern',                        period: 'Jun 2019 – Sep 2019'  },
 ]
