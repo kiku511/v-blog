@@ -26,9 +26,15 @@ export function ActivityBar({ sidebarView, onSidebarView, onPaletteClick }: Prop
       >
         <SearchIcon />
       </div>
-      <div className="act-icon">
+      <a
+        className="act-icon"
+        href="https://www.linkedin.com/in/vanshgambhir/"
+        target="_blank"
+        rel="noreferrer"
+        title="LinkedIn"
+      >
         <PersonIcon />
-      </div>
+      </a>
       <div className="act-icon settings" onClick={onPaletteClick} style={{ cursor: 'pointer' }} title="Command Palette">
         <SettingsIcon />
       </div>
