@@ -26,7 +26,7 @@ export function ExperiencePanel() {
     }
     lineContents.push(<>{'    '}<Prop c="period" />{'  : '}<Str c={entry.period} />{','}</>)
     lineContents.push(<>{'    '}<Prop c="bullets" />{' : ['}</>)
-    entry.bullets.forEach((b, bi) => {
+    entry.bullets.forEach((b) => {
       lineContents.push(<>{'      '}<Cmt c={`// ${b}`} /></>)
     })
     lineContents.push('    ]')
