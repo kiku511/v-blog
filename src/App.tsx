@@ -22,7 +22,7 @@ export default function App() {
   const [cursor, setCursor]           = useState({ ln: 1, col: 1 })
   const [paletteOpen, setPalette]     = useState(false)
   const [themeOpen, setThemeOpen]     = useState(false)
-  const [chatOpen, setChatOpen]         = useState(false)
+  const [chatOpen, setChatOpen]         = useState(true)
   const [terminalOpen, setTerminalOpen] = useState(false)
   const [terminalHeight, setTerminalHeight] = useState(220)
   const [charWidth, setCharWidth]       = useState(8.4)
