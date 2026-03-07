@@ -32,13 +32,6 @@ export function FileIcon({ size = 22, style }: IconProps) {
   )
 }
 
-export function ExternalLinkIcon({ size = 22, style }: IconProps) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" style={style}>
-      <path d="M3 3h8v2H5v14h14v-6h2v8H3V3zm11 0h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14V3z"/>
-    </svg>
-  )
-}
 
 export function SearchIcon({ size = 22, style }: IconProps) {
   return (

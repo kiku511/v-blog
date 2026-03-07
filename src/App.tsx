@@ -16,6 +16,7 @@ import { useTheme }            from './hooks/useTheme'
 import { useMinimapSetting }  from './hooks/useMinimapSetting'
 import { ChatIcon, HamburgerIcon, FileIcon as FileIconAct, SearchIcon, PersonIcon } from './components/Icons'
 import { OnboardingHint } from './components/OnboardingHint'
+import { RESUME_PATH, RESUME_FILENAME } from './config/constants'
 
 const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a']
 
@@ -49,9 +50,7 @@ export default function App() {
   const activeRef        = useRef(active)
   const paletteOpenRef   = useRef(false)
   const konamiIdx        = useRef(0)
-  const sbDragging       = useRef(false)
-  const sbStartX         = useRef(0)
-  const sbStartWidth     = useRef(220)
+  const sbDrag           = useRef({ active: false, startX: 0, startWidth: 220 })
   useEffect(() => { activeRef.current = active }, [active])
   useEffect(() => { paletteOpenRef.current = paletteOpen }, [paletteOpen])
 
@@ -65,19 +64,17 @@ export default function App() {
   }, [])
 
   const onSidebarDragStart = useCallback((e: React.MouseEvent) => {
-    sbDragging.current  = true
-    sbStartX.current    = e.clientX
-    sbStartWidth.current = sidebarWidth
+    sbDrag.current = { active: true, startX: e.clientX, startWidth: sidebarWidth }
     e.preventDefault()
   }, [sidebarWidth])
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
-      if (!sbDragging.current) return
-      const delta = e.clientX - sbStartX.current
-      setSidebarWidth(Math.min(400, Math.max(140, sbStartWidth.current + delta)))
+      if (!sbDrag.current.active) return
+      const delta = e.clientX - sbDrag.current.startX
+      setSidebarWidth(Math.min(400, Math.max(140, sbDrag.current.startWidth + delta)))
     }
-    const onUp = () => { sbDragging.current = false }
+    const onUp = () => { sbDrag.current.active = false }
     window.addEventListener('mousemove', onMove)
     window.addEventListener('mouseup', onUp)
     return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp) }
@@ -191,6 +188,9 @@ export default function App() {
   }, [charWidth])
 
   const { Panel } = TABS.find(t => t.id === active)!
+  const sidebarContent = sidebarView === 'search'
+    ? <SearchPanel onNavigate={tab => { selectTab(tab); setSidebarView('explorer') }} />
+    : <Sidebar active={active} onSelect={selectTab} />
 
   return (
     <div className="vscode">
@@ -215,8 +215,8 @@ export default function App() {
             <ChatIcon />
           </button>
           <a
-            href="/vansh-resume-3-7.pdf"
-            download="Vansh-Gambhir-Resume.pdf"
+            href={RESUME_PATH}
+            download={RESUME_FILENAME}
             className="resume-btn"
             aria-label="Download resume PDF"
             onClick={e => e.stopPropagation()}
@@ -236,10 +236,7 @@ export default function App() {
         />
         <div className="sidebar-resizable" style={{ width: sidebarWidth }}>
           <div className="sidebar-resize-handle" onMouseDown={onSidebarDragStart} />
-          {sidebarView === 'search'
-            ? <SearchPanel onNavigate={tab => { selectTab(tab); setSidebarView('explorer') }} />
-            : <Sidebar active={active} onSelect={selectTab} />
-          }
+          {sidebarContent}
         </div>
         <div className="editor">
           <EditorTabs active={active} onSelect={selectTab} />
@@ -328,10 +325,7 @@ export default function App() {
           </a>
         </div>
         <div className="mobile-drawer-content">
-          {sidebarView === 'search'
-            ? <SearchPanel onNavigate={tab => { selectTab(tab); setSidebarView('explorer') }} />
-            : <Sidebar active={active} onSelect={selectTab} />
-          }
+          {sidebarContent}
         </div>
       </nav>
 

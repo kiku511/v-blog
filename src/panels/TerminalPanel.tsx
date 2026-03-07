@@ -95,7 +95,7 @@ export function TerminalPanel({ onClose, height, onResize }: Props) {
     const cmd = raw.trim()
     if (!cmd) return
     setLines(l => [...l, { id: crypto.randomUUID(), kind: 'cmd', text: cmd, prompt: true }])
-    setHist(h => [cmd, ...h])
+    setHist(h => [cmd, ...h].slice(0, 100))
     histIdx.current = -1
 
     const [c, ...args] = cmd.split(/\s+/)

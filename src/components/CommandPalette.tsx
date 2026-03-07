@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { TABS, type Tab } from '../config/tabs'
 import { cmdKey, optKey } from '../utils/platform'
+import { RESUME_PATH, RESUME_FILENAME } from '../config/constants'
 
 type Command = {
   label: string
@@ -54,8 +55,8 @@ export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect, on
       shortcut: `${cmdKey}+Shift+P → enter`,
       action: () => {
         const a = document.createElement('a')
-        a.href = '/vansh-resume-3-7.pdf'
-        a.download = 'Vansh-Gambhir-Resume.pdf'
+        a.href = RESUME_PATH
+        a.download = RESUME_FILENAME
         a.click()
         onClose()
       },

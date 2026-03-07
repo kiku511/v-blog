@@ -1,9 +1,9 @@
 import type { Tab } from '../config/tabs'
 
 // [colorType, widthPercent] | null (null = blank line)
-type ML = [string, number] | null
+type MinimapLine = [string, number] | null
 
-const MAPS: Record<string, ML[]> = {
+const MAPS: Record<string, MinimapLine[]> = {
   about: [
     ['cmt', 55],
     null,
