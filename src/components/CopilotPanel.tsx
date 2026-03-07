@@ -100,10 +100,10 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
           <ChatIcon style={{ flexShrink: 0 }} />
           AI Chat
         </span>
-        <button className="copilot-close" onClick={onClose}>✕</button>
+        <button className="copilot-close" onClick={onClose} aria-label="Close AI Chat">✕</button>
       </div>
 
-      <div className="copilot-messages">
+      <div className="copilot-messages" aria-live="polite" aria-label="Chat messages">
         {messages.length === 0 && (
           <div className="copilot-welcome">
             <p>Hi! Ask me anything about <span className="kw">Vansh Gambhir</span>.</p>
@@ -146,13 +146,14 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
           <textarea
             ref={inputRef}
             className="copilot-input"
+            aria-label="Ask about Vansh"
             placeholder="Ask about Vansh..."
             value={input}
             rows={1}
             onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
           />
-          <button className="copilot-send" onClick={send} disabled={!input.trim() || loading} title="Send">
+          <button className="copilot-send" onClick={send} disabled={!input.trim() || loading} aria-label="Send message">
             <SendIcon />
           </button>
         </div>

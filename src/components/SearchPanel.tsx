@@ -37,13 +37,14 @@ export function SearchPanel({ onNavigate }: Props) {
   )
 
   return (
-    <div className="sidebar">
+    <nav className="sidebar" aria-label="Search">
       <div className="sidebar-header">Search</div>
 
       <div className="search-input-wrap">
         <input
           ref={inputRef}
           className="search-input"
+          aria-label="Search across files"
           placeholder="Search"
           value={query}
           onChange={e => setQuery(e.target.value)}
@@ -53,21 +54,21 @@ export function SearchPanel({ onNavigate }: Props) {
       </div>
 
       {q.length >= 2 && (
-        <div className="search-results">
+        <div className="search-results" aria-live="polite" aria-label="Search results">
           {Object.keys(grouped).length === 0 ? (
             <div className="search-no-results">No results for "{q}"</div>
           ) : (
             Object.entries(grouped).map(([tab, { fileName, entries }]) => (
               <div key={tab} className="search-group">
-                <div className="search-group-header" onClick={() => onNavigate(tab as Tab)}>
+                <button className="search-group-header" onClick={() => onNavigate(tab as Tab)}>
                   <span className="search-group-name">{fileName}</span>
                   <span className="search-match-count">{entries.length}</span>
-                </div>
+                </button>
                 {entries.map(m => (
-                  <div key={m.line} className="search-match" onClick={() => onNavigate(tab as Tab)}>
+                  <button key={m.line} className="search-match" onClick={() => onNavigate(tab as Tab)}>
                     <span className="search-match-line">{m.line}</span>
                     <span className="search-match-text">{highlight(m.text.trim(), q)}</span>
-                  </div>
+                  </button>
                 ))}
               </div>
             ))
@@ -78,6 +79,6 @@ export function SearchPanel({ onNavigate }: Props) {
       {q.length === 0 && (
         <div className="search-no-results">Type to search across files</div>
       )}
-    </div>
+    </nav>
   )
 }

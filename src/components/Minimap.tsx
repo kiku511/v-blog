@@ -101,7 +101,7 @@ export function Minimap({ active, scrollRatio }: Props) {
   const topOffset = scrollRatio * maxOffset
 
   return (
-    <div className="minimap">
+    <div className="minimap" aria-hidden="true">
       <div className="minimap-viewport" style={{ top: 10 + topOffset }} />
       {lines.map((line, i) =>
         line === null

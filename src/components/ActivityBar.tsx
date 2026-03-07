@@ -9,35 +9,39 @@ type Props = {
 
 export function ActivityBar({ sidebarView, onSidebarView, onPaletteClick }: Props) {
   return (
-    <div className="activitybar">
-      <div
+    <nav className="activitybar" aria-label="Activity Bar">
+      <button
         className={`act-icon${sidebarView === 'explorer' ? ' active' : ''}`}
         onClick={() => onSidebarView('explorer')}
-        style={{ cursor: 'pointer' }}
-        title="Explorer"
+        aria-label="Explorer"
+        aria-pressed={sidebarView === 'explorer'}
       >
-        <FileIcon />
-      </div>
-      <div
+        <FileIcon aria-hidden="true" />
+      </button>
+      <button
         className={`act-icon${sidebarView === 'search' ? ' active' : ''}`}
         onClick={() => onSidebarView('search')}
-        style={{ cursor: 'pointer' }}
-        title="Search"
+        aria-label="Search"
+        aria-pressed={sidebarView === 'search'}
       >
-        <SearchIcon />
-      </div>
+        <SearchIcon aria-hidden="true" />
+      </button>
       <a
         className="act-icon"
         href="https://www.linkedin.com/in/vanshgambhir/"
         target="_blank"
         rel="noreferrer"
-        title="LinkedIn"
+        aria-label="LinkedIn profile (opens in new tab)"
       >
-        <PersonIcon />
+        <PersonIcon aria-hidden="true" />
       </a>
-      <div className="act-icon settings" onClick={onPaletteClick} style={{ cursor: 'pointer' }} title="Command Palette">
-        <SettingsIcon />
-      </div>
-    </div>
+      <button
+        className="act-icon settings"
+        onClick={onPaletteClick}
+        aria-label="Command Palette"
+      >
+        <SettingsIcon aria-hidden="true" />
+      </button>
+    </nav>
   )
 }

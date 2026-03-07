@@ -19,6 +19,30 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body, #root { height: 100%; overflow: hidden; }
 
+/* ── Semantic button resets — preserve visual styling, fix browser defaults ── */
+button.act-icon  { padding: 0; border-right: none; border-top: none; border-bottom: none; }
+button.tree-file { text-align: left; width: 100%; border: none; }
+button.tab       { border-top: none; border-bottom: none; border-left: none; }
+button.sb-palette-hint { border: none; padding: 0; }
+button.search-group-header, button.search-match { background: none; border: none; font: inherit; cursor: pointer; color: inherit; width: 100%; text-align: left; }
+button.act-icon, button.tree-file, button.tab, button.sb-palette-hint {
+  background: none; font: inherit; cursor: pointer; color: inherit;
+}
+
+/* ── Focus indicators ── */
+.act-icon:focus-visible,
+.tree-file:focus-visible,
+.tab:focus-visible,
+.sb-palette-hint:focus-visible,
+.search-group-header:focus-visible,
+.search-match:focus-visible,
+.copilot-close:focus-visible,
+.terminal-header-close:focus-visible,
+.copilot-suggestion:focus-visible,
+.resume-btn:focus-visible,
+.chat-mobile-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.cp-input:focus-visible, .search-input:focus-visible { outline: none; border-color: var(--accent); }
+
 body {
   font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
   font-size: 14px;

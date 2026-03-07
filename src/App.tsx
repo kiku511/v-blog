@@ -153,29 +153,30 @@ export default function App() {
   return (
     <div className="vscode">
 
-      <div className="titlebar">
-        <div className="dots">
+      <header className="titlebar">
+        <div className="dots" aria-hidden="true">
           <div className="dot r" />
           <div className="dot y" />
           <div className="dot g" />
         </div>
-        vansh-gambhir — Code
+        <span aria-hidden="true">vansh-gambhir — Code</span>
         <div style={{ position: 'absolute', right: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
-          <button className="chat-mobile-btn" onClick={() => setChatOpen(o => !o)} title="AI Chat">
+          <button className="chat-mobile-btn" onClick={() => setChatOpen(o => !o)} aria-label="Toggle AI Chat">
             <ChatIcon />
           </button>
           <a
             href="/resume.pdf"
             download="Vansh-Gambhir-Resume.pdf"
             className="resume-btn"
+            aria-label="Download resume PDF"
             onClick={e => e.stopPropagation()}
           >
             ↓ Resume
           </a>
         </div>
-      </div>
+      </header>
 
-      <div className="main">
+      <main className="main">
         <ActivityBar
           sidebarView={sidebarView}
           onSidebarView={setSidebarView}
@@ -214,7 +215,7 @@ export default function App() {
           )}
         </div>
         <CopilotPanel isOpen={chatOpen} onClose={() => setChatOpen(false)} />
-      </div>
+      </main>
 
       <StatusBar
         active={active}

@@ -93,6 +93,7 @@ export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect, on
         <input
           ref={inputRef}
           className="cp-input"
+          aria-label="Search commands and files"
           placeholder="Type a command or file name..."
           value={query}
           onChange={e => setQuery(e.target.value)}

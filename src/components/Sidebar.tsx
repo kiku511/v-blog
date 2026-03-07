@@ -5,20 +5,21 @@ type Props = { active: Tab; onSelect: (tab: Tab) => void }
 
 export function Sidebar({ active, onSelect }: Props) {
   return (
-    <div className="sidebar">
+    <nav className="sidebar" aria-label="File Explorer">
       <div className="sidebar-header">Explorer</div>
       <div className="tree-folder">▾ vansh-gambhir</div>
       <div className="tree-folder sub">▾ src</div>
       {TABS.map(tab => (
-        <div
+        <button
           key={tab.id}
           className={`tree-file${active === tab.id ? ' active' : ''}`}
           onClick={() => onSelect(tab.id)}
+          aria-current={active === tab.id ? 'page' : undefined}
         >
           <FileIcon fileName={tab.fileName} />
           {tab.fileName}
-        </div>
+        </button>
       ))}
-    </div>
+    </nav>
   )
 }

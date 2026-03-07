@@ -276,11 +276,11 @@ export function TerminalPanel({ onClose, height, onResize }: Props) {
             <ShellIcon style={{ flexShrink: 0 }} />
             zsh
           </span>
-          <button className="terminal-header-close" onClick={onClose} title="Close Panel">✕</button>
+          <button className="terminal-header-close" onClick={onClose} aria-label="Close Terminal">✕</button>
         </div>
       </div>
 
-      <div className="terminal-content" onClick={() => inputRef.current?.focus()}>
+      <div className="terminal-content" onClick={() => inputRef.current?.focus()} aria-live="polite" aria-label="Terminal output">
         <div className="term-line">
           <span className="term-out">{WELCOME}</span>
         </div>
@@ -297,6 +297,7 @@ export function TerminalPanel({ onClose, height, onResize }: Props) {
           <input
             ref={inputRef}
             className="term-input"
+            aria-label="Terminal command input"
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={onKeyDown}
