@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { TABS, type Tab } from '../config/tabs'
-import { cmdKey, termKey } from '../utils/platform'
+import { cmdKey } from '../utils/platform'
 
 type Command = {
   label: string
@@ -29,7 +29,7 @@ export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect, on
     })),
     {
       label: 'Toggle Terminal',
-      shortcut: `${termKey}+\``,
+      shortcut: 'Ctrl+`',
       action: () => { onClose(); onTerminalToggle() },
     },
     {

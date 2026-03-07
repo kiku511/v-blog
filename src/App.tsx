@@ -12,7 +12,6 @@ import { MatrixRain }   from './components/MatrixRain'
 import { SearchPanel }  from './components/SearchPanel'
 import { useTheme }       from './hooks/useTheme'
 import { ChatIcon }       from './components/Icons'
-import { isMac }          from './utils/platform'
 
 const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a']
 
@@ -92,8 +91,8 @@ export default function App() {
         setPalette(o => !o)
         return
       }
-      // Cmd+` (Mac) / Ctrl+` (Win) — toggle terminal
-      if ((isMac ? e.metaKey : e.ctrlKey) && e.key === '`') {
+      // Ctrl+` — toggle terminal (same on Mac and Windows, Cmd+` is reserved by macOS)
+      if (e.ctrlKey && e.key === '`') {
         e.preventDefault()
         setTerminalOpen(o => !o)
         return

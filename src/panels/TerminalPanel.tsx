@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { ShellIcon } from '../components/Icons'
 import { about, skills, experience, contact } from '../data/profile'
-import { cmdKey, termKey } from '../utils/platform'
+import { cmdKey } from '../utils/platform'
 
 type Line = { id: string; kind: 'cmd' | 'out'; text: string; prompt?: true }
 
@@ -115,7 +115,7 @@ export function TerminalPanel({ onClose, height, onResize }: Props) {
           '  clear             clear terminal',
           '  history           show command history',
           '',
-          `Tip: ↑ / ↓ history · Ctrl+L / ${cmdKey}+K to clear · ${termKey}+\` to toggle`,
+          `Tip: ↑ / ↓ history · Ctrl+L / ${cmdKey}+K to clear · Ctrl+\` to toggle`,
         )
         break
       case 'whoami':

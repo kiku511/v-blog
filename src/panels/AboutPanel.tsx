@@ -1,6 +1,6 @@
 import { about } from '../data/profile'
 import { Line, Kw, Prop, Str, Cmt } from '../components/syntax'
-import { cmdKey, termKey } from '../utils/platform'
+import { cmdKey } from '../utils/platform'
 
 export function AboutPanel() {
   return (
@@ -8,7 +8,7 @@ export function AboutPanel() {
       <Line n={1}><Cmt c="// about.ts" /></Line>
       <Line n={2}><Cmt c="// 👋 Hey there! You're looking at my portfolio, built to feel like home (VS Code)." /></Line>
       <Line n={3}><Cmt c={`// Poke around: ask the AI anything, hit ${cmdKey}+P to explore, crack open the terminal`} /></Line>
-      <Line n={4}><Cmt c={`// with ${termKey}+\`, or enter the Konami code for a little surprise 🎮`} /></Line>
+      <Line n={4}><Cmt c="// with Ctrl+`, or enter the Konami code for a little surprise 🎮" /></Line>
       <Line n={5} />
       <Line n={6}><Kw c="const" /> <Prop c="vansh" /> {'= {'}</Line>
       <Line n={7}>{'  '}<Prop c="name" />{'     : '}<Str c={about.name} />{','}</Line>

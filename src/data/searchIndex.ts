@@ -1,5 +1,5 @@
 import { about, skills, experience, contact } from './profile'
-import { cmdKey, termKey } from '../utils/platform'
+import { cmdKey } from '../utils/platform'
 import type { Tab } from '../config/tabs'
 
 export type SearchEntry = { tab: Tab; fileName: string; line: number; text: string }
@@ -17,7 +17,7 @@ function makeIndex(): SearchEntry[] {
     '// about.ts',
     "// 👋 Hey there! You're looking at my portfolio, built to feel like home (VS Code).",
     `// Poke around: ask the AI anything, hit ${cmdKey}+P to explore, crack open the terminal`,
-    `// with ${termKey}+\`, or enter the Konami code for a little surprise 🎮`,
+    '// with Ctrl+`, or enter the Konami code for a little surprise 🎮',
     '',
     'const vansh = {',
     `  name     : "${about.name}",`,
