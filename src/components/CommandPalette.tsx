@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { TABS, type Tab } from '../config/tabs'
-import { cmdKey } from '../utils/platform'
+import { cmdKey, optKey } from '../utils/platform'
 
 type Command = {
   label: string
@@ -36,17 +36,17 @@ export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect, on
     },
     {
       label: 'Talk to AI',
-      shortcut: `${cmdKey}+Shift+A`,
+      shortcut: `${cmdKey}+${optKey}+A`,
       action: () => { onClose(); document.querySelector<HTMLTextAreaElement>('.copilot-input')?.focus() },
     },
     {
       label: 'Change Color Theme',
-      shortcut: `${cmdKey}+Shift+T`,
+      shortcut: `${cmdKey}+${optKey}+T`,
       action: () => { onClose(); setTimeout(onThemeSelect, 50) },
     },
     {
       label: minimapOn ? 'Hide Minimap' : 'Show Minimap',
-      shortcut: `${cmdKey}+Shift+M`,
+      shortcut: `${cmdKey}+${optKey}+M`,
       action: () => { onMinimapToggle(); onClose() },
     },
     {

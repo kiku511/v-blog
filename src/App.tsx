@@ -104,20 +104,20 @@ export default function App() {
         setTerminalOpen(o => !o)
         return
       }
-      // Cmd/Ctrl+Shift+T — change color theme
-      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'T') {
+      // Cmd+Opt+T / Ctrl+Alt+T — change color theme
+      if ((e.metaKey || e.ctrlKey) && e.altKey && e.key === 't') {
         e.preventDefault()
         setThemeOpen(o => !o)
         return
       }
-      // Cmd/Ctrl+Shift+M — toggle minimap
-      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'M') {
+      // Cmd+Opt+M / Ctrl+Alt+M — toggle minimap
+      if ((e.metaKey || e.ctrlKey) && e.altKey && e.key === 'm') {
         e.preventDefault()
         toggleMinimap()
         return
       }
-      // Cmd/Ctrl+Shift+A — toggle AI chat
-      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'A') {
+      // Cmd+Opt+A / Ctrl+Alt+A — toggle AI chat
+      if ((e.metaKey || e.ctrlKey) && e.altKey && e.key === 'a') {
         e.preventDefault()
         setChatOpen(o => !o)
         return
