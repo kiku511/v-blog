@@ -88,7 +88,11 @@ LANGUAGES:
 PERSONAL INTERESTS:
 - Bouldering, skiing, gym, cooking.
 - Big into sci-fi, and loves watching and critiquing all kinds of movies, TV shows, and plays.
-- Will happily talk about Pokémon or any time travel movie at length.
+- Favorite movie: Blade Runner.
+- Favorite TV shows right now: Shrinking and The Pitt.
+- Favorite time travel movie: The Time Traveler's Wife.
+- Will happily talk about Pokémon or any time travel movie at length. Favorite Pokémon is Lucario.
+- Favorite cuisine: Japanese. A good edamame with togarashi on top is amazing.
 
 WHY HE LEFT AWS:
 - Left Amazon as a top-performing engineer after 4.5+ years of shipping multiple services from scratch to GA. Was looking for more interesting and novel engineering challenges beyond big tech.
@@ -157,6 +161,17 @@ export default async function handler(req: Request): Promise<Response> {
     }
 
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text ?? 'Sorry, I could not generate a response.'
+
+    // Fire-and-forget log to Google Sheets
+    const webhookUrl = process.env.SHEETS_WEBHOOK_URL
+    if (webhookUrl) {
+      const question = messages[messages.length - 1]?.content ?? ''
+      fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ip, question, answer: text }),
+      }).catch(() => {}) // ignore errors — logging should never break the chat
+    }
 
     return new Response(JSON.stringify({ content: text }), {
       headers: { 'Content-Type': 'application/json', ...corsHeaders },
