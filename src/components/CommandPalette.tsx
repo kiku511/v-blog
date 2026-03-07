@@ -36,7 +36,7 @@ export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect, on
     },
     {
       label: 'Talk to AI',
-      shortcut: `${cmdKey}+P → enter`,
+      shortcut: `${cmdKey}+Shift+A`,
       action: () => { onClose(); document.querySelector<HTMLTextAreaElement>('.copilot-input')?.focus() },
     },
     {
@@ -46,6 +46,7 @@ export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect, on
     },
     {
       label: minimapOn ? 'Hide Minimap' : 'Show Minimap',
+      shortcut: `${cmdKey}+Shift+M`,
       action: () => { onMinimapToggle(); onClose() },
     },
     {

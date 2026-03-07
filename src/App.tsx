@@ -110,6 +110,18 @@ export default function App() {
         setThemeOpen(o => !o)
         return
       }
+      // Cmd/Ctrl+Shift+M — toggle minimap
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'M') {
+        e.preventDefault()
+        toggleMinimap()
+        return
+      }
+      // Cmd/Ctrl+Shift+A — toggle AI chat
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'A') {
+        e.preventDefault()
+        setChatOpen(o => !o)
+        return
+      }
       // Skip arrow-key nav when palette is open or an input is focused
       if (paletteOpenRef.current)                          return
       if (document.activeElement?.tagName === 'INPUT')     return
