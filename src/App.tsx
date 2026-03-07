@@ -8,8 +8,11 @@ import { CommandPalette } from './components/CommandPalette'
 import { ThemeSelector }  from './components/ThemeSelector'
 import { CopilotPanel }  from './components/CopilotPanel'
 import { TerminalPanel } from './panels/TerminalPanel'
+import { MatrixRain }   from './components/MatrixRain'
 import { useTheme }       from './hooks/useTheme'
 import { ChatIcon }       from './components/Icons'
+
+const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a']
 
 export default function App() {
   const [active, setActive]           = useState<Tab>('about')
@@ -20,10 +23,12 @@ export default function App() {
   const [terminalOpen, setTerminalOpen] = useState(false)
   const [terminalHeight, setTerminalHeight] = useState(220)
   const [charWidth, setCharWidth]       = useState(8.4)
+  const [matrixActive, setMatrixActive] = useState(false)
   const { themeId, setThemeId }       = useTheme()
 
   const activeRef      = useRef(active)
   const paletteOpenRef = useRef(false)
+  const konamiIdx      = useRef(0)
   useEffect(() => { activeRef.current = active },           [active])
   useEffect(() => { paletteOpenRef.current = paletteOpen }, [paletteOpen])
 
@@ -44,6 +49,17 @@ export default function App() {
   // Global keyboard navigation
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      // Konami code: ↑↑↓↓←→←→BA
+      if (e.key === KONAMI[konamiIdx.current]) {
+        konamiIdx.current++
+        if (konamiIdx.current === KONAMI.length) {
+          konamiIdx.current = 0
+          setMatrixActive(true)
+        }
+      } else {
+        konamiIdx.current = e.key === KONAMI[0] ? 1 : 0
+      }
+
       // ⌘P / ⌘⇧P — toggle command palette
       if ((e.metaKey || e.ctrlKey) && (e.key === 'p' || e.key === 'P')) {
         e.preventDefault()
@@ -151,6 +167,8 @@ export default function App() {
         onClose={() => setThemeOpen(false)}
         onSelect={setThemeId}
       />
+
+      {matrixActive && <MatrixRain onDone={() => setMatrixActive(false)} />}
 
     </div>
   )
