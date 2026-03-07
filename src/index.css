@@ -232,7 +232,7 @@ body {
 /* ── Panels ── */
 .panels { flex: 1; overflow: hidden; display: flex; flex-direction: row; }
 .panel-content { flex: 1; overflow-y: auto; padding: 8px 0; }
-.panel-content:has(embed) { padding: 0; overflow: hidden; }
+.panel-content:has(iframe) { padding: 0; overflow: hidden; }
 
 /* ── Minimap ── */
 .minimap {

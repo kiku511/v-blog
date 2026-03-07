@@ -1,11 +1,9 @@
 export function ResumePanel() {
   return (
-    <embed
-      src="/resume.pdf"
-      type="application/pdf"
-      width="100%"
-      height="100%"
-      style={{ display: 'block' }}
+    <iframe
+      src="/vansh-resume-3-7.pdf"
+      style={{ display: 'block', width: '100%', height: '100%', border: 'none' }}
+      title="Vansh Gambhir Resume"
     />
   )
 }

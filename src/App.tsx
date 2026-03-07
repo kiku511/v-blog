@@ -175,7 +175,7 @@ export default function App() {
             <ChatIcon />
           </button>
           <a
-            href="/resume.pdf"
+            href="/vansh-resume-3-7.pdf"
             download="Vansh-Gambhir-Resume.pdf"
             className="resume-btn"
             aria-label="Download resume PDF"

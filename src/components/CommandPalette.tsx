@@ -54,7 +54,7 @@ export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect, on
       shortcut: `${cmdKey}+Shift+P → enter`,
       action: () => {
         const a = document.createElement('a')
-        a.href = '/resume.pdf'
+        a.href = '/vansh-resume-3-7.pdf'
         a.download = 'Vansh-Gambhir-Resume.pdf'
         a.click()
         onClose()
