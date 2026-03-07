@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { ChatIcon, SendIcon } from './Icons'
 
 type Message = { id: string; role: 'user' | 'assistant'; content: string }
 
@@ -26,8 +27,8 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
   }, [messages, loading])
 
   useEffect(() => {
-    inputRef.current?.focus()
-  }, [])
+    if (isOpen) inputRef.current?.focus()
+  }, [isOpen])
 
   useEffect(() => {
     const el = inputRef.current
@@ -96,9 +97,7 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
 
       <div className="copilot-header">
         <span className="copilot-title">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
-            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
-          </svg>
+          <ChatIcon style={{ flexShrink: 0 }} />
           AI Chat
         </span>
         <button className="copilot-close" onClick={onClose}>✕</button>
@@ -150,17 +149,11 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
             placeholder="Ask about Vansh..."
             value={input}
             rows={1}
-            onChange={e => {
-              setInput(e.target.value)
-              e.target.style.height = 'auto'
-              e.target.style.height = e.target.scrollHeight + 'px'
-            }}
+            onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
           />
           <button className="copilot-send" onClick={send} disabled={!input.trim() || loading} title="Send">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M2 21 23 12 2 3v7l15 2-15 2z"/>
-            </svg>
+            <SendIcon />
           </button>
         </div>
       </div>

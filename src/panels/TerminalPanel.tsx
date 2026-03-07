@@ -1,43 +1,49 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { ShellIcon } from '../components/Icons'
+import { about, skills, experience, contact } from '../data/profile'
 
 type Line = { id: string; kind: 'cmd' | 'out'; text: string; prompt?: true }
 
 const PROMPT  = 'vansh@portfolio:~$'
 const WELCOME = "Type 'help' to see available commands."
 
+const CONTACT_LABELS: Record<string, string> = {
+  email: 'Email', website: 'Web', linkedin: 'LinkedIn', github: 'GitHub',
+}
+
 const CAT_FILES: Record<string, string[]> = {
   'about.ts': [
     'const about = {',
-    '  name:      "Vansh Gambhir",',
-    '  role:      "Software Engineer (Frontend)",',
-    '  company:   "BRINC Drones",',
-    '  location:  "Seattle, WA",',
+    `  name:      "${about.name}",`,
+    `  role:      "${about.role}",`,
+    `  company:   "${about.company}",`,
+    `  location:  "${about.location}",`,
     '  interests: ["bouldering", "skiing", "sci-fi", "pokémon"],',
     '  fav_movie: "Blade Runner",',
     '}',
   ],
   'skills.json': [
     '{',
-    '  "languages": ["TypeScript", "JavaScript", "Python", "Go", "Swift"],',
-    '  "frontend":  ["React", "Next.js", "GraphQL", "CSS"],',
-    '  "aws":       ["Lambda", "DynamoDB", "Bedrock", "S3", "CloudFront"],',
-    '  "testing":   ["Jest", "Cypress", "Playwright", "Vitest"]',
+    `  "languages": ${JSON.stringify(skills.languages)},`,
+    `  "frontend":  ${JSON.stringify(skills.frontend)},`,
+    `  "aws":       ${JSON.stringify(skills.aws)},`,
+    `  "testing":   ${JSON.stringify(skills.testing)}`,
     '}',
   ],
   'experience.ts': [
     'const experience = [',
-    '  { company: "BRINC Drones",   role: "SWE Frontend",  period: "Feb 2026 – Present" },',
-    '  { company: "AWS GenAI",      role: "FEE II",         period: "Jan 2025 – Feb 2026" },',
-    '  { company: "AWS App Studio", role: "FEE → FEE II",  period: "Jul 2020 – Jan 2025" },',
-    '  { company: "Apple",          role: "SWE Intern",     period: "Jun 2019 – Sep 2019" },',
+    ...experience.map((e, i) => {
+      const co = e.team ? `${e.company} (${e.team})` : e.company
+      return `  { company: "${co}", role: "${e.role}", period: "${e.period}" }${i < experience.length - 1 ? ',' : ''}`
+    }),
     ']',
   ],
   'contact.ts': [
     'const contact = {',
-    '  email:    "vansh.gambhir@gmail.com",',
-    '  website:  "vansh.dev",',
-    '  linkedin: "linkedin.com/in/vanshgambhir",',
-    '  github:   "github.com/kiku511",',
+    `  email:    "${contact.email.label}",`,
+    `  website:  "${contact.website.label}",`,
+    `  linkedin: "${contact.linkedin.label}",`,
+    `  github:   "${contact.github.label}",`,
     '}',
   ],
   'resume.pdf': ['Binary file. Hint: click ↓ Resume in the title bar to download it.'],
@@ -59,11 +65,12 @@ export function TerminalPanel({ onClose, height, onResize }: Props) {
   const startY            = useRef(0)
   const startHeight       = useRef(height)
 
+  useEffect(() => { inputRef.current?.focus() }, [])
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [lines])
 
   const onDragStart = useCallback((e: React.MouseEvent) => {
-    dragging.current   = true
-    startY.current     = e.clientY
+    dragging.current    = true
+    startY.current      = e.clientY
     startHeight.current = height
     e.preventDefault()
   }, [height])
@@ -112,9 +119,9 @@ export function TerminalPanel({ onClose, height, onResize }: Props) {
         break
       case 'whoami':
         push(
-          'Vansh Gambhir',
-          'Software Engineer (Frontend) @ BRINC Drones · Seattle, WA',
-          "Prev: Amazon Web Services (4.5 yrs) · Apple (intern)",
+          about.name,
+          `${about.role} @ ${about.company} · ${about.location}`,
+          "Prev: Amazon Web Services (5.5 yrs) · Apple (intern)",
           "UW Dean's List · vansh.dev · github.com/kiku511",
         )
         break
@@ -126,31 +133,20 @@ export function TerminalPanel({ onClose, height, onResize }: Props) {
         push(`cat: ${args[0]}: No such file or directory`)
         break
       case 'skills':
-        push(
-          'Languages  TypeScript · JavaScript · Python · Java · Go · Swift',
-          'Frontend   React · Next.js · Node.js · GraphQL · CSS',
-          'State      Redux Toolkit · Zustand · React Query',
-          'Testing    Jest · RTL · Cypress · Playwright · Vitest',
-          'Tooling    Vite · Webpack · esbuild · Storybook',
-          'AWS        Lambda · DynamoDB · Bedrock · S3 · CloudFront · AppSync',
-          'Data       Cassandra · MySQL · MongoDB · Redshift · Pandas',
-        )
+        push(...Object.entries(skills).map(([k, v]) =>
+          `${(k.charAt(0).toUpperCase() + k.slice(1)).padEnd(10)} ${v.join(' · ')}`
+        ))
         break
       case 'experience':
-        push(
-          'Feb 2026 – Present   BRINC Drones         Software Engineer (Frontend)',
-          'Jan 2025 – Feb 2026  Amazon Web Services  Front End Engineer II (GenAI Agents)',
-          'Jul 2020 – Jan 2025  Amazon Web Services  Front End Engineer (App Studio & QApps)',
-          'Jun 2019 – Sep 2019  Apple, Inc.          Software Engineer Intern',
-        )
+        push(...experience.map(e => {
+          const co = e.team ? `${e.company} (${e.team})` : e.company
+          return `${e.period.padEnd(22)} ${co.padEnd(26)} ${e.role}`
+        }))
         break
       case 'contact':
-        push(
-          'Email    vansh.gambhir@gmail.com',
-          'Web      vansh.dev',
-          'LinkedIn linkedin.com/in/vanshgambhir',
-          'GitHub   github.com/kiku511',
-        )
+        push(...Object.entries(contact).map(([k, v]) =>
+          `${(CONTACT_LABELS[k] ?? k).padEnd(9)} ${v.label}`
+        ))
         break
       case 'clear':  setLines([]); break
       case 'history':
@@ -195,7 +191,7 @@ export function TerminalPanel({ onClose, height, onResize }: Props) {
       e.preventDefault()
       const next = Math.max(histIdx.current - 1, -1)
       histIdx.current = next; setInput(next === -1 ? '' : (hist[next] ?? ''))
-    } else if (e.ctrlKey && e.key === 'l' || e.metaKey && e.key === 'k') {
+    } else if ((e.ctrlKey && e.key === 'l') || (e.metaKey && e.key === 'k')) {
       e.preventDefault(); setLines([])
     } else if (e.ctrlKey && e.key === 'c') {
       e.preventDefault()
@@ -217,9 +213,7 @@ export function TerminalPanel({ onClose, height, onResize }: Props) {
         </div>
         <div className="terminal-header-actions">
           <span className="terminal-shell-id">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
-              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8h16v10zm-9-1h2v-2h-2v2zm-4 0h2v-2H7v2zm8 0h2v-2h-2v2zM5 11.5l1.5-1.5L5 8.5 6.5 7 9 9.5 6.5 12 5 11.5z"/>
-            </svg>
+            <ShellIcon style={{ flexShrink: 0 }} />
             zsh
           </span>
           <button className="terminal-header-close" onClick={onClose} title="Close Panel">✕</button>

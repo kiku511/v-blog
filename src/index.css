@@ -412,11 +412,16 @@ a.str:hover { text-decoration: underline; }
   background: var(--bg);
   border-top: 1px solid rgba(255,255,255,0.08);
   overflow: hidden;
+  position: relative;
 }
 .terminal-resize-handle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 4px;
   cursor: row-resize;
-  flex-shrink: 0;
+  z-index: 10;
 }
 .terminal-resize-handle:hover { background: var(--accent); opacity: 0.5; }
 .terminal-header {

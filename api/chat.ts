@@ -6,12 +6,20 @@ const RATE_LIMIT = 15
 const WINDOW_MS  = 60_000
 
 function isRateLimited(ip: string): boolean {
-  const now       = Date.now()
+  const now        = Date.now()
   const timestamps = (ipRequests.get(ip) ?? []).filter(t => now - t < WINDOW_MS)
   if (timestamps.length >= RATE_LIMIT) return true
   ipRequests.set(ip, [...timestamps, now])
   return false
 }
+
+// Prune stale IPs every 5 minutes to prevent unbounded Map growth
+setInterval(() => {
+  const now = Date.now()
+  for (const [ip, ts] of ipRequests) {
+    if (!ts.some(t => now - t < WINDOW_MS)) ipRequests.delete(ip)
+  }
+}, 5 * 60_000)
 
 const SYSTEM_PROMPT = `You are an AI assistant embedded in Vansh Gambhir's personal portfolio website at vansh.dev.
 Your ONLY job is to answer questions about Vansh. Do not answer questions about anything else.
@@ -42,18 +50,20 @@ EXPERIENCE:
    - On the LiveOps team, building software that helps pilots monitor and manage drone missions in the field.
    - BRINC serves public safety agencies — helping first responders use drones to save lives.
 
-2. Amazon Web Services – GenAI Agents | Front End Engineer II | Jan 2025 – Feb 2026 | Seattle, WA
-   - Built a brand new stealth service to create AI Agents as part of the AWS GenAI org.
-   - Created a custom layout engine to allow users to build and visualize agentic workflows supporting 50+ coding constructs and 300+ first and third-party connectors.
-   - Partnered with Applied Scientists to co-develop a DSL that interfaces directly with a trained model, enabling both human and AI-based edits to workflows.
+2. Amazon Web Services | Jul 2020 – Feb 2026 (5.5 years total) | Seattle, WA
+   TITLE PROGRESSION: Started as Front End Engineer (Jul 2020), promoted to Front End Engineer II in January 2023 after 2.5 years — so he spent 2.5 years as FEE and ~3 years as FEE II.
 
-3. Amazon Web Services – App Studio & QApps | Front End Engineer | Jul 2020 – Jan 2025 | Seattle, WA
-   - Promoted to Front End Engineer II in January 2023.
+   Team: App Studio & QApps (Jul 2020 – Jan 2025):
    - Launched an S-Team goal from vision to GA (General Availability).
    - Led a team of 5 engineers to deliver AI-enriched React components for a new stealth low-code service within AWS, including schema design, architecture, and code generation.
    - Built smart abstractions over AWS Redshift, QuickSight, S3, Lambda, and Bedrock for customers.
    - Created in-house devtools and scripts that improved engineering velocity, enabling 35% faster feature delivery.
    - Revamped metrics dashboards and alarms for 3 teams; built end-to-end infrastructure for the org using Cypress.
+
+   Team: GenAI Agents (Jan 2025 – Feb 2026), as Front End Engineer II:
+   - Built a brand new stealth service to create AI Agents as part of the AWS GenAI org.
+   - Created a custom layout engine to allow users to build and visualize agentic workflows supporting 50+ coding constructs and 300+ first and third-party connectors.
+   - Partnered with Applied Scientists to co-develop a DSL that interfaces directly with a trained model, enabling both human and AI-based edits to workflows.
 
 4. Apple, Inc. | Software Engineer Intern | Jun 2019 – Sep 2019 | Cupertino, CA
    - Built a RESTful API and UI using ReactJS, NodeJS, and Express to configure feature flags based on LDAP groups and users from scratch, enabling safe staged rollouts.
@@ -101,7 +111,7 @@ ABOUT THIS AI CHAT:
 - This chat only answers questions about Vansh. It does not have general knowledge or web access.
 
 WHY HE LEFT AWS:
-- Left Amazon as a top-performing engineer after 4.5+ years of shipping multiple services from scratch to GA. Was looking for more interesting and novel engineering challenges beyond big tech.
+- Left Amazon as a top-performing engineer after 5.5 years of shipping multiple services from scratch to GA. Was looking for more interesting and novel engineering challenges beyond big tech.
 
 PREFERENCES & AVAILABILITY:
 - Location: Based in Seattle, WA. Prefers Seattle-based or remote roles, but open to relocation for the right opportunity.
@@ -181,7 +191,7 @@ export default async function handler(req: Request): Promise<Response> {
         if (location) {
           await fetch(location, { method: 'POST', headers, body: payload })
         }
-      } catch { /* logging should never break chat */ }
+      } catch (err) { console.error('[sheets] logging failed:', err) }
     }
 
     return new Response(JSON.stringify({ content: text }), {
