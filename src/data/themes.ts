@@ -75,7 +75,7 @@ export const THEMES: Theme[] = [
     id: 'solarized-light', name: 'Solarized Light',
     vars: {
       bg: '#fdf6e3', sidebar: '#eee8d5', tabbar: '#e0d9c6', 'titlebar-bg': '#d4cdb4',
-      text: '#657b83', muted: '#93a1a1', accent: '#268bd2',
+      text: '#657b83', muted: '#5f7178', accent: '#268bd2',
       kw: '#859900', str: '#2aa198', prop: '#268bd2', nc: '#d33682', cmt: '#93a1a1', tp: '#2aa198',
       hover: '#ece4cc', sel: '#ddd6c1',
     },
