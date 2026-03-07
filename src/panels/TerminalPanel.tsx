@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import { ShellIcon } from '../components/Icons'
 import { about, skills, experience, contact } from '../data/profile'
 import { cmdKey } from '../utils/platform'
@@ -50,6 +51,56 @@ const CAT_FILES: Record<string, string[]> = {
   'resume.pdf': ['Binary file. Hint: click ↓ Resume in the title bar to download it.'],
 }
 
+function animateNpmInstall(setLines: Dispatch<SetStateAction<Line[]>>) {
+  const add = (text: string, delay: number) =>
+    setTimeout(() => setLines(l => [...l, { id: crypto.randomUUID(), kind: 'out', text }]), delay)
+
+  const lines = [
+    '',
+    'npm warn deprecated sleep@∞.0.0: please get some rest',
+    'npm warn deprecated work-life-balance@0.0.1: still working on it',
+    '',
+    'added 1 developer 👨‍💻',
+    '',
+    '> vansh@6.0.0 postinstall',
+    '> loading packages...',
+    '',
+  ]
+  const packages = [
+    '  ✓ typescript              5.7.0',
+    '  ✓ react                   19.0.0',
+    '  ✓ aws-experience          5.5y',
+    '  ✓ brinc-drones            current',
+    '  ✓ problem-solving         latest',
+    '  ✓ bouldering              intermediate',
+    '  ✓ lucario-knowledge       expert',
+  ]
+
+  let delay = 0
+  lines.forEach(text => { add(text, delay); delay += 60 })
+  packages.forEach(text => { add(text, delay); delay += 220 })
+
+  const BAR_LEN = 28
+  for (let i = 1; i <= BAR_LEN; i++) {
+    const text  = `  [${'█'.repeat(i)}${'░'.repeat(BAR_LEN - i)}] ${Math.round((i / BAR_LEN) * 100)}%`
+    const barId = 'npm-bar'
+    setTimeout(() => setLines(l => {
+      const existing = l.findIndex(x => x.id === barId)
+      const bar = { id: barId, kind: 'out' as const, text }
+      return existing === -1 ? [...l, bar] : l.map(x => x.id === barId ? bar : x)
+    }), delay)
+    delay += 60
+  }
+
+  setTimeout(() => setLines(l => [...l,
+    { id: crypto.randomUUID(), kind: 'out', text: '' },
+    { id: crypto.randomUUID(), kind: 'out', text: 'added 47 packages in 5 years' },
+    { id: crypto.randomUUID(), kind: 'out', text: '' },
+    { id: crypto.randomUUID(), kind: 'out', text: 'vansh is ready to ship 🚀' },
+    { id: crypto.randomUUID(), kind: 'out', text: '' },
+  ]), delay)
+}
+
 type Props = { onClose: () => void; height: number; onResize: (h: number) => void }
 
 const MIN_HEIGHT = 120
@@ -62,27 +113,23 @@ export function TerminalPanel({ onClose, height, onResize }: Props) {
   const histIdx           = useRef(-1)
   const inputRef          = useRef<HTMLInputElement>(null)
   const bottomRef         = useRef<HTMLDivElement>(null)
-  const dragging          = useRef(false)
-  const startY            = useRef(0)
-  const startHeight       = useRef(height)
+  const drag = useRef({ active: false, startY: 0, startHeight: height })
 
   useEffect(() => { inputRef.current?.focus() }, [])
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [lines])
 
-  const onDragStart = useCallback((e: React.MouseEvent) => {
-    dragging.current    = true
-    startY.current      = e.clientY
-    startHeight.current = height
+  const onDragStart = (e: React.MouseEvent) => {
+    drag.current = { active: true, startY: e.clientY, startHeight: height }
     e.preventDefault()
-  }, [height])
+  }
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
-      if (!dragging.current) return
-      const delta = startY.current - e.clientY
-      onResize(Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, startHeight.current + delta)))
+      if (!drag.current.active) return
+      const delta = drag.current.startY - e.clientY
+      onResize(Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, drag.current.startHeight + delta)))
     }
-    const onUp = () => { dragging.current = false }
+    const onUp = () => { drag.current.active = false }
     window.addEventListener('mousemove', onMove)
     window.addEventListener('mouseup', onUp)
     return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp) }
@@ -176,59 +223,7 @@ export function TerminalPanel({ onClose, height, onResize }: Props) {
         break
       case 'npm':
         if (args[0] === 'install' && (args[1] === 'vansh' || args[1] === 'vansh-gambhir')) {
-          const npmLines = [
-            '',
-            'npm warn deprecated sleep@∞.0.0: please get some rest',
-            'npm warn deprecated work-life-balance@0.0.1: still working on it',
-            '',
-            'added 1 developer 👨‍💻',
-            '',
-            '> vansh@6.0.0 postinstall',
-            '> loading packages...',
-            '',
-          ]
-          const packages = [
-            '  ✓ typescript              5.7.0',
-            '  ✓ react                   19.0.0',
-            '  ✓ aws-experience          5.5y',
-            '  ✓ brinc-drones            current',
-            '  ✓ problem-solving         latest',
-            '  ✓ bouldering              intermediate',
-            '  ✓ lucario-knowledge       expert',
-          ]
-          const BAR_LEN = 28
-          // Animate: initial lines → packages one by one → progress bar → done
-          let delay = 0
-          npmLines.forEach(text => {
-            setTimeout(() => setLines(l => [...l, { id: crypto.randomUUID(), kind: 'out', text }]), delay)
-            delay += 60
-          })
-          packages.forEach(text => {
-            setTimeout(() => setLines(l => [...l, { id: crypto.randomUUID(), kind: 'out', text }]), delay)
-            delay += 220
-          })
-          // Progress bar
-          for (let i = 1; i <= BAR_LEN; i++) {
-            const filled = '█'.repeat(i) + '░'.repeat(BAR_LEN - i)
-            const pct = Math.round((i / BAR_LEN) * 100)
-            const barId = 'npm-bar'
-            const text = `  [${filled}] ${pct}%`
-            setTimeout(() => {
-              setLines(l => {
-                const existing = l.findIndex(x => x.id === barId)
-                const bar = { id: barId, kind: 'out' as const, text }
-                return existing === -1 ? [...l, bar] : l.map(x => x.id === barId ? bar : x)
-              })
-            }, delay)
-            delay += 60
-          }
-          setTimeout(() => setLines(l => [...l,
-            { id: crypto.randomUUID(), kind: 'out', text: '' },
-            { id: crypto.randomUUID(), kind: 'out', text: 'added 47 packages in 5 years' },
-            { id: crypto.randomUUID(), kind: 'out', text: '' },
-            { id: crypto.randomUUID(), kind: 'out', text: 'vansh is ready to ship 🚀' },
-            { id: crypto.randomUUID(), kind: 'out', text: '' },
-          ]), delay)
+          animateNpmInstall(setLines)
         } else {
           push("npm: try 'npm install vansh'")
         }

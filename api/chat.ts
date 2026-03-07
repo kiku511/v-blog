@@ -13,6 +13,18 @@ function isRateLimited(ip: string): boolean {
   return false
 }
 
+async function logToSheets(ip: string, question: string, answer: string) {
+  const webhookUrl = process.env.SHEETS_WEBHOOK_URL
+  if (!webhookUrl || !answer) return
+  const payload = JSON.stringify({ ip, question, answer })
+  const headers  = { 'Content-Type': 'application/json' }
+  try {
+    const res = await fetch(webhookUrl, { method: 'POST', headers, body: payload, redirect: 'manual' })
+    const location = res.headers.get('location')
+    if (location) await fetch(location, { method: 'POST', headers, body: payload })
+  } catch (err) { console.error('[sheets] logging failed:', err) }
+}
+
 // Prune stale IPs every 5 minutes to prevent unbounded Map growth
 setInterval(() => {
   const now = Date.now()
@@ -198,17 +210,7 @@ export default async function handler(req: Request): Promise<Response> {
           }
         }
       } finally {
-        // Log to Google Sheets after stream completes
-        const webhookUrl = process.env.SHEETS_WEBHOOK_URL
-        if (webhookUrl && fullText) {
-          const payload = JSON.stringify({ ip, question: lastMessage, answer: fullText })
-          const headers = { 'Content-Type': 'application/json' }
-          try {
-            const res = await fetch(webhookUrl, { method: 'POST', headers, body: payload, redirect: 'manual' })
-            const location = res.headers.get('location')
-            if (location) await fetch(location, { method: 'POST', headers, body: payload })
-          } catch (err) { console.error('[sheets] logging failed:', err) }
-        }
+        await logToSheets(ip, lastMessage, fullText)
         await writer.write(encoder.encode('data: [DONE]\n\n'))
         await writer.close()
       }

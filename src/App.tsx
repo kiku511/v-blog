@@ -14,6 +14,8 @@ import { SearchPanel }  from './components/SearchPanel'
 import { Minimap }      from './components/Minimap'
 import { useTheme }            from './hooks/useTheme'
 import { useMinimapSetting }  from './hooks/useMinimapSetting'
+import { useDragResize }      from './hooks/useDragResize'
+import { measureMonospaceCharWidth } from './utils/platform'
 import { ChatIcon, HamburgerIcon, FileIcon as FileIconAct, SearchIcon, PersonIcon } from './components/Icons'
 import { OnboardingHint } from './components/OnboardingHint'
 import { RESUME_PATH, RESUME_FILENAME } from './config/constants'
@@ -37,44 +39,19 @@ export default function App() {
   const [chatOpen, setChatOpen]         = useState(() => window.innerWidth > 640)
   const [terminalOpen, setTerminalOpen] = useState(false)
   const [terminalHeight, setTerminalHeight] = useState(220)
-  const [charWidth, setCharWidth]       = useState(8.4)
+  const [charWidth, setCharWidth]         = useState(8.4)
   const [matrixActive, setMatrixActive]   = useState(false)
   const [scrollRatio, setScrollRatio]     = useState(0)
   const panelContentRef                   = useRef<HTMLDivElement>(null)
   const [sidebarView, setSidebarView]     = useState<'explorer' | 'search'>('explorer')
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
-  const [sidebarWidth, setSidebarWidth]   = useState(220)
   const { themeId, setThemeId }           = useTheme()
   const { minimapOn, toggleMinimap }      = useMinimapSetting()
+  const [sidebarWidth, onSidebarDragStart] = useDragResize({ initial: 220, min: 140, max: 400 })
 
   const konamiIdx = useRef(0)
-  const sbDrag    = useRef({ active: false, startX: 0, startWidth: 220 })
 
-  // Measure actual character width once for accurate column numbers
-  useEffect(() => {
-    const canvas = document.createElement('canvas')
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-    ctx.font = '14px "Cascadia Code", "Fira Code", Consolas, monospace'
-    setCharWidth(ctx.measureText('M').width)
-  }, [])
-
-  const onSidebarDragStart = (e: React.MouseEvent) => {
-    sbDrag.current = { active: true, startX: e.clientX, startWidth: sidebarWidth }
-    e.preventDefault()
-  }
-
-  useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      if (!sbDrag.current.active) return
-      const delta = e.clientX - sbDrag.current.startX
-      setSidebarWidth(Math.min(400, Math.max(140, sbDrag.current.startWidth + delta)))
-    }
-    const onUp = () => { sbDrag.current.active = false }
-    window.addEventListener('mousemove', onMove)
-    window.addEventListener('mouseup', onUp)
-    return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp) }
-  }, [])
+  useEffect(() => { setCharWidth(measureMonospaceCharWidth()) }, [])
 
   const selectTab = useCallback((tab: Tab) => {
     navigate(TAB_TO_PATH[tab])

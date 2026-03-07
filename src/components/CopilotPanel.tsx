@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { ChatIcon, SendIcon } from './Icons'
+import { useDragResize } from '../hooks/useDragResize'
 
 type Message = { id: string; role: 'user' | 'assistant'; content: string }
 
@@ -15,10 +16,9 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput]       = useState('')
   const [loading, setLoading]   = useState(false)
-  const [width, setWidth]       = useState(DEFAULT_WIDTH)
-  const bottomRef               = useRef<HTMLDivElement>(null)
-  const inputRef                = useRef<HTMLTextAreaElement>(null)
-  const drag                    = useRef({ active: false, startX: 0, startWidth: DEFAULT_WIDTH })
+  const bottomRef = useRef<HTMLDivElement>(null)
+  const inputRef  = useRef<HTMLTextAreaElement>(null)
+  const [width, onDragStart] = useDragResize({ initial: DEFAULT_WIDTH, min: MIN_WIDTH, max: MAX_WIDTH, direction: -1 })
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -34,26 +34,6 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
     el.style.height = 'auto'
     el.style.height = el.scrollHeight + 'px'
   }, [input])
-
-  const onDragStart = useCallback((e: React.MouseEvent) => {
-    drag.current = { active: true, startX: e.clientX, startWidth: width }
-    e.preventDefault()
-  }, [width])
-
-  useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      if (!drag.current.active) return
-      const delta = drag.current.startX - e.clientX
-      setWidth(Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, drag.current.startWidth + delta)))
-    }
-    const onUp = () => { drag.current.active = false }
-    window.addEventListener('mousemove', onMove)
-    window.addEventListener('mouseup', onUp)
-    return () => {
-      window.removeEventListener('mousemove', onMove)
-      window.removeEventListener('mouseup', onUp)
-    }
-  }, [])
 
   const send = async () => {
     const text = input.trim()
