@@ -1,4 +1,4 @@
-import { ExternalLinkIcon, SearchIcon, PersonIcon, SettingsIcon } from './Icons'
+import { FileIcon, SearchIcon, PersonIcon, SettingsIcon } from './Icons'
 
 type Props = { onPaletteClick: () => void }
 
@@ -6,7 +6,7 @@ export function ActivityBar({ onPaletteClick }: Props) {
   return (
     <div className="activitybar">
       <div className="act-icon active">
-        <ExternalLinkIcon />
+        <FileIcon />
       </div>
       <div className="act-icon">
         <SearchIcon />
