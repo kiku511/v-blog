@@ -9,8 +9,10 @@ import { ThemeSelector }  from './components/ThemeSelector'
 import { CopilotPanel }  from './components/CopilotPanel'
 import { TerminalPanel } from './panels/TerminalPanel'
 import { MatrixRain }   from './components/MatrixRain'
+import { SearchPanel }  from './components/SearchPanel'
 import { useTheme }       from './hooks/useTheme'
 import { ChatIcon }       from './components/Icons'
+import { isMac }          from './utils/platform'
 
 const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a']
 
@@ -23,12 +25,17 @@ export default function App() {
   const [terminalOpen, setTerminalOpen] = useState(false)
   const [terminalHeight, setTerminalHeight] = useState(220)
   const [charWidth, setCharWidth]       = useState(8.4)
-  const [matrixActive, setMatrixActive] = useState(false)
-  const { themeId, setThemeId }       = useTheme()
+  const [matrixActive, setMatrixActive]   = useState(false)
+  const [sidebarView, setSidebarView]     = useState<'explorer' | 'search'>('explorer')
+  const [sidebarWidth, setSidebarWidth]   = useState(220)
+  const { themeId, setThemeId }           = useTheme()
 
-  const activeRef      = useRef(active)
-  const paletteOpenRef = useRef(false)
-  const konamiIdx      = useRef(0)
+  const activeRef        = useRef(active)
+  const paletteOpenRef   = useRef(false)
+  const konamiIdx        = useRef(0)
+  const sbDragging       = useRef(false)
+  const sbStartX         = useRef(0)
+  const sbStartWidth     = useRef(220)
   useEffect(() => { activeRef.current = active },           [active])
   useEffect(() => { paletteOpenRef.current = paletteOpen }, [paletteOpen])
 
@@ -39,6 +46,25 @@ export default function App() {
     if (!ctx) return
     ctx.font = '14px "Cascadia Code", "Fira Code", Consolas, monospace'
     setCharWidth(ctx.measureText('M').width)
+  }, [])
+
+  const onSidebarDragStart = useCallback((e: React.MouseEvent) => {
+    sbDragging.current  = true
+    sbStartX.current    = e.clientX
+    sbStartWidth.current = sidebarWidth
+    e.preventDefault()
+  }, [sidebarWidth])
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      if (!sbDragging.current) return
+      const delta = e.clientX - sbStartX.current
+      setSidebarWidth(Math.min(400, Math.max(140, sbStartWidth.current + delta)))
+    }
+    const onUp = () => { sbDragging.current = false }
+    window.addEventListener('mousemove', onMove)
+    window.addEventListener('mouseup', onUp)
+    return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp) }
   }, [])
 
   const selectTab = useCallback((tab: Tab) => {
@@ -66,10 +92,16 @@ export default function App() {
         setPalette(o => !o)
         return
       }
-      // Ctrl+` — toggle terminal
-      if (e.ctrlKey && e.key === '`') {
+      // Cmd+` (Mac) / Ctrl+` (Win) — toggle terminal
+      if ((isMac ? e.metaKey : e.ctrlKey) && e.key === '`') {
         e.preventDefault()
         setTerminalOpen(o => !o)
+        return
+      }
+      // Cmd/Ctrl+Shift+T — change color theme
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'T') {
+        e.preventDefault()
+        setThemeOpen(o => !o)
         return
       }
       // Skip arrow-key nav when palette is open or an input is focused
@@ -127,9 +159,17 @@ export default function App() {
 
       <div className="main">
         <ActivityBar
+          sidebarView={sidebarView}
+          onSidebarView={setSidebarView}
           onPaletteClick={() => setPalette(true)}
         />
-        <Sidebar active={active} onSelect={selectTab} />
+        <div className="sidebar-resizable" style={{ width: sidebarWidth }}>
+          <div className="sidebar-resize-handle" onMouseDown={onSidebarDragStart} />
+          {sidebarView === 'search'
+            ? <SearchPanel onNavigate={tab => { selectTab(tab); setSidebarView('explorer') }} />
+            : <Sidebar active={active} onSelect={selectTab} />
+          }
+        </div>
         <div className="editor">
           <EditorTabs active={active} onSelect={selectTab} />
           <div className="panels" onMouseMove={handleMouseMove}>

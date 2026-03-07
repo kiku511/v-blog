@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { TABS, type Tab } from '../config/tabs'
+import { cmdKey, termKey } from '../utils/platform'
 
 type Command = {
   label: string
@@ -28,22 +29,22 @@ export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect, on
     })),
     {
       label: 'Toggle Terminal',
-      shortcut: 'Ctrl+`',
+      shortcut: `${termKey}+\``,
       action: () => { onClose(); onTerminalToggle() },
     },
     {
       label: 'Talk to AI',
-      shortcut: '⌘P → enter',
+      shortcut: `${cmdKey}+P → enter`,
       action: () => { onClose(); document.querySelector<HTMLTextAreaElement>('.copilot-input')?.focus() },
     },
     {
       label: 'Change Color Theme',
-      shortcut: '⚙',
+      shortcut: `${cmdKey}+Shift+T`,
       action: () => { onClose(); setTimeout(onThemeSelect, 50) },
     },
     {
       label: 'Download Resume',
-      shortcut: '⌘⇧P → enter',
+      shortcut: `${cmdKey}+Shift+P → enter`,
       action: () => {
         const a = document.createElement('a')
         a.href = '/resume.pdf'
