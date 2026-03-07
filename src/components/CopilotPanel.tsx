@@ -11,6 +11,10 @@ const DEFAULT_WIDTH = 300
 
 type Props = { isOpen: boolean; onClose: () => void }
 
+// Characters typed per interval tick (every 20ms → ~100 chars/sec ≈ natural reading pace)
+const CHARS_PER_TICK = 2
+const TICK_MS        = 20
+
 export function CopilotPanel({ isOpen, onClose }: Props) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput]       = useState('')
@@ -21,6 +25,25 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
   const dragging                = useRef(false)
   const startX                  = useRef(0)
   const startWidth              = useRef(DEFAULT_WIDTH)
+  const charQueue               = useRef<string[]>([])
+  const typeInterval            = useRef<ReturnType<typeof setInterval> | null>(null)
+  const activeId                = useRef<string | null>(null)
+
+  const stopTypewriter = () => {
+    if (typeInterval.current) { clearInterval(typeInterval.current); typeInterval.current = null }
+  }
+
+  const startTypewriter = (id: string) => {
+    stopTypewriter()
+    activeId.current = id
+    typeInterval.current = setInterval(() => {
+      const batch = charQueue.current.splice(0, CHARS_PER_TICK).join('')
+      if (!batch) return
+      setMessages(m => m.map(msg => msg.id === id ? { ...msg, content: msg.content + batch } : msg))
+    }, TICK_MS)
+  }
+
+  useEffect(() => () => stopTypewriter(), [])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -84,8 +107,9 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
       const reader      = res.body!.getReader()
       const decoder     = new TextDecoder()
       let buffer        = ''
-      let fullContent   = ''
-      let firstToken    = true
+      let gotToken      = false
+
+      charQueue.current = []
 
       while (true) {
         const { done, value } = await reader.read()
@@ -100,25 +124,31 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
           try {
             const { token } = JSON.parse(jsonStr) as { token?: string }
             if (token) {
-              fullContent += token
-              if (firstToken) {
-                firstToken = false
+              if (!gotToken) {
+                gotToken = true
                 setLoading(false)
-                setMessages(m => [...m, { id: assistantId, role: 'assistant', content: fullContent }])
-              } else {
-                setMessages(m => m.map(msg => msg.id === assistantId ? { ...msg, content: fullContent } : msg))
+                setMessages(m => [...m, { id: assistantId, role: 'assistant', content: '' }])
+                startTypewriter(assistantId)
               }
+              charQueue.current.push(...token.split(''))
             }
           } catch { /* skip malformed chunks */ }
         }
       }
 
-      if (firstToken) {
-        // Stream ended with no tokens
+      if (!gotToken) {
         setLoading(false)
         setMessages(m => [...m, { id: assistantId, role: 'assistant', content: 'Sorry, I could not generate a response.' }])
+        return
       }
+
+      // Wait for the typewriter to drain the queue, then stop
+      const drain = setInterval(() => {
+        if (charQueue.current.length === 0) { clearInterval(drain); stopTypewriter() }
+      }, 50)
     } catch (err) {
+      stopTypewriter()
+      charQueue.current = []
       setLoading(false)
       const msg = err instanceof Error ? err.message : 'Network error. Please try again.'
       setMessages(m => [...m, { id: crypto.randomUUID(), role: 'assistant', content: msg }])
