@@ -15,6 +15,7 @@ import { Minimap }      from './components/Minimap'
 import { useTheme }            from './hooks/useTheme'
 import { useMinimapSetting }  from './hooks/useMinimapSetting'
 import { ChatIcon, HamburgerIcon, FileIcon as FileIconAct, SearchIcon, PersonIcon } from './components/Icons'
+import { OnboardingHint } from './components/OnboardingHint'
 
 const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a']
 
@@ -91,14 +92,32 @@ export default function App() {
   }, [navigate])
 
   useEffect(() => {
-    const titles: Record<Tab, string> = {
+    const desc: Record<Tab, string> = {
+      about:      'Vansh Gambhir is a Software Engineer at BRINC Drones, formerly at AWS for 5.5 years building GenAI Agents and low-code products. Based in Seattle.',
+      skills:     'Tech stack: TypeScript, React, Vue, PHP, Laravel, Node.js, AWS (EC2, Lambda, Bedrock, AppSync, IoT Core), Cypress, Playwright, Docker, and more.',
+      experience: 'Work history: Software Engineer at BRINC Drones (Feb 2026–), Front End Engineer II at Amazon Web Services (5.5 yrs), Software Engineer Intern at Apple.',
+      contact:    'Get in touch with Vansh Gambhir — email, LinkedIn, GitHub, and personal website.',
+      resume:     'Download or view the resume of Vansh Gambhir, Frontend Software Engineer based in Seattle, WA.',
+    }
+    const url = `https://www.vansh.dev${TAB_TO_PATH[active]}`
+
+    const title: Record<Tab, string> = {
       about:      'Vansh Gambhir — Frontend Engineer',
       skills:     'Skills | Vansh Gambhir',
       experience: 'Experience | Vansh Gambhir',
       contact:    'Contact | Vansh Gambhir',
       resume:     'Resume | Vansh Gambhir',
     }
-    document.title = titles[active] ?? 'Vansh Gambhir'
+
+    document.querySelector('meta[name="description"]')        ?.setAttribute('content', desc[active])
+    document.querySelector('meta[property="og:description"]') ?.setAttribute('content', desc[active])
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', desc[active])
+    document.querySelector('meta[property="og:url"]')         ?.setAttribute('content', url)
+    document.querySelector('meta[name="twitter:url"]')        ?.setAttribute('content', url)
+    document.querySelector('meta[property="og:title"]')       ?.setAttribute('content', title[active])
+    document.querySelector('meta[name="twitter:title"]')      ?.setAttribute('content', title[active])
+    document.querySelector('link[rel="canonical"]')           ?.setAttribute('href', url)
+    document.title = title[active]
   }, [active])
 
   // Global keyboard navigation
@@ -206,6 +225,8 @@ export default function App() {
           </a>
         </div>
       </header>
+
+      <OnboardingHint />
 
       <main className="main">
         <ActivityBar

@@ -24,7 +24,12 @@ export function ExperiencePanel() {
     if (entry.promoted) {
       lineContents.push(<>{'    '}<Prop c="promoted" />{': '}<Promoted c={`↑ FE II · ${entry.promoted}`} />{','}</>)
     }
-    lineContents.push(<>{'    '}<Prop c="period" />{'  : '}<Str c={entry.period} /></>)
+    lineContents.push(<>{'    '}<Prop c="period" />{'  : '}<Str c={entry.period} />{','}</>)
+    lineContents.push(<>{'    '}<Prop c="bullets" />{' : ['}</>)
+    entry.bullets.forEach((b, bi) => {
+      lineContents.push(<>{'      '}<Cmt c={`// ${b}`} /></>)
+    })
+    lineContents.push('    ]')
     lineContents.push(isLast ? '  }' : '  },')
   })
 

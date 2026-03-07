@@ -19,14 +19,21 @@ function makeIndex(): SearchEntry[] {
     " * 👋 Hey there! You're looking at my portfolio, built to feel like home (VS Code).",
     ` * Poke around: ask the AI anything, hit ${cmdKey}+P to explore, crack open the terminal`,
     ' * with Ctrl+`, or enter the Konami code for a little surprise 🎮',
+    ' *',
+    ` * ${Math.floor((Date.now() - new Date(2020, 6, 1).getTime()) / (1000 * 60 * 60 * 24 * 365.25))} years building ambitious frontend products at scale —`,
+    ' * from AWS no-code platforms to real-time drone control UIs.',
+    ' *',
+    ' * I specialize in turning complex systems into clean, fast user experiences.',
+    ' * At AWS I led teams shipping 0-1 products used by thousands of customers.',
+    " * Now at BRINC, I'm building real-time flight control software where",
+    ' * performance is life-critical.',
     ' */',
     '',
     'const vansh = {',
-    `  name     : "${about.name}",`,
-    `  role     : "${about.role}",`,
-    `  company  : "${about.company}",`,
-    `  location : "${about.location}",`,
-    `  bio      : "${about.bio}"`,
+    `  name      : "${about.name}",`,
+    `  role      : "${about.role}",`,
+    `  company   : "${about.company}",`,
+    `  location  : "${about.location}",`,
     '};',
     '',
     'export default vansh;',
@@ -48,7 +55,10 @@ function makeIndex(): SearchEntry[] {
     if (e.team) expLines.push(`    team    : "${e.team}",`)
     expLines.push(`    role    : "${e.role}",`)
     if (e.promoted) expLines.push(`    promoted: "↑ FE II · ${e.promoted}",`)
-    expLines.push(`    period  : "${e.period}"`)
+    expLines.push(`    period  : "${e.period}",`)
+    expLines.push('    bullets : [')
+    e.bullets.forEach(b => expLines.push(`      // ${b}`))
+    expLines.push('    ]')
     expLines.push(ei < experience.length - 1 ? '  },' : '  }')
   })
   expLines.push(']', '', 'export default experience;')

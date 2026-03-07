@@ -52,35 +52,31 @@ EXPERIENCE:
    - Tech stack: Vue, TypeScript, PHP, Laravel, EC2.
 
 2. Amazon Web Services | Jul 2020 – Feb 2026 (5.5 years total) | Seattle, WA
-   TITLE PROGRESSION: Started as Front End Engineer (Jul 2020), promoted to Front End Engineer II in January 2023 after 2.5 years.
+   TITLE PROGRESSION: Started as Front End Engineer (Jul 2020), promoted to Front End Engineer II in January 2023.
 
-   Team: App Studio & QApps (Jul 2020 – Jan 2025):
-   - Under tight constraints, delivered AWS AppStudio as a 0-1 product: architected a spec-driven rendering system that compiles customer-defined schemas into React components at runtime, forming the foundation of a no-code app builder.
-   - Led a team of 5 engineers from architecture through GA.
-   - Built abstractions over Redshift, QuickSight, S3, Lambda, and Bedrock for customers.
-   - Created in-house devtools enabling 35% faster feature delivery. Revamped metrics and alarms across 3 teams; built org-wide E2E infrastructure with Cypress.
+   As Front End Engineer II (Jan 2023 – Feb 2026):
+   - Led a team of 3 to architect and build the rendering engine for AWS Q Automate from scratch using React, TypeScript, and a custom layout algorithm — renders complex automation DSLs into deterministic, interactive node graphs capable of handling 1,000+ nodes with smooth performance, comparable to n8n. Onboarded the entire frontend org to the new architecture.
+   - Co-developed a DSL with Applied Scientists that interfaces directly with a trained model, supporting 50+ coding constructs and 300+ connectors. Served as security guardian for the frontend team, reviewing all new features and architectural decisions, and partnered with AppSec to keep threat models current.
 
-   Team: GenAI Agents (Jan 2025 – Feb 2026), as Front End Engineer II:
-   - Led a team of 3 to architect and build the rendering engine for AWS Q Automate from scratch using React, TypeScript, and a custom layout algorithm — renders complex automation DSLs into deterministic, interactive node graphs capable of handling 1,000+ nodes, comparable to n8n.
-   - Onboarded the entire frontend org to the new architecture.
-   - Co-developed a DSL with Applied Scientists interfacing directly with a trained model, supporting 50+ coding constructs and 300+ connectors.
-   - Served as security guardian for the frontend team, reviewing all features and architecture, and partnering with AppSec to keep threat models current.
+   As Front End Engineer (Jul 2020 – Jan 2023):
+   - Under tight constraints, delivered AWS AppStudio as a 0-1 product: architected a spec-driven rendering system that compiles customer-defined schemas into React components at runtime, forming the foundation of a no-code app builder. Led a team of 5 from architecture through GA.
+   - Built abstractions over Redshift, QuickSight, S3, Lambda, and Bedrock, enabling customers to integrate AWS services without deep infrastructure knowledge.
+   - Built in-house devtools enabling 35% faster feature delivery. Revamped metrics and alarms across 3 teams; created org-wide E2E infrastructure with Cypress.
 
 3. Apple, Inc. | Software Engineer Intern | Jun 2019 – Sep 2019 | Cupertino, CA
-   - Built a RESTful API and React/Node UI from scratch to configure LDAP-based feature flags, enabling safe staged rollouts. Designed the Cassandra schema for the service.
-   - Contributed to the launch of Apple's internal design system via StorybookJS.
+   - Built a RESTful API and React/Node UI from scratch to configure LDAP-based feature flags, enabling safe staged rollouts for internal developers. Designed the Cassandra schema for the service.
+   - Contributed to the launch of Apple's internal design system, documenting and fixing components via StorybookJS.
 
 SKILLS:
-- Web: CSS, HTML, React, Vue, Node.js, Express, Laravel, HapiJS, GraphQL
+- Web: CSS, HTML, React, Vue, Node.js, Express, Laravel, HapiJS, Vite, Docker, GitHub Actions, Vercel
 - Languages: TypeScript, JavaScript, PHP, Python, Java, Go, Swift
 - Testing: Cypress, Playwright, Vitest, React Testing Library
-- Tooling: Vite, Docker, GitHub Actions, Vercel, Webpack, Storybook
-- AWS: CloudFront, EC2, S3, SNS, IAM, Lambda, CloudWatch, AppSync, Bedrock, IoT Core, DynamoDB
-- Data: Cassandra, MySQL, MongoDB, DynamoDB
+- AWS: CloudFront, EC2, S3, SNS, IAM, Lambda, CloudWatch, AppSync, ChatBot, Bedrock, IoT Core
+- Data: Cassandra, MySQL, DynamoDB, MongoDB
 
 PROJECTS:
 - vansh.dev: Built a VS Code-themed interactive portfolio using React, TypeScript, Vite, and Claude API. Features an AI chat assistant, command palette, syntax-highlighted code panels, a mock terminal with Easter eggs, full keyboard and screen reader accessibility, CI/CD via GitHub Actions and Vercel, and a hardened AI agent with prompt injection defenses and behavior tests.
-- SkiBud: Designed a ski resort management database in MS SQL Server; built stored procedures and synthetic transactions validating 100,000+ INSERTS; developed disaster-recovery plans.
+- SkiBud: Designed a ski resort management database on MS SQL Server. Populated via BeautifulSoup, built stored procedures and synthetic transactions validating 100,000+ INSERT throughput, and authored an SLA with disaster-recovery plans.
 
 SOFT SKILLS & LEADERSHIP:
 - Has led multiple engineers on frontend and fullstack projects.
