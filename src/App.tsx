@@ -47,12 +47,8 @@ export default function App() {
   const { themeId, setThemeId }           = useTheme()
   const { minimapOn, toggleMinimap }      = useMinimapSetting()
 
-  const activeRef        = useRef(active)
-  const paletteOpenRef   = useRef(false)
-  const konamiIdx        = useRef(0)
-  const sbDrag           = useRef({ active: false, startX: 0, startWidth: 220 })
-  useEffect(() => { activeRef.current = active }, [active])
-  useEffect(() => { paletteOpenRef.current = paletteOpen }, [paletteOpen])
+  const konamiIdx = useRef(0)
+  const sbDrag    = useRef({ active: false, startX: 0, startWidth: 220 })
 
   // Measure actual character width once for accurate column numbers
   useEffect(() => {
@@ -63,10 +59,10 @@ export default function App() {
     setCharWidth(ctx.measureText('M').width)
   }, [])
 
-  const onSidebarDragStart = useCallback((e: React.MouseEvent) => {
+  const onSidebarDragStart = (e: React.MouseEvent) => {
     sbDrag.current = { active: true, startX: e.clientX, startWidth: sidebarWidth }
     e.preventDefault()
-  }, [sidebarWidth])
+  }
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
@@ -162,17 +158,17 @@ export default function App() {
         return
       }
       // Skip arrow-key nav when palette is open or an input is focused
-      if (paletteOpenRef.current)                          return
+      if (paletteOpen)                                     return
       if (document.activeElement?.tagName === 'INPUT')     return
 
       if (!(e.metaKey || e.ctrlKey)) return
-      const idx = TABS.findIndex(t => t.id === activeRef.current)
+      const idx = TABS.findIndex(t => t.id === active)
       if (e.key === 'ArrowRight') { e.preventDefault(); selectTab(TABS[(idx + 1) % TABS.length].id) }
       if (e.key === 'ArrowLeft')  { e.preventDefault(); selectTab(TABS[(idx - 1 + TABS.length) % TABS.length].id) }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [selectTab])
+  }, [selectTab, active, paletteOpen])
 
   // Live Ln/Col tracking via event delegation
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {

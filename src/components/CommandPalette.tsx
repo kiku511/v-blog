@@ -77,13 +77,11 @@ export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect, on
 
   useEffect(() => { setSelected(0) }, [query])
 
-  const execute = (cmd: Command) => { cmd.action(); onClose() }
-
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Escape')     { e.preventDefault(); onClose() }
     if (e.key === 'ArrowDown')  { e.preventDefault(); setSelected(i => Math.min(i + 1, filtered.length - 1)) }
     if (e.key === 'ArrowUp')    { e.preventDefault(); setSelected(i => Math.max(i - 1, 0)) }
-    if (e.key === 'Enter' && filtered[selected]) { e.preventDefault(); execute(filtered[selected]) }
+    if (e.key === 'Enter' && filtered[selected]) { e.preventDefault(); filtered[selected].action(); onClose() }
   }
 
   if (!isOpen) return null
@@ -105,7 +103,7 @@ export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect, on
             <div
               key={cmd.label}
               className={`cp-item${i === selected ? ' active' : ''}`}
-              onClick={() => execute(cmd)}
+              onClick={() => { cmd.action(); onClose() }}
               onMouseEnter={() => setSelected(i)}
             >
               <span className="cp-label">{cmd.label}</span>

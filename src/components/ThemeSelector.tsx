@@ -40,20 +40,13 @@ export function ThemeSelector({ isOpen, currentThemeId, onClose, onSelect }: Pro
       onSelect(currentThemeId)
       onClose()
     }
-    if (e.key === 'ArrowDown') {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       e.preventDefault()
+      const dir = e.key === 'ArrowDown' ? 1 : -1
       setSelected(i => {
-        const next = Math.min(i + 1, THEMES.length - 1)
+        const next = Math.min(Math.max(i + dir, 0), THEMES.length - 1)
         setPreview(THEMES[next].id)
         return next
-      })
-    }
-    if (e.key === 'ArrowUp') {
-      e.preventDefault()
-      setSelected(i => {
-        const prev = Math.max(i - 1, 0)
-        setPreview(THEMES[prev].id)
-        return prev
       })
     }
     if (e.key === 'Enter') {

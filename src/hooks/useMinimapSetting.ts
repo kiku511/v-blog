@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const STORAGE_KEY = 'vscode-minimap'
 
@@ -7,13 +7,9 @@ export function useMinimapSetting() {
     localStorage.getItem(STORAGE_KEY) === 'true'
   )
 
-  const toggleMinimap = () => {
-    setMinimapOn(prev => {
-      const next = !prev
-      localStorage.setItem(STORAGE_KEY, String(next))
-      return next
-    })
-  }
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, String(minimapOn))
+  }, [minimapOn])
 
-  return { minimapOn, toggleMinimap }
+  return { minimapOn, toggleMinimap: () => setMinimapOn(v => !v) }
 }
