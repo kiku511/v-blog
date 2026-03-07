@@ -6,6 +6,41 @@ import { useDragResize } from '../hooks/useDragResize'
 
 type Message = { id: string; role: 'user' | 'assistant'; content: string }
 
+async function fetchChatResponse(messages: Message[]): Promise<Response> {
+  const res = await fetch('/api/chat', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify({ messages }),
+  })
+  if (!res.ok) {
+    const { error } = await res.json() as { error?: string }
+    throw new Error(error ?? `HTTP ${res.status}`)
+  }
+  return res
+}
+
+async function* readSSETokens(res: Response): AsyncGenerator<string> {
+  const reader  = res.body!.getReader()
+  const decoder = new TextDecoder()
+  let buffer    = ''
+  while (true) {
+    const { done, value } = await reader.read()
+    if (done) break
+    buffer += decoder.decode(value, { stream: true })
+    const lines = buffer.split('\n')
+    buffer = lines.pop()!
+    for (const line of lines) {
+      if (!line.startsWith('data: ')) continue
+      const jsonStr = line.slice(6).trim()
+      if (!jsonStr || jsonStr === '[DONE]') continue
+      try {
+        const { token } = JSON.parse(jsonStr) as { token?: string }
+        if (token) yield token
+      } catch { /* skip malformed chunks */ }
+    }
+  }
+}
+
 const MIN_WIDTH = 220
 const MAX_WIDTH = 560
 const DEFAULT_WIDTH = 300
@@ -45,55 +80,28 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
     if (inputRef.current) inputRef.current.style.height = 'auto'
     setLoading(true)
 
-    try {
-      const res = await fetch('/api/chat', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ messages: next }),
-      })
-      if (!res.ok) {
-        const data = await res.json() as { error?: string }
-        throw new Error(data.error ?? `HTTP ${res.status}`)
-      }
-
-      const assistantId = crypto.randomUUID()
-      const reader      = res.body!.getReader()
-      const decoder     = new TextDecoder()
-      let buffer        = ''
-      let gotToken      = false
-
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-        buffer += decoder.decode(value, { stream: true })
-        const lines = buffer.split('\n')
-        buffer = lines.pop()!
-        for (const line of lines) {
-          if (!line.startsWith('data: ')) continue
-          const jsonStr = line.slice(6).trim()
-          if (!jsonStr || jsonStr === '[DONE]') continue
-          try {
-            const { token } = JSON.parse(jsonStr) as { token?: string }
-            if (token) {
-              if (!gotToken) {
-                gotToken = true
-                setLoading(false)
-                setMessages(m => [...m, { id: assistantId, role: 'assistant', content: '' }])
-              }
-              setMessages(m => m.map(msg => msg.id === assistantId ? { ...msg, content: msg.content + token } : msg))
-            }
-          } catch { /* skip malformed chunks */ }
-        }
-      }
-
-      if (!gotToken) {
-        setLoading(false)
-        setMessages(m => [...m, { id: assistantId, role: 'assistant', content: 'Sorry, I could not generate a response.' }])
-      }
-    } catch (err) {
+    const fail = (msg: string) => {
       setLoading(false)
-      const msg = err instanceof Error ? err.message : 'Network error. Please try again.'
       setMessages(m => [...m, { id: crypto.randomUUID(), role: 'assistant', content: msg }])
+    }
+
+    try {
+      const res         = await fetchChatResponse(next)
+      const assistantId = crypto.randomUUID()
+      let   responded   = false
+
+      for await (const token of readSSETokens(res)) {
+        if (!responded) {
+          responded = true
+          setLoading(false)
+          setMessages(m => [...m, { id: assistantId, role: 'assistant', content: '' }])
+        }
+        setMessages(m => m.map(msg => msg.id === assistantId ? { ...msg, content: msg.content + token } : msg))
+      }
+
+      if (!responded) fail('Sorry, I could not generate a response.')
+    } catch (err) {
+      fail(err instanceof Error ? err.message : 'Network error. Please try again.')
     }
   }
 
