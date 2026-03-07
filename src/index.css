@@ -4,7 +4,7 @@
   --tabbar:      #2d2d30;
   --titlebar-bg: #323233;
   --text:        #d4d4d4;
-  --muted:       #858585;
+  --muted:       #9d9d9d;
   --accent:      #007acc;
   --kw:          #569cd6;
   --str:         #ce9178;
@@ -221,7 +221,7 @@ body {
   gap: 4px;
   padding: 0 13px;
   font-size: 13px;
-  color: #969696;
+  color: #9d9d9d;
   cursor: pointer;
   border-right: 1px solid #252526;
   white-space: nowrap;
@@ -311,7 +311,7 @@ a.str:hover { text-decoration: underline; }
 .resume-btn:hover { color: var(--text); border-color: var(--text); }
 
 /* ── Status bar palette hint ── */
-.sb-palette-hint { cursor: pointer; opacity: 0.75; letter-spacing: 0.03em; }
+.sb-palette-hint { cursor: pointer; letter-spacing: 0.03em; }
 .sb-palette-hint:hover { opacity: 1; }
 
 /* ── Command Palette ── */

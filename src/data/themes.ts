@@ -12,7 +12,7 @@ export const THEMES: Theme[] = [
     id: 'dark-plus', name: 'Dark+ (Default)',
     vars: {
       bg: '#1e1e1e', sidebar: '#252526', tabbar: '#2d2d30', 'titlebar-bg': '#323233',
-      text: '#d4d4d4', muted: '#858585', accent: '#007acc',
+      text: '#d4d4d4', muted: '#9d9d9d', accent: '#007acc',
       kw: '#569cd6', str: '#ce9178', prop: '#9cdcfe', nc: '#b5cea8', cmt: '#6a9955', tp: '#4ec9b0',
       hover: '#2a2d2e', sel: '#37373d',
     },
@@ -21,7 +21,7 @@ export const THEMES: Theme[] = [
     id: 'light-plus', name: 'Light+ (Default)',
     vars: {
       bg: '#ffffff', sidebar: '#f3f3f3', tabbar: '#ececec', 'titlebar-bg': '#dddddd',
-      text: '#000000', muted: '#717171', accent: '#007acc',
+      text: '#000000', muted: '#696969', accent: '#007acc',
       kw: '#0000ff', str: '#a31515', prop: '#001080', nc: '#098658', cmt: '#008000', tp: '#267f99',
       hover: '#e8e8e8', sel: '#d6ebff',
     },
@@ -30,7 +30,7 @@ export const THEMES: Theme[] = [
     id: 'monokai', name: 'Monokai',
     vars: {
       bg: '#272822', sidebar: '#1e1f1c', tabbar: '#2d2e27', 'titlebar-bg': '#1a1b16',
-      text: '#f8f8f2', muted: '#75715e', accent: '#a6e22e',
+      text: '#f8f8f2', muted: '#999080', accent: '#a6e22e',
       kw: '#f92672', str: '#e6db74', prop: '#a6e22e', nc: '#ae81ff', cmt: '#75715e', tp: '#66d9e8',
       hover: '#3a3b35', sel: '#49483e',
     },
@@ -39,7 +39,7 @@ export const THEMES: Theme[] = [
     id: 'dracula', name: 'Dracula',
     vars: {
       bg: '#282a36', sidebar: '#21222c', tabbar: '#343746', 'titlebar-bg': '#191a21',
-      text: '#f8f8f2', muted: '#6272a4', accent: '#bd93f9',
+      text: '#f8f8f2', muted: '#8b9fc4', accent: '#bd93f9',
       kw: '#ff79c6', str: '#f1fa8c', prop: '#8be9fd', nc: '#bd93f9', cmt: '#6272a4', tp: '#50fa7b',
       hover: '#343746', sel: '#44475a',
     },
@@ -48,7 +48,7 @@ export const THEMES: Theme[] = [
     id: 'nord', name: 'Nord',
     vars: {
       bg: '#2e3440', sidebar: '#3b4252', tabbar: '#434c5e', 'titlebar-bg': '#2e3440',
-      text: '#d8dee9', muted: '#616e88', accent: '#88c0d0',
+      text: '#d8dee9', muted: '#8fa0b5', accent: '#88c0d0',
       kw: '#81a1c1', str: '#a3be8c', prop: '#88c0d0', nc: '#b48ead', cmt: '#616e88', tp: '#8fbcbb',
       hover: '#434c5e', sel: '#4c566a',
     },
