@@ -13,7 +13,7 @@ import { SearchPanel }  from './components/SearchPanel'
 import { Minimap }      from './components/Minimap'
 import { useTheme }            from './hooks/useTheme'
 import { useMinimapSetting }  from './hooks/useMinimapSetting'
-import { ChatIcon }       from './components/Icons'
+import { ChatIcon, HamburgerIcon, FileIcon as FileIconAct, SearchIcon, PersonIcon } from './components/Icons'
 
 const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a']
 
@@ -30,6 +30,7 @@ export default function App() {
   const [scrollRatio, setScrollRatio]     = useState(0)
   const panelContentRef                   = useRef<HTMLDivElement>(null)
   const [sidebarView, setSidebarView]     = useState<'explorer' | 'search'>('explorer')
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const [sidebarWidth, setSidebarWidth]   = useState(220)
   const { themeId, setThemeId }           = useTheme()
   const { minimapOn, toggleMinimap }      = useMinimapSetting()
@@ -75,6 +76,7 @@ export default function App() {
     setActive(tab)
     setCursor({ ln: 1, col: 1 })
     setScrollRatio(0)
+    setMobileNavOpen(false)
     if (panelContentRef.current) panelContentRef.current.scrollTop = 0
   }, [])
 
@@ -159,6 +161,14 @@ export default function App() {
           <div className="dot y" />
           <div className="dot g" />
         </div>
+        <button
+          className="hamburger-btn"
+          onClick={() => setMobileNavOpen(o => !o)}
+          aria-label="Open navigation"
+          aria-expanded={mobileNavOpen}
+        >
+          <HamburgerIcon />
+        </button>
         <span aria-hidden="true">vansh-gambhir — Code</span>
         <div style={{ position: 'absolute', right: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
           <button className="chat-mobile-btn" onClick={() => setChatOpen(o => !o)} aria-label="Toggle AI Chat">
@@ -242,6 +252,46 @@ export default function App() {
       />
 
       {matrixActive && <MatrixRain onDone={() => setMatrixActive(false)} />}
+
+      {/* Mobile slide-in navigation drawer */}
+      {mobileNavOpen && (
+        <div className="mobile-backdrop" onClick={() => setMobileNavOpen(false)} aria-hidden="true" />
+      )}
+      <nav className={`mobile-drawer${mobileNavOpen ? ' open' : ''}`} aria-label="Navigation" aria-hidden={!mobileNavOpen}>
+        <div className="mobile-drawer-bar">
+          <button
+            className={`act-icon${sidebarView === 'explorer' ? ' active' : ''}`}
+            onClick={() => setSidebarView('explorer')}
+            aria-label="Explorer"
+            aria-pressed={sidebarView === 'explorer'}
+          >
+            <FileIconAct aria-hidden="true" />
+          </button>
+          <button
+            className={`act-icon${sidebarView === 'search' ? ' active' : ''}`}
+            onClick={() => setSidebarView('search')}
+            aria-label="Search"
+            aria-pressed={sidebarView === 'search'}
+          >
+            <SearchIcon aria-hidden="true" />
+          </button>
+          <a
+            className="act-icon"
+            href="https://www.linkedin.com/in/vanshgambhir/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="LinkedIn profile (opens in new tab)"
+          >
+            <PersonIcon aria-hidden="true" />
+          </a>
+        </div>
+        <div className="mobile-drawer-content">
+          {sidebarView === 'search'
+            ? <SearchPanel onNavigate={tab => { selectTab(tab); setSidebarView('explorer') }} />
+            : <Sidebar active={active} onSelect={selectTab} />
+          }
+        </div>
+      </nav>
 
     </div>
   )
