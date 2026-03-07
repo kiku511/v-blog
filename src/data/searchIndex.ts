@@ -15,9 +15,11 @@ function makeIndex(): SearchEntry[] {
 
   add('about', 'about.ts', [
     '// about.ts',
-    "// 👋 Hey there! You're looking at my portfolio, built to feel like home (VS Code).",
-    `// Poke around: ask the AI anything, hit ${cmdKey}+P to explore, crack open the terminal`,
-    '// with Ctrl+`, or enter the Konami code for a little surprise 🎮',
+    '/**',
+    " * 👋 Hey there! You're looking at my portfolio, built to feel like home (VS Code).",
+    ` * Poke around: ask the AI anything, hit ${cmdKey}+P to explore, crack open the terminal`,
+    ' * with Ctrl+`, or enter the Konami code for a little surprise 🎮',
+    ' */',
     '',
     'const vansh = {',
     `  name     : "${about.name}",`,
