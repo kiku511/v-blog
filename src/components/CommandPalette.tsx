@@ -12,9 +12,10 @@ type Props = {
   onClose: () => void
   onTabSelect: (tab: Tab) => void
   onThemeSelect: () => void
+  onTerminalToggle: () => void
 }
 
-export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect }: Props) {
+export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect, onTerminalToggle }: Props) {
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -25,6 +26,11 @@ export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect }: 
       shortcut: '← →',
       action: () => { onTabSelect(tab.id); onClose() },
     })),
+    {
+      label: 'Toggle Terminal',
+      shortcut: 'Ctrl+`',
+      action: () => { onClose(); onTerminalToggle() },
+    },
     {
       label: 'Talk to AI',
       shortcut: '⌘P → enter',

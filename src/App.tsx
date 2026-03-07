@@ -7,6 +7,7 @@ import { StatusBar }      from './components/StatusBar'
 import { CommandPalette } from './components/CommandPalette'
 import { ThemeSelector }  from './components/ThemeSelector'
 import { CopilotPanel }  from './components/CopilotPanel'
+import { TerminalPanel } from './panels/TerminalPanel'
 import { useTheme }       from './hooks/useTheme'
 
 export default function App() {
@@ -14,8 +15,10 @@ export default function App() {
   const [cursor, setCursor]           = useState({ ln: 1, col: 1 })
   const [paletteOpen, setPalette]     = useState(false)
   const [themeOpen, setThemeOpen]     = useState(false)
-  const [chatOpen, setChatOpen]       = useState(false)
-  const [charWidth, setCharWidth]     = useState(8.4)
+  const [chatOpen, setChatOpen]         = useState(false)
+  const [terminalOpen, setTerminalOpen] = useState(false)
+  const [terminalHeight, setTerminalHeight] = useState(220)
+  const [charWidth, setCharWidth]       = useState(8.4)
   const { themeId, setThemeId }       = useTheme()
 
   const activeRef      = useRef(active)
@@ -44,6 +47,12 @@ export default function App() {
       if ((e.metaKey || e.ctrlKey) && (e.key === 'p' || e.key === 'P')) {
         e.preventDefault()
         setPalette(o => !o)
+        return
+      }
+      // Ctrl+` — toggle terminal
+      if (e.ctrlKey && e.key === '`') {
+        e.preventDefault()
+        setTerminalOpen(o => !o)
         return
       }
       // Skip arrow-key nav when palette is open or an input is focused
@@ -104,6 +113,7 @@ export default function App() {
       <div className="main">
         <ActivityBar
           onThemeClick={() => setThemeOpen(true)}
+          onPaletteClick={() => setPalette(true)}
         />
         <Sidebar active={active} onSelect={selectTab} />
         <div className="editor">
@@ -111,6 +121,13 @@ export default function App() {
           <div className="panels" onMouseMove={handleMouseMove}>
             <Panel />
           </div>
+          {terminalOpen && (
+            <TerminalPanel
+              onClose={() => setTerminalOpen(false)}
+              height={terminalHeight}
+              onResize={setTerminalHeight}
+            />
+          )}
         </div>
         <CopilotPanel isOpen={chatOpen} onClose={() => setChatOpen(false)} />
       </div>
@@ -127,6 +144,7 @@ export default function App() {
         onClose={() => setPalette(false)}
         onTabSelect={selectTab}
         onThemeSelect={() => setThemeOpen(true)}
+        onTerminalToggle={() => setTerminalOpen(o => !o)}
       />
 
       <ThemeSelector
