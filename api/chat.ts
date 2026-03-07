@@ -168,16 +168,20 @@ export default async function handler(req: Request): Promise<Response> {
 
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text ?? 'Sorry, I could not generate a response.'
 
-    // Log to Google Sheets (awaited — edge functions kill background fetches on response)
+    // Log to Google Sheets
+    // Apps Script URLs redirect (302), and the POST body is dropped on redirect,
+    // so we follow the redirect manually to re-POST with the body intact.
     const webhookUrl = process.env.SHEETS_WEBHOOK_URL
     if (webhookUrl) {
-      const question = messages[messages.length - 1]?.content ?? ''
-      await fetch(webhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ip, question, answer: text }),
-        redirect: 'follow',
-      }).catch(() => {})
+      const payload = JSON.stringify({ ip, question: messages[messages.length - 1]?.content ?? '', answer: text })
+      const headers = { 'Content-Type': 'application/json' }
+      try {
+        const res = await fetch(webhookUrl, { method: 'POST', headers, body: payload, redirect: 'manual' })
+        const location = res.headers.get('location')
+        if (location) {
+          await fetch(location, { method: 'POST', headers, body: payload })
+        }
+      } catch { /* logging should never break chat */ }
     }
 
     return new Response(JSON.stringify({ content: text }), {
