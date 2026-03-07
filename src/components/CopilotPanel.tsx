@@ -66,9 +66,7 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
     const next: Message[] = [...messages, { id: crypto.randomUUID(), role: 'user', content: text }]
     setMessages(next)
     setInput('')
-    if (inputRef.current) {
-      inputRef.current.style.height = 'auto'
-    }
+    if (inputRef.current) inputRef.current.style.height = 'auto'
     setLoading(true)
 
     try {
@@ -77,13 +75,53 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ messages: next }),
       })
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const data = await res.json() as { content?: string; error?: string }
-      setMessages(m => [...m, { id: crypto.randomUUID(), role: 'assistant', content: data.content ?? data.error ?? 'Something went wrong.' }])
-    } catch {
-      setMessages(m => [...m, { id: crypto.randomUUID(), role: 'assistant', content: 'Network error. Please try again.' }])
-    } finally {
+      if (!res.ok) {
+        const data = await res.json() as { error?: string }
+        throw new Error(data.error ?? `HTTP ${res.status}`)
+      }
+
+      const assistantId = crypto.randomUUID()
+      const reader      = res.body!.getReader()
+      const decoder     = new TextDecoder()
+      let buffer        = ''
+      let fullContent   = ''
+      let firstToken    = true
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        buffer += decoder.decode(value, { stream: true })
+        const lines = buffer.split('\n')
+        buffer = lines.pop()!
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue
+          const jsonStr = line.slice(6).trim()
+          if (!jsonStr || jsonStr === '[DONE]') continue
+          try {
+            const { token } = JSON.parse(jsonStr) as { token?: string }
+            if (token) {
+              fullContent += token
+              if (firstToken) {
+                firstToken = false
+                setLoading(false)
+                setMessages(m => [...m, { id: assistantId, role: 'assistant', content: fullContent }])
+              } else {
+                setMessages(m => m.map(msg => msg.id === assistantId ? { ...msg, content: fullContent } : msg))
+              }
+            }
+          } catch { /* skip malformed chunks */ }
+        }
+      }
+
+      if (firstToken) {
+        // Stream ended with no tokens
+        setLoading(false)
+        setMessages(m => [...m, { id: assistantId, role: 'assistant', content: 'Sorry, I could not generate a response.' }])
+      }
+    } catch (err) {
       setLoading(false)
+      const msg = err instanceof Error ? err.message : 'Network error. Please try again.'
+      setMessages(m => [...m, { id: crypto.randomUUID(), role: 'assistant', content: msg }])
     }
   }
 

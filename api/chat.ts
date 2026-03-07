@@ -1,6 +1,6 @@
 export const config = { runtime: 'edge' }
 
-// Per-IP rate limiter: max 5 requests per minute
+// Per-IP rate limiter: max 15 requests per minute
 const ipRequests = new Map<string, number[]>()
 const RATE_LIMIT = 15
 const WINDOW_MS  = 60_000
@@ -145,9 +145,10 @@ export default async function handler(req: Request): Promise<Response> {
 
   try {
     const { messages } = await req.json() as { messages: { role: string; content: string }[] }
+    const lastMessage = messages[messages.length - 1]?.content ?? ''
 
     const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:streamGenerateContent?alt=sse`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-goog-api-key': process.env.GEMINI_API_KEY ?? '' },
@@ -162,40 +163,70 @@ export default async function handler(req: Request): Promise<Response> {
       }
     )
 
-    const data = await geminiRes.json() as {
-      candidates?: { content: { parts: { text: string }[] } }[]
-      error?: { message: string }
-    }
-
-    if (data.error) {
-      return new Response(JSON.stringify({ error: data.error.message }), {
+    if (!geminiRes.ok || !geminiRes.body) {
+      return new Response(JSON.stringify({ error: 'Gemini API error' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
       })
     }
 
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text ?? 'Sorry, I could not generate a response.'
+    const encoder    = new TextEncoder()
+    const decoder    = new TextDecoder()
+    let fullText     = ''
+    let sseBuffer    = ''
 
-    // Log to Google Sheets
-    // Apps Script URLs redirect (302), and the POST body is dropped on redirect,
-    // so we follow the redirect manually to re-POST with the body intact.
-    const webhookUrl = process.env.SHEETS_WEBHOOK_URL
-    if (webhookUrl) {
-      const payload = JSON.stringify({ ip, question: messages[messages.length - 1]?.content ?? '', answer: text })
-      const headers = { 'Content-Type': 'application/json' }
+    const { readable, writable } = new TransformStream()
+    const writer      = writable.getWriter()
+    const geminiReader = geminiRes.body.getReader()
+
+    ;(async () => {
       try {
-        const res = await fetch(webhookUrl, { method: 'POST', headers, body: payload, redirect: 'manual' })
-        const location = res.headers.get('location')
-        if (location) {
-          await fetch(location, { method: 'POST', headers, body: payload })
+        while (true) {
+          const { done, value } = await geminiReader.read()
+          if (done) break
+          sseBuffer += decoder.decode(value, { stream: true })
+          const lines = sseBuffer.split('\n')
+          sseBuffer = lines.pop()!
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue
+            const jsonStr = line.slice(6).trim()
+            if (!jsonStr || jsonStr === '[DONE]') continue
+            try {
+              const json  = JSON.parse(jsonStr)
+              const token = json.candidates?.[0]?.content?.parts?.[0]?.text ?? ''
+              if (token) {
+                fullText += token
+                await writer.write(encoder.encode(`data: ${JSON.stringify({ token })}\n\n`))
+              }
+            } catch { /* skip malformed chunks */ }
+          }
         }
-      } catch (err) { console.error('[sheets] logging failed:', err) }
-    }
+      } finally {
+        // Log to Google Sheets after stream completes
+        const webhookUrl = process.env.SHEETS_WEBHOOK_URL
+        if (webhookUrl && fullText) {
+          const payload = JSON.stringify({ ip, question: lastMessage, answer: fullText })
+          const headers = { 'Content-Type': 'application/json' }
+          try {
+            const res = await fetch(webhookUrl, { method: 'POST', headers, body: payload, redirect: 'manual' })
+            const location = res.headers.get('location')
+            if (location) await fetch(location, { method: 'POST', headers, body: payload })
+          } catch (err) { console.error('[sheets] logging failed:', err) }
+        }
+        await writer.write(encoder.encode('data: [DONE]\n\n'))
+        await writer.close()
+      }
+    })()
 
-    return new Response(JSON.stringify({ content: text }), {
-      headers: { 'Content-Type': 'application/json', ...corsHeaders },
+    return new Response(readable, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'X-Accel-Buffering': 'no',
+        ...corsHeaders,
+      },
     })
-  } catch (err) {
+  } catch {
     return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json', ...corsHeaders },

@@ -114,6 +114,7 @@ export function TerminalPanel({ onClose, height, onResize }: Props) {
           '  contact           contact info',
           '  clear             clear terminal',
           '  history           show command history',
+          '  curl wttr.in/seattle  live Seattle weather',
           '',
           `Tip: ↑ / ↓ history · Ctrl+L / ${cmdKey}+K to clear · Ctrl+\` to toggle`,
         )
@@ -170,7 +171,30 @@ export function TerminalPanel({ onClose, height, onResize }: Props) {
         else push(`git: try 'git log' or 'git blame'`)
         break
       case 'ssh':   push("ssh: connect to host vansh.dev port 22: no route to host (he's a frontend dev 😅)"); break
-      case 'curl': case 'wget': push(`${c}: not a real server, but vansh.dev is! 🌐`); break
+      case 'curl': {
+        const target = args.join(' ').toLowerCase()
+        if (target.includes('wttr.in')) {
+          push('Fetching weather for Seattle...')
+          ;(async () => {
+            try {
+              const res = await fetch('/api/weather')
+              const text = await res.text()
+              if (res.ok) {
+                push(...text.split('\n'))
+              } else {
+                const data = JSON.parse(text) as { error?: string }
+                push(`curl: ${data.error ?? 'request failed'}`)
+              }
+            } catch {
+              push('curl: network error')
+            }
+          })()
+        } else {
+          push(`${c}: not a real server, but vansh.dev is! 🌐`)
+        }
+        break
+      }
+      case 'wget': push(`${c}: not a real server, but vansh.dev is! 🌐`); break
       case 'pokemon': case 'lucario':
         push('Lucario — Aura Pokémon  #448', 'Type: Fighting / Steel · Ability: Inner Focus', "Favorite Pokémon. Will talk about this at length. Don't start him. 🐾")
         break

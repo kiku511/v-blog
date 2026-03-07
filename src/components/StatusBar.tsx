@@ -18,9 +18,9 @@ export function StatusBar({ active, cursor, onOpenPalette, onOpenTheme }: Props)
         </button>
       </div>
       <div className="sb-right">
-        <span>{tab.lang}</span>
-        <span className="sb-hide-mobile">UTF-8</span>
         <span>Ln {cursor.ln}, Col {cursor.col}</span>
+        <span className="sb-hide-mobile">UTF-8</span>
+        <span>{tab.lang}</span>
       </div>
     </div>
   )

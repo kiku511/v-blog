@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { TABS, type Tab } from './config/tabs'
 import { ActivityBar }    from './components/ActivityBar'
 import { Sidebar }        from './components/Sidebar'
@@ -17,8 +18,17 @@ import { ChatIcon, HamburgerIcon, FileIcon as FileIconAct, SearchIcon, PersonIco
 
 const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a']
 
+const TAB_TO_PATH: Record<Tab, string> = {
+  about: '/', skills: '/skills', experience: '/experience', contact: '/contact', resume: '/resume',
+}
+const PATH_TO_TAB: Record<string, Tab> = {
+  '/': 'about', '/skills': 'skills', '/experience': 'experience', '/contact': 'contact', '/resume': 'resume',
+}
+
 export default function App() {
-  const [active, setActive]           = useState<Tab>('about')
+  const navigate            = useNavigate()
+  const { pathname }        = useLocation()
+  const active              = PATH_TO_TAB[pathname] ?? 'about'
   const [cursor, setCursor]           = useState({ ln: 1, col: 1 })
   const [paletteOpen, setPalette]     = useState(false)
   const [themeOpen, setThemeOpen]     = useState(false)
@@ -41,7 +51,7 @@ export default function App() {
   const sbDragging       = useRef(false)
   const sbStartX         = useRef(0)
   const sbStartWidth     = useRef(220)
-  useEffect(() => { activeRef.current = active },           [active])
+  useEffect(() => { activeRef.current = active }, [active])
   useEffect(() => { paletteOpenRef.current = paletteOpen }, [paletteOpen])
 
   // Measure actual character width once for accurate column numbers
@@ -73,12 +83,23 @@ export default function App() {
   }, [])
 
   const selectTab = useCallback((tab: Tab) => {
-    setActive(tab)
+    navigate(TAB_TO_PATH[tab])
     setCursor({ ln: 1, col: 1 })
     setScrollRatio(0)
     setMobileNavOpen(false)
     if (panelContentRef.current) panelContentRef.current.scrollTop = 0
-  }, [])
+  }, [navigate])
+
+  useEffect(() => {
+    const titles: Record<Tab, string> = {
+      about:      'Vansh Gambhir — Frontend Engineer',
+      skills:     'Skills | Vansh Gambhir',
+      experience: 'Experience | Vansh Gambhir',
+      contact:    'Contact | Vansh Gambhir',
+      resume:     'Resume | Vansh Gambhir',
+    }
+    document.title = titles[active] ?? 'Vansh Gambhir'
+  }, [active])
 
   // Global keyboard navigation
   useEffect(() => {
