@@ -17,7 +17,7 @@ export const skills: Record<string, string[]> = {
 
 export const experience: { company: string; team?: string; role: string; promoted?: string; period: string }[] = [
   { company: 'BRINC Drones',        role: 'Software Engineer (Frontend)',                   period: 'Feb 2026 – Present'   },
-  { company: 'Amazon Web Services', team: 'GenAI Agents',       role: 'Front End Engineer II',   period: 'Jan 2025 – Jan 2026'  },
+  { company: 'Amazon Web Services', team: 'GenAI Agents',       role: 'Front End Engineer II',   period: 'Jan 2025 – Feb 2026'  },
   { company: 'Amazon Web Services', team: 'App Studio & QApps', role: 'Front End Engineer', promoted: 'Jan 2023', period: 'Jul 2020 – Jan 2025'  },
   { company: 'Apple, Inc.',         role: 'Software Engineer Intern',                        period: 'Jun 2019 – Sep 2019'  },
 ]

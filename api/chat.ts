@@ -51,7 +51,7 @@ EXPERIENCE:
    - Developing features that directly interface with drone hardware, maintaining a highly performant UI under real-time constraints.
    - Tech stack: Vue, TypeScript, PHP, Laravel, EC2.
 
-2. Amazon Web Services | Jul 2020 – Jan 2026 (5.5 years total) | Seattle, WA
+2. Amazon Web Services | Jul 2020 – Feb 2026 (5.5 years total) | Seattle, WA
    TITLE PROGRESSION: Started as Front End Engineer (Jul 2020), promoted to Front End Engineer II in January 2023 after 2.5 years.
 
    Team: App Studio & QApps (Jul 2020 – Jan 2025):
@@ -60,7 +60,7 @@ EXPERIENCE:
    - Built abstractions over Redshift, QuickSight, S3, Lambda, and Bedrock for customers.
    - Created in-house devtools enabling 35% faster feature delivery. Revamped metrics and alarms across 3 teams; built org-wide E2E infrastructure with Cypress.
 
-   Team: GenAI Agents (Jan 2025 – Jan 2026), as Front End Engineer II:
+   Team: GenAI Agents (Jan 2025 – Feb 2026), as Front End Engineer II:
    - Led a team of 3 to architect and build the rendering engine for AWS Q Automate from scratch using React, TypeScript, and a custom layout algorithm — renders complex automation DSLs into deterministic, interactive node graphs capable of handling 1,000+ nodes, comparable to n8n.
    - Onboarded the entire frontend org to the new architecture.
    - Co-developed a DSL with Applied Scientists interfacing directly with a trained model, supporting 50+ coding constructs and 300+ connectors.
