@@ -317,6 +317,7 @@ a.str:hover { text-decoration: underline; }
   flex-shrink: 0;
 }
 .onboarding-hint-close:hover { color: var(--text); }
+.onboarding-hint-short { display: none; }
 
 /* ── Status bar ── */
 .statusbar {
@@ -345,6 +346,27 @@ a.str:hover { text-decoration: underline; }
   user-select: none;
 }
 .resume-btn:hover { color: var(--text); border-color: var(--text); }
+
+/* ── Resume panel download bar ── */
+.resume-panel-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 6px 12px;
+  background: var(--sidebar);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.resume-panel-download {
+  font-size: 12px;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 3px 10px;
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  font-family: inherit;
+}
+.resume-panel-download:hover { background: rgba(0, 122, 204, 0.15); }
 
 /* ── Status bar palette hint ── */
 .sb-palette-hint { cursor: pointer; letter-spacing: 0.03em; }
@@ -729,7 +751,8 @@ a.str:hover { text-decoration: underline; }
   }
   .copilot-panel.copilot-panel-open { display: flex; }
   .copilot-close { display: flex; }
-  .resume-btn { display: none; }
+  .onboarding-hint-full { display: none; }
+  .onboarding-hint-short { display: inline; }
   .search-results { max-height: none; }
   .dots { display: none; }
   .hamburger-btn { display: flex; align-items: center; }

@@ -22,8 +22,11 @@ export function OnboardingHint() {
 
   return (
     <div className="onboarding-hint" role="status" aria-live="polite">
-      <span>
+      <span className="onboarding-hint-full">
         Tip: Hit <kbd>{cmdKey}P</kbd> to explore &nbsp;·&nbsp; <kbd>Ctrl+`</kbd> for terminal &nbsp;·&nbsp; Ask the AI anything →
+      </span>
+      <span className="onboarding-hint-short">
+        Tip: Ask the AI anything →
       </span>
       <button className="onboarding-hint-close" onClick={dismiss} aria-label="Dismiss tip">✕</button>
     </div>
