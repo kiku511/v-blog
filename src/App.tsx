@@ -66,13 +66,13 @@ export default function App() {
       about:      'Vansh Gambhir is a Software Engineer at BRINC Drones, formerly at AWS for 5.5 years building GenAI Agents and low-code products. Based in Seattle.',
       skills:     'Tech stack: TypeScript, React, Vue, PHP, Laravel, Node.js, AWS (EC2, Lambda, Bedrock, AppSync, IoT Core), Cypress, Playwright, Docker, and more.',
       experience: 'Work history: Software Engineer at BRINC Drones (Feb 2026–), Front End Engineer II at Amazon Web Services (5.5 yrs), Software Engineer Intern at Apple.',
-      contact:    'Get in touch with Vansh Gambhir — email, LinkedIn, GitHub, and personal website.',
+      contact:    'Get in touch with Vansh Gambhir via email, LinkedIn, GitHub, and personal website.',
       resume:     'Download or view the resume of Vansh Gambhir, Frontend Software Engineer based in Seattle, WA.',
     }
     const url = `https://www.vansh.dev${TAB_TO_PATH[active]}`
 
     const title: Record<Tab, string> = {
-      about:      'Vansh Gambhir — Frontend Engineer',
+      about:      'Vansh Gambhir: Frontend Engineer',
       skills:     'Skills | Vansh Gambhir',
       experience: 'Experience | Vansh Gambhir',
       contact:    'Contact | Vansh Gambhir',

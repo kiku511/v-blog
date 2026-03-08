@@ -3,7 +3,7 @@ export const about = {
   role:      'Software Engineer (Frontend)',
   company:   'BRINC Drones',
   location:  'Seattle, WA',
-  tagline:   '6 years building ambitious frontend products at scale — from AWS no-code platforms to real-time drone control UIs.',
+  tagline:   '6 years building ambitious frontend products at scale, from AWS no-code platforms to real-time drone control UIs.',
   bio:       "I specialize in turning complex systems into clean, fast user experiences. At AWS I led teams shipping 0-1 products used by thousands of customers. Now at BRINC, I'm building real-time flight control software where performance is life-critical.",
 }
 
