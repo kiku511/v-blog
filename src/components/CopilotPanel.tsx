@@ -51,8 +51,11 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput]       = useState('')
   const [loading, setLoading]   = useState(false)
-  const bottomRef = useRef<HTMLDivElement>(null)
-  const inputRef  = useRef<HTMLTextAreaElement>(null)
+  const bottomRef     = useRef<HTMLDivElement>(null)
+  const inputRef      = useRef<HTMLTextAreaElement>(null)
+  const charQueueRef  = useRef<string[]>([])
+  const drainerRef    = useRef<ReturnType<typeof setInterval> | null>(null)
+  const streamDoneRef = useRef(false)
   const [width, onDragStart] = useDragResize({ initial: DEFAULT_WIDTH, min: MIN_WIDTH, max: MAX_WIDTH, direction: -1 })
 
   useEffect(() => {
@@ -70,9 +73,32 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
     el.style.height = el.scrollHeight + 'px'
   }, [input])
 
+  useEffect(() => () => {
+    if (drainerRef.current) clearInterval(drainerRef.current)
+  }, [])
+
+  function startDrainer(assistantId: string) {
+    drainerRef.current = setInterval(() => {
+      const chars = charQueueRef.current.splice(0, 2) // 2 chars per 20ms ≈ 100 chars/sec
+      if (chars.length) {
+        setMessages(m => m.map(msg =>
+          msg.id === assistantId ? { ...msg, content: msg.content + chars.join('') } : msg
+        ))
+      }
+      if (streamDoneRef.current && charQueueRef.current.length === 0) {
+        clearInterval(drainerRef.current!)
+        drainerRef.current = null
+      }
+    }, 20)
+  }
+
   const send = async () => {
     const text = input.trim()
     if (!text || loading) return
+
+    if (drainerRef.current) clearInterval(drainerRef.current)
+    charQueueRef.current  = []
+    streamDoneRef.current = false
 
     const next: Message[] = [...messages, { id: crypto.randomUUID(), role: 'user', content: text }]
     setMessages(next)
@@ -95,9 +121,11 @@ export function CopilotPanel({ isOpen, onClose }: Props) {
           responded = true
           setLoading(false)
           setMessages(m => [...m, { id: assistantId, role: 'assistant', content: '' }])
+          startDrainer(assistantId)
         }
-        setMessages(m => m.map(msg => msg.id === assistantId ? { ...msg, content: msg.content + token } : msg))
+        charQueueRef.current.push(...token.split(''))
       }
+      streamDoneRef.current = true
 
       if (!responded) fail('Sorry, I could not generate a response.')
     } catch (err) {
