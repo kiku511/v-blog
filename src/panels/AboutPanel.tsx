@@ -25,6 +25,8 @@ export function AboutPanel() {
     <Cmt c=" * At AWS I led teams shipping 0-1 products used by thousands of customers." />,
     <Cmt c=" * Now at BRINC, I'm building real-time flight control software where" />,
     <Cmt c=" * performance is life-critical." />,
+    <Cmt c=" *" />,
+    <Cmt c=" * Source: github.com/kiku511/v-blog" />,
     <Cmt c=" */" />,
     null,
     <><Kw c="const" /> <Prop c="vansh" /> {'= {'}</>,
