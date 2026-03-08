@@ -1,4 +1,4 @@
-# vansh.dev — Personal Portfolio
+# vansh.dev: Personal Portfolio
 
 [![Deploy to Vercel](https://github.com/kiku511/v-blog/actions/workflows/deploy.yml/badge.svg)](https://github.com/kiku511/v-blog/actions/workflows/deploy.yml)
 [![Vercel](https://img.shields.io/badge/Vercel-deployed-black?logo=vercel&logoColor=white)](https://vansh.dev)
@@ -10,30 +10,31 @@ VS Code-themed interactive portfolio. Live at **[vansh.dev](https://vansh.dev)**
 
 [![vansh.dev preview](https://www.vansh.dev/og.png)](https://vansh.dev)
 
-I built this in between jobs as an experiment in 100% vibe coding with light supervision — just me, Claude, and a rough idea of what a portfolio could look like if it felt like home. The goal wasn't to ship the fastest portfolio; it was to see how far AI-assisted development could take a project end-to-end, from blank canvas to a production site with a real backend, auth-hardened API, observability, and CI/CD. Turns out: pretty far.
+I built this in between jobs as an experiment in 100% vibe coding with light supervision. Just me, Claude, and a rough idea of what a portfolio could look like if it felt like home. The goal wasn't to ship the fastest portfolio; it was to see how far AI-assisted development could take a project end-to-end, from blank canvas to a production site with a real backend, auth-hardened API, observability, and CI/CD. Turns out: pretty far.
 
 ---
 
 ## Features
 
-- **VS Code UI** — title bar, activity bar, resizable sidebar, editor tabs, status bar, minimap
-- **Syntax-highlighted panels** — About, Skills, Experience, Contact, Resume rendered as TypeScript source files with token-level coloring
-- **AI Chat** — Gemini-powered assistant that answers questions about Vansh; streaming SSE with typewriter effect; rate-limited per IP; prompt injection defenses
-- **Command palette** — `Cmd/Ctrl+P` fuzzy-search navigation across all tabs and actions
-- **Mock terminal** — `Ctrl+\`` opens a bash-style terminal with easter-egg commands (`npm install vansh`, `git log`, `lucario`, and more)
-- **Full-text search** — `Cmd/Ctrl+Shift+F` searches across all panel content
-- **8 color themes** — Dark+, Light+, Monokai, Dracula, Nord, GitHub Dark, Solarized Dark, Solarized Light; persisted to localStorage
-- **Minimap** — pixel-art code minimap synchronized to scroll position; toggleable
-- **Keyboard navigation** — `Cmd/Ctrl+Arrow` cycles tabs; `Cmd/Ctrl+Alt+T/M/A` toggle theme/minimap/chat
-- **Live cursor tracking** — status bar shows Ln/Col as you hover over panel content
-- **Resizable panels** — sidebar, AI chat panel, and terminal all drag-to-resize
-- **Mobile responsive** — hamburger drawer navigation, chat toggle button in title bar
-- **Onboarding hint** — dismissible first-visit tip banner (auto-dismisses after 12s)
-- **Konami easter egg** — ↑↑↓↓←→←→BA triggers Matrix rain
-- **Accessibility** — ARIA labels, keyboard focus, screen reader live regions, WCAG AA contrast on all themes
-- **SEO** — per-route `<title>` and meta tags, Open Graph, Twitter Card, JSON-LD `ProfilePage` schema, canonical URLs
-- **Observability** — every AI chat request logged to Google Sheets (IP, geo, user agent, question, answer, conversation length)
-- **CI/CD** — GitHub Actions runs `tsc -b && vite build` on every push; Vercel deploys on merge to `main`
+**Core experience**
+- Faithful VS Code layout: activity bar, resizable sidebar, editor tabs, status bar, minimap, and syntax-highlighted panels that render resume content as real TypeScript source files
+- `Cmd/Ctrl+P` command palette, `Cmd/Ctrl+Shift+F` full-text search, and `Cmd/Ctrl+Arrow` tab cycling
+- 8 color themes (Dark+, Monokai, Dracula, Nord, GitHub Dark, Solarized, and more), persisted across sessions
+
+**AI Chat**
+- Gemini Flash-powered assistant that knows everything about Vansh and nothing else
+- Streaming SSE with typewriter effect, per-IP rate limiting, and prompt injection defenses
+- Every conversation logged to Google Sheets with geo, user agent, and full Q&A
+
+**Easter eggs & polish**
+- Mock terminal (`Ctrl+\``) with easter-egg commands: try `npm install vansh`, `git blame`, or `lucario`
+- Konami code (↑↑↓↓←→←→BA) triggers Matrix rain
+- Live Ln/Col cursor tracking in the status bar as you hover over code
+
+**Production-grade**
+- WCAG AA contrast on every theme, full keyboard navigation, screen reader live regions
+- Per-route Open Graph, Twitter Card, JSON-LD `ProfilePage` schema, and canonical URLs
+- GitHub Actions type-checks and builds on every push; Vercel deploys to production on merge
 
 ---
 
@@ -59,7 +60,7 @@ I built this in between jobs as an experiment in 100% vibe coding with light sup
 ```
 vBlog/
 ├── api/
-│   └── chat.ts              # Vercel Edge Function — Gemini streaming, rate limiting, Sheets logging
+│   └── chat.ts              # Vercel Edge Function: Gemini streaming, rate limiting, Sheets logging
 ├── public/
 │   ├── vansh-resume-*.pdf   # Resume download
 │   ├── og.png               # Open Graph image
@@ -95,7 +96,7 @@ vBlog/
 │   │   ├── Sidebar.tsx
 │   │   ├── StatusBar.tsx
 │   │   ├── ThemeSelector.tsx
-│   │   └── syntax.tsx       # Kw, Prop, Str, Cmt, Line — syntax highlight primitives
+│   │   └── syntax.tsx       # Kw, Prop, Str, Cmt, Line: syntax highlight primitives
 │   ├── panels/
 │   │   └── TerminalPanel.tsx # Mock terminal with easter-egg commands
 │   ├── utils/
@@ -132,7 +133,7 @@ The entire frontend is a client-side SPA with no server-side rendering. The only
 
 ### Prerequisites
 - Node.js 20+
-- [Vercel CLI](https://vercel.com/docs/cli) (`npm i -g vercel`) — required to run the Edge Function locally
+- [Vercel CLI](https://vercel.com/docs/cli) (`npm i -g vercel`), required to run the Edge Function locally
 
 ### Environment variables
 
@@ -153,7 +154,7 @@ SHEETS_WEBHOOK_URL=https://script.google.com/macros/s/.../exec
 # Install dependencies
 npm install
 
-# Run frontend only (no AI chat — api/chat.ts won't work)
+# Run frontend only (no AI chat, api/chat.ts won't work)
 npm run dev
 
 # Run with Edge Function locally (recommended)
@@ -172,8 +173,8 @@ npm run build
 
 Merging to `main` triggers two things automatically:
 
-1. **GitHub Actions** (`.github/workflows/`) — runs `tsc -b && vite build` to validate the build
-2. **Vercel** — deploys the built SPA and the Edge Function; environment variables are set in the Vercel project dashboard
+1. **GitHub Actions** (`.github/workflows/`) runs `tsc -b && vite build` to validate the build
+2. **Vercel** deploys the built SPA and the Edge Function; environment variables are set in the Vercel project dashboard
 
 The `vercel.json` rewrites all non-asset paths to `index.html` to support client-side routing.
 
