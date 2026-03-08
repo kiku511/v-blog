@@ -18,7 +18,7 @@ export function AboutPanel() {
     <Cmt c={` * Poke around: ask the AI anything, hit ${cmdKey}+P to explore, crack open the terminal`} />,
     <Cmt c=" * with Ctrl+`, or enter the Konami code for a little surprise 🎮" />,
     <Cmt c=" *" />,
-    <Cmt c={` * ${years} years building ambitious frontend products at scale —`} />,
+    <Cmt c={` * ${years} years building ambitious frontend products at scale,`} />,
     <Cmt c=" * from AWS no-code platforms to real-time drone control UIs." />,
     <Cmt c=" *" />,
     <Cmt c=" * I specialize in turning complex systems into clean, fast user experiences." />,

@@ -59,70 +59,35 @@ I built this in between jobs as an experiment in 100% vibe coding with light sup
 
 ```
 vBlog/
-├── api/
-│   └── chat.ts              # Vercel Edge Function: Gemini streaming, rate limiting, Sheets logging
-├── public/
-│   ├── vansh-resume-*.pdf   # Resume download
-│   ├── og.png               # Open Graph image
-│   └── favicon.svg
+├── api/              # Vercel Edge Functions
+├── public/           # Static assets (resume PDF, OG image, favicon)
 ├── src/
-│   ├── config/
-│   │   ├── constants.ts     # Shared constants (resume path, localStorage keys)
-│   │   └── tabs.ts          # Tab definitions (id, fileName, lang, Panel component)
-│   ├── data/
-│   │   ├── profile.ts       # All content (about, skills, experience, contact)
-│   │   ├── searchIndex.ts   # Pre-built search index for full-text search
-│   │   └── themes.ts        # Theme definitions (colors, CSS var mappings)
-│   ├── hooks/
-│   │   ├── useDragResize.ts # Reusable drag-to-resize hook (x/y axis, direction)
-│   │   ├── useMinimapSetting.ts
-│   │   └── useTheme.ts
-│   ├── panels/              # One component per editor tab
-│   │   ├── AboutPanel.tsx
-│   │   ├── SkillsPanel.tsx
-│   │   ├── ExperiencePanel.tsx
-│   │   ├── ContactPanel.tsx
-│   │   └── ResumePanel.tsx
-│   ├── components/
-│   │   ├── ActivityBar.tsx
-│   │   ├── CopilotPanel.tsx # AI chat (SSE streaming, typewriter effect, drag resize)
-│   │   ├── CommandPalette.tsx
-│   │   ├── EditorTabs.tsx
-│   │   ├── Icons.tsx
-│   │   ├── MatrixRain.tsx   # Konami easter egg
-│   │   ├── Minimap.tsx      # Pixel-art minimap with scroll sync
-│   │   ├── OnboardingHint.tsx
-│   │   ├── SearchPanel.tsx
-│   │   ├── Sidebar.tsx
-│   │   ├── StatusBar.tsx
-│   │   ├── ThemeSelector.tsx
-│   │   └── syntax.tsx       # Kw, Prop, Str, Cmt, Line: syntax highlight primitives
-│   ├── panels/
-│   │   └── TerminalPanel.tsx # Mock terminal with easter-egg commands
-│   ├── utils/
-│   │   └── platform.ts      # isMac, cmdKey, measureMonospaceCharWidth
-│   └── App.tsx              # Root layout, routing, keyboard handlers, SEO meta
-├── index.html               # Entry point with full SEO meta + JSON-LD schema
+│   ├── config/       # Tab definitions and shared constants
+│   ├── data/         # Content (profile, themes, search index)
+│   ├── hooks/        # useDragResize, useTheme, useMinimapSetting
+│   ├── panels/       # One component per editor tab + TerminalPanel
+│   ├── components/   # UI shell (ActivityBar, CopilotPanel, CommandPalette, Minimap, etc.)
+│   ├── utils/        # Platform utilities
+│   └── App.tsx       # Root layout, routing, keyboard handlers, SEO meta
+├── index.html
 ├── vite.config.ts
-└── vercel.json              # Rewrites for SPA routing
+└── vercel.json
 ```
 
 ---
 
 ## Architecture
 
-```
-Browser (React SPA)
-  │
-  ├── Static assets + JS bundle  ←  Vercel CDN / GitHub Actions build
-  │
-  └── POST /api/chat  ──────────→  Vercel Edge Function (api/chat.ts)
-                                        │
-                                        ├── Rate limit (15 req/min per IP, in-memory Map)
-                                        ├── Gemini Flash REST API  (SSE stream)
-                                        │       google generativelanguage.googleapis.com
-                                        └── Google Sheets webhook  (fire-and-forget)
-                                                Apps Script web app → append row
+```mermaid
+graph TD
+    A[Browser - React SPA] -->|POST /api/chat| B[Vercel Edge Function]
+    C[GitHub Actions] -->|tsc + vite build| D[Vercel CDN]
+    D -->|serves bundle| A
+    B --> E{Rate limit check}
+    E -->|pass| F[Gemini Flash API - SSE stream]
+    E -->|fail| G[429 Too Many Requests]
+    F -->|stream tokens| A
+    F -->|fire and forget| H[Google Sheets webhook]
 ```
 
 The entire frontend is a client-side SPA with no server-side rendering. The only backend surface is the single Edge Function at `/api/chat`.

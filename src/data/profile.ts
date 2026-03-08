@@ -32,7 +32,7 @@ export const experience: { company: string; team?: string; role: string; promote
     role:    'Front End Engineer II',
     period:  'Jan 2025 – Feb 2026',
     bullets: [
-      'Built the Q Automate rendering engine — supports 1,000+ node graphs with custom DSL, comparable to n8n.',
+      'Built the Q Automate rendering engine: supports 1,000+ node graphs with custom DSL, comparable to n8n.',
       'Acted as security guardian: reviewed all feature launches, partnered with AppSec on threat models.',
     ],
   },
@@ -43,7 +43,7 @@ export const experience: { company: string; team?: string; role: string; promote
     promoted: 'Jan 2023',
     period:   'Jul 2020 – Jan 2025',
     bullets: [
-      'Led 0-1 delivery of AWS AppStudio, a no-code app builder — managed a team of 5 from Architecture through GA.',
+      'Led 0-1 delivery of AWS AppStudio, a no-code app builder, managing a team of 5 from Architecture through GA.',
       'Built reusable abstractions over 10+ AWS services (S3, Lambda, DynamoDB, AppSync) for the AppStudio runtime.',
       'Shipped in-house devtools accelerating feature delivery by 35%; built org-wide E2E infrastructure with Cypress.',
     ],

@@ -20,7 +20,7 @@ function makeIndex(): SearchEntry[] {
     ` * Poke around: ask the AI anything, hit ${cmdKey}+P to explore, crack open the terminal`,
     ' * with Ctrl+`, or enter the Konami code for a little surprise 🎮',
     ' *',
-    ` * ${Math.floor((Date.now() - new Date(2020, 6, 1).getTime()) / (1000 * 60 * 60 * 24 * 365.25))} years building ambitious frontend products at scale —`,
+    ` * ${Math.floor((Date.now() - new Date(2020, 6, 1).getTime()) / (1000 * 60 * 60 * 24 * 365.25))} years building ambitious frontend products at scale,`,
     ' * from AWS no-code platforms to real-time drone control UIs.',
     ' *',
     ' * I specialize in turning complex systems into clean, fast user experiences.',

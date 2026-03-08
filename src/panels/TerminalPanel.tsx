@@ -219,7 +219,7 @@ export function TerminalPanel({ onClose, height, onResize }: Props) {
       case 'ssh':   push("ssh: connect to host vansh.dev port 22: no route to host (he's a frontend dev 😅)"); break
       case 'curl': case 'wget': push(`${c}: not a real server, but vansh.dev is! 🌐`); break
       case 'pokemon': case 'lucario':
-        push('Lucario — Aura Pokémon  #448', 'Type: Fighting / Steel · Ability: Inner Focus', "Favorite Pokémon. Will talk about this at length. Don't start him. 🐾")
+        push('Lucario (#448) - Aura Pokemon', 'Type: Fighting / Steel · Ability: Inner Focus', "Favorite Pokemon. Will talk about this at length. Don't start him. 🐾")
         break
       case 'npm':
         if (args[0] === 'install' && (args[1] === 'vansh' || args[1] === 'vansh-gambhir')) {

@@ -182,7 +182,7 @@ export default function App() {
         >
           <HamburgerIcon />
         </button>
-        <span aria-hidden="true">vansh-gambhir — Code</span>
+        <span aria-hidden="true">vansh-gambhir: Code</span>
         <div style={{ position: 'absolute', right: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
           <button className="chat-mobile-btn" onClick={() => setChatOpen(o => !o)} aria-label="Toggle AI Chat">
             <ChatIcon />
