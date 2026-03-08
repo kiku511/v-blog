@@ -54,10 +54,16 @@ export function CommandPalette({ isOpen, onClose, onTabSelect, onThemeSelect, on
       label: 'Download Resume',
       shortcut: `${cmdKey}+Shift+P → enter`,
       action: () => {
-        const a = document.createElement('a')
-        a.href = RESUME_PATH
-        a.download = RESUME_FILENAME
-        a.click()
+        fetch(RESUME_PATH)
+          .then(r => r.blob())
+          .then(blob => {
+            const url = URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = RESUME_FILENAME
+            a.click()
+            URL.revokeObjectURL(url)
+          })
         onClose()
       },
     },

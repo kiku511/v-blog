@@ -187,15 +187,25 @@ export default function App() {
           <button className="chat-mobile-btn" onClick={() => setChatOpen(o => !o)} aria-label="Toggle AI Chat">
             <ChatIcon />
           </button>
-          <a
-            href={RESUME_PATH}
-            download={RESUME_FILENAME}
+          <button
             className="resume-btn"
             aria-label="Download resume PDF"
-            onClick={e => e.stopPropagation()}
+            onClick={e => {
+              e.stopPropagation()
+              fetch(RESUME_PATH)
+                .then(r => r.blob())
+                .then(blob => {
+                  const url = URL.createObjectURL(blob)
+                  const a = document.createElement('a')
+                  a.href = url
+                  a.download = RESUME_FILENAME
+                  a.click()
+                  URL.revokeObjectURL(url)
+                })
+            }}
           >
             ↓ Resume
-          </a>
+          </button>
         </div>
       </header>
 
