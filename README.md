@@ -1,6 +1,14 @@
 # vansh.dev — Personal Portfolio
 
+[![Deploy to Vercel](https://github.com/kiku511/v-blog/actions/workflows/deploy.yml/badge.svg)](https://github.com/kiku511/v-blog/actions/workflows/deploy.yml)
+[![Vercel](https://img.shields.io/badge/Vercel-deployed-black?logo=vercel&logoColor=white)](https://vansh.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white)](https://vitejs.dev)
+
 VS Code-themed interactive portfolio. Live at **[vansh.dev](https://vansh.dev)**.
+
+[![vansh.dev preview](https://www.vansh.dev/og.png)](https://vansh.dev)
 
 I built this in between jobs as an experiment in 100% vibe coding with light supervision — just me, Claude, and a rough idea of what a portfolio could look like if it felt like home. The goal wasn't to ship the fastest portfolio; it was to see how far AI-assisted development could take a project end-to-end, from blank canvas to a production site with a real backend, auth-hardened API, observability, and CI/CD. Turns out: pretty far.
 
